@@ -1,5 +1,5 @@
 # Mockup of Meteorites in Antarctica
-![Default State](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/2_mockup/image/top_page.png)
+![Default State](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/2_mockup/image/default_state.png)
 ![Zoom-In](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/2_mockup/image/zoom_in.png)
 
 # Estimated Data Source
