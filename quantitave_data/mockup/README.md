@@ -17,7 +17,7 @@ This visualization uses the latitude and longitude metadata for the density map 
 - Polygon Data: [U.S. National Ice Center](https://usicecenter.gov/Products/AntarcData)
 - Meteorites: [Smithsonian Open Access](https://www.si.edu/openaccess)
 
-### Estimated Data Point (As of September 19, 2024)
+### Estimated # of Data Point (As of September 19, 2024)
 45,223
 
 ### Sample Data
