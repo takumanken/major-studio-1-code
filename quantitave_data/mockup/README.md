@@ -2,11 +2,15 @@
 ![Default State](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/mockup/image/default_state.png)
 ![Zoom-In](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/mockup/image/zoom_in.png)
 
-# Estimated Data Source
+# Data
+## Estimated Data Source
 - Polygon Data: [U.S. National Ice Center](https://usicecenter.gov/Products/AntarcData)
 - Meteorites: [Smithsonian Open Access](https://www.si.edu/openaccess)
 
-# Sample Data
+## Estimated Data Point (As of Sep 19th)
+45,223
+
+## Sample Data
 ```JSON
   {
     "id": "ld1-1643406126934-1643406131162-1",
