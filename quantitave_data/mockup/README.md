@@ -2,8 +2,8 @@
 ## Overview
 This visualization allows users to explore the Antarctic meteorite collection based on a map UI.
 The first view of this UI is to show the entire Antarctic and visualize the number of meteorites on the density heatmap, grouped by binned latitude and longitude. In addition, users can click on the density heatmap to see each instance on the screen.
-This visualization uses the latitude and longitude metadata for the density map and also uses collection date, weight, and radius as filters. The estimated number of data points is 55000.
-The map visualization is used to let the user know where the meteorite was collected.
+This visualization uses the latitude and longitude metadata for the density map and also uses collection date, weight as filters.
+
 
 ## Mockup
 ### Dafault State
