@@ -1,4 +1,4 @@
-# Project: Meteorites in Antarctica
+# Meteorites in Antarctica
 ## Overview
 This visualization allows users to explore the Antarctic meteorite collection based on a map UI.
 The first view of this UI is to show the entire Antarctic and visualize the number of meteorites on the density heatmap, grouped by binned latitude and longitude. In addition, users can click on the density heatmap to see each instance on the screen.
