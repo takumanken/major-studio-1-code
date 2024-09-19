@@ -12,12 +12,12 @@ This visualization uses the latitude and longitude metadata for the density map 
 ### When you select a specific data point
 ![Zoom-In](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/mockup/image/zoom_in.png)
 
-## Data
-### Estimated Data Source
+## Data (As of September 19, 2024)
+### Data Source
 - Polygon Data: [U.S. National Ice Center](https://usicecenter.gov/Products/AntarcData)
 - Meteorites: [Smithsonian Open Access](https://www.si.edu/openaccess)
 
-### Estimated # of Data Point (As of September 19, 2024)
+### # of Data Point
 45,223
 
 ### Data Source Structure
