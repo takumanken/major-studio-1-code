@@ -20,7 +20,7 @@ This visualization uses the latitude and longitude metadata for the density map 
 ### Estimated # of Data Point (As of September 19, 2024)
 45,223
 
-### Sample Data
+### Data Source Structure
 ```JSON
   {
     "id": "ld1-1643406126934-1643406131162-1",
