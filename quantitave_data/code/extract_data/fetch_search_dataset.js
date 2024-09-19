@@ -87,21 +87,6 @@ function addObject(objectData) {
     const geolocation = objectData.content?.indexedStructured?.geoLocation?.[0]?.points?.point ?? 'N/A';
     const weight = objectData.content?.freetext?.physicalDescription ?? 'N/A';
     const link = objectData.content?.descriptiveNonRepeating?.record_link ?? 'N/A';
-    
-    let currentPlace = "";
-    if (objectData.content?.indexedStructured?.place && Array.isArray(objectData.content.indexedStructured.place)) {
-        currentPlace = objectData.content.indexedStructured.place[0] ?? 'Unknown Place';
-    } else {
-        console.warn(`Place information missing for object ID: ${id}`);
-    }
-
-    // Log warnings for missing critical fields
-    if (date === 'Unknown Date') {
-        console.warn(`Date information missing for object ID: ${id}`);
-    }
-    if (geolocation === 'No Geolocation') {
-        console.warn(`Geolocation information missing for object ID: ${id}`);
-    }
 
     myArray.push({
         id: id,
@@ -110,7 +95,6 @@ function addObject(objectData) {
         geolocation: geolocation,
         weight: weight,
         link: link,
-        place: currentPlace
     });
 }
 
