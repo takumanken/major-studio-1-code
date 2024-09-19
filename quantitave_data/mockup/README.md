@@ -1,16 +1,19 @@
 # Mockup of Meteorites in Antarctica
+### Dafault State
 ![Default State](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/mockup/image/default_state.png)
+
+### When you select a specific data point
 ![Zoom-In](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/mockup/image/zoom_in.png)
 
 # Data
-## Estimated Data Source
+### Estimated Data Source
 - Polygon Data: [U.S. National Ice Center](https://usicecenter.gov/Products/AntarcData)
 - Meteorites: [Smithsonian Open Access](https://www.si.edu/openaccess)
 
-## Estimated Data Point (As of September 19, 2024)
+### Estimated Data Point (As of September 19, 2024)
 45,223
 
-## Sample Data
+### Sample Data
 ```JSON
   {
     "id": "ld1-1643406126934-1643406131162-1",
