@@ -64,7 +64,11 @@ function fetchAllData(url) {
         }
 
         data.response.rows.forEach(function(n) {
-            addObject(n);
+            try {
+                addObject(n);
+            } catch (error) {
+                console.error(`Error processing object ID ${n.id}:`, error);
+            }
         });
         // Update jsonString after each fetch
         jsonString = JSON.stringify(myArray, null, 2); // Pretty-print with 2 spaces
@@ -77,24 +81,38 @@ function fetchAllData(url) {
 
 // Create your own array with just the data you need
 function addObject(objectData) {  
-    // We've encountered that some places have data others don't
+    const id = objectData.id ?? 'N/A';
+    const title = objectData.title ?? 'N/A';
+    const date = objectData.content?.freetext?.date?.[0] ?? 'N/A';
+    const geolocation = objectData.content?.indexedStructured?.geoLocation?.[0]?.points?.point ?? 'N/A';
+    const weight = objectData.content?.freetext?.physicalDescription ?? 'N/A';
+    const link = objectData.content?.descriptiveNonRepeating?.record_link ?? 'N/A';
+    
     let currentPlace = "";
-    if(objectData.content && objectData.content.indexedStructured && Array.isArray(objectData.content.indexedStructured.place)) {
-        currentPlace = objectData.content.indexedStructured.place[0];
+    if (objectData.content?.indexedStructured?.place && Array.isArray(objectData.content.indexedStructured.place)) {
+        currentPlace = objectData.content.indexedStructured.place[0] ?? 'Unknown Place';
+    } else {
+        console.warn(`Place information missing for object ID: ${id}`);
+    }
+
+    // Log warnings for missing critical fields
+    if (date === 'Unknown Date') {
+        console.warn(`Date information missing for object ID: ${id}`);
+    }
+    if (geolocation === 'No Geolocation') {
+        console.warn(`Geolocation information missing for object ID: ${id}`);
     }
 
     myArray.push({
-        id: objectData.id,
-        title: objectData.title,
-        date: objectData.content.freetext.date[0],
-        geolocation: objectData.content.indexedStructured.geoLocation[0].points.point,
-        weight: objectData.content.freetext.physicalDescription,
-        link: objectData.content.descriptiveNonRepeating.record_link
+        id: id,
+        title: title,
+        date: date,
+        geolocation: geolocation,
+        weight: weight,
+        link: link,
+        place: currentPlace
     });
 }
 
 // Start the data fetching process
 fetchSearchData(search);
-
-// ---------------------------UNIT CODES------------------------------
-// (Your unit codes here)
