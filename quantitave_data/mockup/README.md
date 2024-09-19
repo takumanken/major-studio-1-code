@@ -20,7 +20,7 @@ This visualization uses the latitude and longitude metadata for the density map 
 ### # of Data Point
 45,223
 
-### Data Source Structure
+### JSON Structure
 ```JSON
   {
     "id": "ld1-1643406126934-1643406131162-1",
