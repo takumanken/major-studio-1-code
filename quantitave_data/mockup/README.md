@@ -23,13 +23,13 @@ This visualization uses the latitude and longitude metadata for the density map 
 ### JSON Structure
 ```JSON
   {
-    "id": "ld1-1643406126934-1643406141420-2",
-    "title": "LEW 93887,2",
-    "collection_date": "N/A",
-    "latitude": "N/A",
-    "longitude": "N/A",
-    "weight": "N/A",
-    "link": "http://n2t.net/ark:/65665/3cf5d9326-0f95-4ab8-b88c-7022119d0b65"
+    "id": "ld1-1643406126934-1643406143354-0",
+    "title": "ALH 77165,4",
+    "collection_date": "1977",
+    "latitude": "-76.7139",
+    "longitude": "159.424",
+    "weight": "0.083 g",
+    "link": "http://n2t.net/ark:/65665/314c804f4-6e8e-4569-b787-44eb3a025c84"
   },
 ```
 See all data [here](https://github.com/takumanken/major-studio-1-code/blob/main/quantitave_data/mockup/data/data.json)
