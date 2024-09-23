@@ -25,6 +25,20 @@ def convert_weight_to_grams(weight_str):
     else:
         raise ValueError(f"Invalid weight format: {weight_str}")
 
+def convert_collection_date_to_year(collection_date_str):
+    """
+    Converts a collection date string to an integer year.
+    Ensures that the year is a 4-digit number.
+    """
+    # Use regex to extract a 4-digit year
+    year_pattern = re.match(r"(\d{4})", collection_date_str)
+    
+    if year_pattern:
+        year = int(year_pattern.group(1))
+        return year
+    else:
+        raise ValueError(f"Invalid collection date format: {collection_date_str}")
+
 def cleanse_json(input_file, output_file):
     # Load the data from the JSON file
     with open(input_file, 'r') as f:
@@ -50,6 +64,17 @@ def cleanse_json(input_file, output_file):
 
                 # Remove the original 'weight' field
                 del item['weight']
+
+                # Convert collection_date to collection_year
+                if 'collection_date' in item:
+                    try:
+                        collection_year = convert_collection_date_to_year(item['collection_date'])
+                        item['collection_year'] = collection_year
+                        # Remove the original 'collection_date' field
+                        del item['collection_date']
+                    except ValueError:
+                        # Skip this entry if the collection_date is invalid
+                        continue
 
                 # Add the cleansed item to the result list
                 cleansed_data.append(item)
