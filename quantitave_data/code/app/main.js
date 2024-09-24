@@ -191,7 +191,7 @@ function loadAndRenderHistogram(svgMenu) {
       .on("mouseover", function (event, d) {
         d3.select(this).attr("stroke", "black");
         collectedYearTooltip.style("visibility", "visible")
-          .html(`<strong>Collected Year:</strong> ${d.x0} - ${d.x1 - 1}<br><strong>Number of Meteorites:</strong> ${d.length}`);
+          .html(`<strong>Collected Year:</strong> ${d.x0} - ${d.x1 - 1}<br><strong>Number of Meteorites:</strong> ${d.length.toLocaleString()}`); // Updated line
       })
       .on("mousemove", function (event) {
         collectedYearTooltip.style("top", `${event.pageY - 10}px`)
@@ -319,7 +319,7 @@ function loadAndRenderHistogram(svgMenu) {
         }
 
         weightTooltip.style("visibility", "visible")
-          .html(`<strong>Weight:</strong> ${weightRange}<br><strong>Number of Meteorites:</strong> ${d.length}`);
+          .html(`<strong>Weight:</strong> ${weightRange}<br><strong>Number of Meteorites:</strong> ${d.length.toLocaleString()}`); // Updated line
       })
       .on("mousemove", function (event) {
         weightTooltip.style("top", `${event.pageY - 10}px`)
@@ -384,6 +384,17 @@ function getBrightness(hexColor) {
   return (rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114);
 }
 
+// Define custom number formatting function
+function formatNumber(n) {
+  if (n >= 1000 && n < 10000) {
+    return (n / 1000).toFixed(1) + 'K';
+  } else if (n >= 10000) {
+    return Math.round(n / 1000) + 'K';
+  } else {
+    return n.toString();
+  }
+}
+
 // ---------------------------------
 // Rendering Functions
 // ---------------------------------
@@ -417,8 +428,6 @@ function createHeatmap(pointData) {
   const COLOR_SCALE = d3.scaleSequential(d3.interpolateRgb("#B4D2D9", "#0688A6"))
     .domain([0, d3.max(hexbinData, d => d.length)]);
 
-  const FORMAT_COUNT = d3.format(".0s");
-
   const hexGroup = svgMap.append("g")
     .attr("class", "hexagon")
     .selectAll("g")
@@ -446,7 +455,7 @@ function createHeatmap(pointData) {
       return brightness < 150 ? "white" : "#343434";
     })
     .style("pointer-events", "none")
-    .text(d => FORMAT_COUNT(d.length));
+    .text(d => formatNumber(d.length));
 
   // Create tooltip
   const tooltip = d3.select("body").append("div")
@@ -464,7 +473,7 @@ function createHeatmap(pointData) {
     .on("mouseover", function (event, d) {
       d3.select(this).attr("stroke", "black");
       tooltip.style("visibility", "visible")
-        .text(`Number of Meteorites: ${d.length}`);
+        .html(`<strong>Number of Meteorites:</strong> ${d.length.toLocaleString()}`); // Updated line
     })
     .on("mousemove", function (event) {
       tooltip.style("top", `${event.pageY - 10}px`)
