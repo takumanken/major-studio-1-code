@@ -1,9 +1,3 @@
-// Import styles and libraries
-import "./style.css";
-import * as d3 from "d3";
-import { hexbin as d3Hexbin } from "d3-hexbin";
-import proj4 from "proj4";
-
 // ---------------------------------
 // SVG Setup
 // ---------------------------------
@@ -412,7 +406,7 @@ function drawMap(mapData) {
 // Create a hexbin heatmap for meteorite data
 function createHeatmap(pointData) {
   const HEXBIN_RADIUS = 25;
-  const hexbin = d3Hexbin()
+  const hexbin = d3.hexbin()
     .extent([[0, 0], [WIDTH, HEIGHT]])
     .radius(HEXBIN_RADIUS);
 
