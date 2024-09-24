@@ -12,8 +12,8 @@ function setupSVG() {
     .append("svg")
     .attr("viewBox", `0 0 ${WIDTH} ${HEIGHT}`)
     .attr("preserveAspectRatio", "xMidYMid meet")
-    .style("width", "100%")
-    .style("height", "auto")
+    .style("width", WIDTH)
+    .style("height", HEIGHT)
     .style("background-color", "#6DCBD3")
     .style("box-shadow", "0 1px 2px #DDDDDD");
 }
