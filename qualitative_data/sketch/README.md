@@ -3,12 +3,12 @@
 ### Overview
 The Smithsonian's National Numismatic Collection houses a vast and diverse collection of coins and bills. However, when looking at these items, some may wonder, "How valuable were they?" This data visualization illustrates the purchasing power of these coins and bills during the time they were in circulation, using a pictorial chart to show what they could buy.
 
-### Sketches:
+### Sketches
 Default
-![](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/worth_it_1.jpg)
+![default](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/worth_it_1.jpg)
 
 After clicking coin/bill
-![](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/worth_it_2.jpg)
+![after_click](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/worth_it_2.jpg)
 
 ### Approaches
 1. Extract coin and bill data about collected year, description, its value from the Smithsonian API.
@@ -23,10 +23,15 @@ After clicking coin/bill
 
 # 2. Portrait TimeLens
 
-### Overview:
+### Overview
 The Smithsonian Portrait Collection contains a vast and diverse archive of portraits, including influential historical figures, but sometimes lacks descriptions of the context and background of the person in the portraits. This visualization enhances the context of the portraits through the power of generative AI, adding context about what the person was like and when the moment of the portrait occurred in their life.
 
 ### Sketches
+Default
+![default](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/timelens_1.jpg)
+
+After clicking coin/bill
+![after_click](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/timelens_2.jpg)
 
 ### Approach
 1. Extract portrait data from the Smithsonian API.
@@ -41,7 +46,7 @@ The Smithsonian Portrait Collection contains a vast and diverse archive of portr
 
 # 3. Art Wheel
 
-### Overview:
+### Overview
 This visualization classifies paintings from the Smithsonian American Art Museum by the main colors used and allows users to explore the collections using a color wheel. When viewers select a color, the tool additionally displays paintings that also uses that color as main, with options to apply additional filters for sub-colors and accent colors. Color classification is performed by AI (Gemini).
 
 ### Sketches
