@@ -6,7 +6,9 @@ const apiKey = API_KEY;
 const searchBaseURL = "https://api.si.edu/openaccess/api/v1.0/search";
 
 // Constructing the initial search query
-const search = 'unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"'; // Portrait
+// const search = 'unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"'; // Portrait
+const search = 'unit_code:"SAAM" AND "painting" AND online_media_type:"Images"'; // Painting
+
 // Array that we will write into
 let myArray = [];
 

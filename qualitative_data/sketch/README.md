@@ -83,11 +83,16 @@ After clicking a painting
 
 ![after_select_painting](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/art_wheel_3.jpg)
 
-
 ### How to build it
 1. Extract painting data from the Smithsonian American Art Museum using the Smithsonian API.
 2. Use the Gemini API to identify the main, sub, and accent colors.
 3. Build the visualization.
+
+### The number of Data Points
+5103
+```javascript
+unit_code:"SAAM" AND "painting" AND online_media_type:"Images"
+```
 
 ### Considerations
 - AI hallucinations: Based on my brief testing, the risk of hallucination in this context is considered relatively low.
