@@ -4,7 +4,7 @@
 ### Overview
 The Smithsonian's National Numismatic Collection houses a vast and diverse collection of coins and bills. However, when looking at these items, some may wonder, "How valuable were they?" This data visualization illustrates the purchasing power of these coins and bills during the time they were in circulation, using a pictorial chart to show what they could buy.
 
-## Collection
+### Collection
 [National Numismatic Collection](https://www.si.edu/spotlight/national-numismatic-collection)
 
 ### Sketches
@@ -31,7 +31,7 @@ After clicking a coin or bill
 ### Overview
 The Smithsonian Portrait Collection contains a vast and diverse archive of portraits, including influential historical figures, but sometimes lacks descriptions of the context and background of the person in the portraits. This visualization enhances the context of the portraits through the power of generative AI, adding context about what the person was like and when the moment of the portrait occurred in their life.
 
-## Collection
+### Collection
 [National Portrait Gallery](https://npg.si.edu/home/national-portrait-gallery)
 
 ### Sketches
