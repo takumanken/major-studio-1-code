@@ -18,7 +18,7 @@ The Smithsonian's National Numismatic Collection houses a vast and diverse colle
 
 # 2. Portrait TimeLens
 
-Overview:
+### Overview:
 The Smithsonian Portrait Collection contains a vast and diverse archive of portraits, including influential historical figures, but sometimes lacks descriptions of the context and background of the person in the portraits. This visualization enhances the context of the portraits through the power of generative AI, adding context about what the person was like and when the moment of the portrait occurred in their life.
 
 ### Sketches
