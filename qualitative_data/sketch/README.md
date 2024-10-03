@@ -4,6 +4,9 @@
 ### Overview
 The Smithsonian's National Numismatic Collection houses a vast and diverse collection of coins and bills. However, when looking at these items, some may wonder, "How valuable were they?" This data visualization illustrates the purchasing power of these coins and bills during the time they were in circulation, using a pictorial chart to show what they could buy.
 
+## Collection
+[National Numismatic Collection](https://www.si.edu/spotlight/national-numismatic-collection)
+
 ### Sketches
 
 Default
@@ -27,6 +30,9 @@ After clicking a coin or bill
 
 ### Overview
 The Smithsonian Portrait Collection contains a vast and diverse archive of portraits, including influential historical figures, but sometimes lacks descriptions of the context and background of the person in the portraits. This visualization enhances the context of the portraits through the power of generative AI, adding context about what the person was like and when the moment of the portrait occurred in their life.
+
+## Collection
+[National Portrait Gallery](https://npg.si.edu/home/national-portrait-gallery)
 
 ### Sketches
 
@@ -59,6 +65,9 @@ unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
 
 ### Overview
 This visualization classifies paintings from the Smithsonian American Art Museum by the main colors used and allows users to explore the collections using a color wheel. When viewers select a color, the tool additionally displays paintings that also uses that color as main, with options to apply additional filters for sub-colors and accent colors. Color classification is performed by AI (Gemini).
+
+### Collection
+[Smithsonian American Art Museum](https://www.si.edu/museums/american-art-museum)
 
 ### Sketches
 
