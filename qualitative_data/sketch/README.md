@@ -5,10 +5,10 @@ The Smithsonian's National Numismatic Collection houses a vast and diverse colle
 
 ### Sketches:
 Default
-![](https://github.com/takumanken/major-studio-1-code/tree/main/qualitative_data/sketch/image/worth_it_1.jpg)
+![](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/worth_it_1.jpg)
 
 After clicking coin/bill
-![](https://github.com/takumanken/major-studio-1-code/tree/main/qualitative_data/sketch/image/worth_it_2.jpg)
+![](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/worth_it_2.jpg)
 
 ### Approaches
 1. Extract coin and note data from the Smithsonian API.
