@@ -20,7 +20,7 @@ After clicking a coin or bill
 5. Build the visualization.
 
 ### Considerations
-- The historical cost of living is critical data for this visualization, but there is a risk that the estimates may be subjective or inaccurate. It's important to show the method used for these estimates to users to avoid confusion.
+- The historical cost of living is critical data for this visualization and should be calculated based on research. It is also important to show the rationale and source to avoid confusion.
 
 
 ## 2. Portrait TimeLens
@@ -46,8 +46,8 @@ After clicking a portrait
 5. Build the visualization.
 
 ### Considerations
-- AI hallucinations: There is a risk of AI hallucinations, especially when dealing with lesser-known people. It's important not only to declare this risk on the page, but also to carefully design prompts to minimize hallucinations.
-- Gemini Token: Consider the practical use of the Gemini API given the tokens available. There is a possibility that interaction with the Gemini API could be real-time if batch processing is unrealistic.
+- AI hallucinations: There is a risk of AI hallucinations, particularly when dealing with lesser-known individuals. It is important to clearly indicate that the information is AI-generated and may be subject to inaccuracies or hallucinations.
+- Gemini Token: Consider the practical use of the Gemini API, taking into account the tokens available within the free tier. If batch processing proves unrealistic, real-time interaction with the Gemini API may be a viable alternative.
 
 ## 3. Art Wheel
 
