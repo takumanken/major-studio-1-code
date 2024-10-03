@@ -63,6 +63,10 @@ After clicking a color
 
 ![after_click](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/art_wheel_2.jpg)
 
+After clicking a painting
+
+![after_select_painting](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/art_wheel_3.jpg)
+
 
 ### How to build it
 1. Extract painting data from the Smithsonian American Art Museum using the Smithsonian API.
