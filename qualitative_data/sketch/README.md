@@ -1,4 +1,5 @@
-# 1. Worth It?
+# Qualitative Data Visualization Sketches
+## 1. Worth It?
 
 ### Overview
 The Smithsonian's National Numismatic Collection houses a vast and diverse collection of coins and bills. However, when looking at these items, some may wonder, "How valuable were they?" This data visualization illustrates the purchasing power of these coins and bills during the time they were in circulation, using a pictorial chart to show what they could buy.
@@ -22,7 +23,7 @@ After clicking a coin or bill
 - The historical cost of living is critical data for this visualization, but there is a risk that the estimates may be subjective or inaccurate. It's important to show the method used for these estimates to users to avoid confusion.
 
 
-# 2. Portrait TimeLens
+## 2. Portrait TimeLens
 
 ### Overview
 The Smithsonian Portrait Collection contains a vast and diverse archive of portraits, including influential historical figures, but sometimes lacks descriptions of the context and background of the person in the portraits. This visualization enhances the context of the portraits through the power of generative AI, adding context about what the person was like and when the moment of the portrait occurred in their life.
@@ -48,7 +49,7 @@ After clicking a portrait
 - AI hallucinations: There is a risk of AI hallucinations, especially when dealing with lesser-known people. It's important not only to declare this risk on the page, but also to carefully design prompts to minimize hallucinations.
 - Gemini Token: Consider the practical use of the Gemini API given the tokens available. There is a possibility that interaction with the Gemini API could be real-time if batch processing is unrealistic.
 
-# 3. Art Wheel
+## 3. Art Wheel
 
 ### Overview
 This visualization classifies paintings from the Smithsonian American Art Museum by the main colors used and allows users to explore the collections using a color wheel. When viewers select a color, the tool additionally displays paintings that also uses that color as main, with options to apply additional filters for sub-colors and accent colors. Color classification is performed by AI (Gemini).
