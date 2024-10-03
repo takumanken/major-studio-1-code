@@ -22,6 +22,12 @@ After clicking a coin or bill
 4. Calculate what the coins and bills could buy at that time.
 5. Build the visualization.
 
+### The number of Data Points
+330703
+```javascript
+unit_code:"NMAH" AND "National Numismatic Collection" AND online_media_type:"Images"
+```
+
 ### Considerations
 - The historical cost of living is critical data for this visualization and should be calculated based on research. It is also important to show the rationale and source to avoid confusion.
 
