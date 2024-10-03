@@ -45,6 +45,12 @@ After clicking a portrait
 4. Filter out data that is obviously incorrect or inefficient.
 5. Build the visualization.
 
+### The number of Data Points
+782 
+```javascript
+unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
+```
+
 ### Considerations
 - AI hallucinations: There is a risk of AI hallucinations, particularly when dealing with lesser-known individuals. It is important to clearly indicate that the information is AI-generated and may be subject to inaccuracies or hallucinations.
 - Gemini Token: Consider the practical use of the Gemini API, taking into account the tokens available within [the free tier of Google AI Studio](https://ai.google.dev/pricing). If batch processing proves unrealistic, real-time interaction with the Gemini API may be a viable alternative.

@@ -1,10 +1,12 @@
-const apiKey = "";
+import { API_KEY } from "../../../secrets.js";
+
+const apiKey = API_KEY;
 
 // Search base URL
 const searchBaseURL = "https://api.si.edu/openaccess/api/v1.0/search";
 
 // Constructing the initial search query
-const search = 'unit_code:NMAAHC';
+const search = 'unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"'; // Portrait
 // Array that we will write into
 let myArray = [];
 
