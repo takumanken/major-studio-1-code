@@ -55,6 +55,15 @@ This visualization classifies paintings from the Smithsonian American Art Museum
 
 ### Sketches
 
+Default
+
+![default](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/art_wheel_1.jpg)
+
+After clicking a color
+
+![after_click](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/art_wheel_2.jpg)
+
+
 ### How to build it
 1. Extract painting data from the Smithsonian American Art Museum using the Smithsonian API.
 2. Use the Gemini API to identify the main, sub, and accent colors.
