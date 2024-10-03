@@ -11,11 +11,11 @@ After clicking coin/bill
 ![](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/worth_it_2.jpg)
 
 ### Approaches
-1. Extract coin and note data from the Smithsonian API.
+1. Extract coin and bill data about collected year, description, its value from the Smithsonian API.
 2. List the years the coins and bills were in use.
 3. Research the cost of living during those years.
 4. Calculate what the coins and bills could buy at that time.
-5. Build the application.
+5. Build the visualization.
 
 ### Considerations
 - The historical cost of living is critical data for this visualization, but there is a risk that the estimates may be subjective or inaccurate. It's important to show the method used for these estimates to users to avoid confusion.
