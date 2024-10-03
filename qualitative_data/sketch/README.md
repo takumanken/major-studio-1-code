@@ -34,7 +34,7 @@ unit_code:"NMAH" AND "National Numismatic Collection" AND online_media_type:"Ima
 ## 2. Portrait TimeLens
 
 ### Overview
-The Smithsonian Portrait Collection contains a vast and diverse archive of portraits, including influential historical figures, but sometimes lacks descriptions of the context and background of the person in the portraits. This visualization enhances the context of the portraits through the power of generative AI, adding context about what the person was like and when the moment of the portrait occurred in their life.
+The Smithsonian Portrait Collection contains a vast and diverse archive of portraits, including influential historical figures, but sometimes lacks descriptions of the context and background of the person in the portraits. This visualization enhances the context of the portraits through the power of generative AI (within the free tier of Google AI Studio), adding context about what the person was like and when the moment of the portrait occurred in their life.
 
 ### Collection
 [National Portrait Gallery](https://npg.si.edu/home/national-portrait-gallery)
