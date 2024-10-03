@@ -22,8 +22,8 @@ After clicking a coin or bill
 4. Calculate what the coins and bills could buy at that time.
 5. Build the visualization.
 
-### The number of Data Points
-330703
+### The estimated number of Data Points
+330,703
 ```javascript
 unit_code:"NMAH" AND "National Numismatic Collection" AND online_media_type:"Images"
 ```
@@ -57,7 +57,7 @@ After clicking a portrait
 4. Filter out data that is obviously incorrect or inefficient.
 5. Build the visualization.
 
-### The number of Data Points
+### The estimated number of Data Points
 782 
 ```javascript
 unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
@@ -94,8 +94,8 @@ After clicking a painting
 2. Use the Gemini API to identify the main, sub, and accent colors.
 3. Build the visualization.
 
-### The number of Data Points
-5103
+### The estimated number of Data Points
+5,103
 ```javascript
 unit_code:"SAAM" AND "painting" AND online_media_type:"Images"
 ```
