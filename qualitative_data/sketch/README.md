@@ -17,10 +17,9 @@ After clicking a coin or bill
 
 ### Approaches
 1. Extract coin and bill data about collected year, description, its value from the Smithsonian API.
-2. List the years the coins and bills were in use.
-3. Research the cost of living during those years.
-4. Calculate what the coins and bills could buy at that time.
-5. Build the visualization.
+2. Research the cost of living during the years.
+3. Calculate what we could buy with that coin/bill at that time.
+4. Build the visualization.
 
 ### The estimated number of Data Points
 330,703
