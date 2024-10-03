@@ -4,6 +4,7 @@
 The Smithsonian's National Numismatic Collection houses a vast and diverse collection of coins and bills. However, when looking at these items, some may wonder, "How valuable were they?" This data visualization illustrates the purchasing power of these coins and bills during the time they were in circulation, using a pictorial chart to show what they could buy.
 
 ### Sketches
+
 Default
 ![default](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/worth_it_1.jpg)
 
