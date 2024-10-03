@@ -30,9 +30,11 @@ The Smithsonian Portrait Collection contains a vast and diverse archive of portr
 ### Sketches
 
 Default
+
 ![default](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/timelens_1.jpg)
 
 After clicking a portrait
+
 ![after_click](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/sketch/image/timelens_2.jpg)
 
 ### Approach
