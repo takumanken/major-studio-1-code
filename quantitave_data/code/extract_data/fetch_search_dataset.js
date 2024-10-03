@@ -4,7 +4,7 @@ const apiKey = "";
 const searchBaseURL = "https://api.si.edu/openaccess/api/v1.0/search";
 
 // Constructing the initial search query
-const search = 'unit_code:"NMNHMINSCI" AND topic=Meteorite AND place=Antarctica';
+const search = 'unit_code:NMAH';
 // Array that we will write into
 let myArray = [];
 
@@ -79,26 +79,10 @@ function fetchAllData(url) {
     });
 }
 
-// Create your own array with just the data you need
+// Create your own array with the entire object
 function addObject(objectData) {  
-    const id = objectData.id ?? 'N/A';
-    const title = objectData.title ?? 'N/A';
-    const collection_date = objectData.content?.freetext?.date?.[0].content ?? 'N/A';
-    const geolocation = objectData.content?.indexedStructured?.geoLocation?.[0]?.points?.point ?? 'N/A';
-    const latitude = geolocation.latitude?.content ?? 'N/A';
-    const longitude = geolocation.longitude?.content ?? 'N/A';
-    const weight = objectData.content?.freetext?.physicalDescription?.[0].content ?? 'N/A';
-    const link = objectData.content?.descriptiveNonRepeating?.record_link ?? 'N/A';
-
-    myArray.push({
-        id: id,
-        title: title,
-        collection_date: collection_date,
-        latitude: latitude,
-        longitude: longitude,
-        weight: weight,
-        link: link,
-    });
+    // Instead of extracting specific fields, we push the entire object
+    myArray.push(objectData);
 }
 
 // Start the data fetching process
