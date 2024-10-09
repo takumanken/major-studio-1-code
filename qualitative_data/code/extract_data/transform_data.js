@@ -6,6 +6,11 @@ const originalDataArray = JSON.parse(rawData);
 
 // Function to extract the desired fields from each data object
 function extractData(data) {
+  // Exclude data with known invalid or incomplete image information (specific ID exclusion).
+  if (data.id === 'ld1-1643399756728-1643399778390-0') {
+    return null;
+  }
+
   const freetext = data.content?.freetext;
 
   // Extract sitter names
@@ -24,9 +29,7 @@ function extractData(data) {
     : '';
 
   // Extract thumbnail link
-  const thumbnailLink = data.content?.descriptiveNonRepeating?.online_media?.media
-    ? data.content.descriptiveNonRepeating.online_media.media[0]?.thumbnail
-    : '';
+  const thumbnailLink = `${imageLink}&max=200`;
 
   // Exclude if there are multiple sitters or no sitters
   if (sitterNames.length > 1 || sitterNames.length === 0) {
@@ -100,6 +103,7 @@ function extractData(data) {
     isSelfPortrait: data.title.includes('Self-Portrait'),
     imageLink: imageLink,
     thumbnailLink: thumbnailLink,
+    thumbnailPath: `./data/thumbnails/${data.id}.jpg`,
     detailLink: data.content?.descriptiveNonRepeating?.record_link,
   };
 }

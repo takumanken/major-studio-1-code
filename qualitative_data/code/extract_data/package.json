@@ -5,10 +5,10 @@
     "main": "fetch_search_dataset.js",
     "type": "module",
     "scripts": {
-      "start": "node fetch_search_dataset.js"
+        "start": "node fetch_search_dataset.js"
     },
     "dependencies": {
-      "node-fetch": "^3.0.0"
+        "axios": "^1.7.7",
+        "node-fetch": "^3.0.0"
     }
-  }
-  
+}
