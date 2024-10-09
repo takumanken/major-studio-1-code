@@ -1,6 +1,6 @@
-import { API_KEY } from "../../../secrets.js";
+import { SMITHSONIAN_API_KEY } from "../../../secrets.js";
 
-const apiKey = API_KEY;
+const apiKey = SMITHSONIAN_API_KEY;
 
 // Search base URL
 const searchBaseURL = "https://api.si.edu/openaccess/api/v1.0/search";
