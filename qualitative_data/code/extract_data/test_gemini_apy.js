@@ -30,12 +30,12 @@ const prompt = `
 Create a factual and concise dictionary entry for ${name} (${period}) to be used as descriptive text for his/her portrait.
 
 Consider the following keywords to help identify him/her in the portrait:
-${keywords.join("\n")}
 
 Self-portrait: ${isSelfPortrait ? "Yes" : "No"}
 
 Please follow this format and ensure accuracy:
 
+- id: just return '${id}'
 - description: A factual description of ${name} in no more than 20 words, avoiding subjective or speculative language.
 - mainEvents: Four key events from ${name}'s life, including birth, two major historical events, and death, formatted as 'YYYY: Brief description.' Each event must use a single year (no date ranges or decades), and each description should be within 20 words.
 - portraitMoment: A sentence describing the context of the provided portrait, based on historical facts and considering ${name}'s timeline (e.g., early, peak, or later in life). This must be within 30 words and begin with: 'This portrait, drawn in (the year), seems to capture the moment...'. If it's a self-portrait, you must mention that in the beginning.
@@ -47,6 +47,10 @@ const schema = {
     items: {
       type: SchemaType.OBJECT,
       properties: {
+          id: {
+            type: SchemaType.STRING,
+            nullable: false,
+        },
         description: {
             type: SchemaType.STRING,
             nullable: false,
@@ -67,7 +71,7 @@ const schema = {
             nullable: false,
         },
       },
-      required: ["description", "mainEvents", "portraitMoment", "funFact"],
+      required: ["id", "description", "mainEvents", "portraitMoment", "funFact"],
     },
   };
 

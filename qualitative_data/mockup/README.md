@@ -36,6 +36,7 @@ unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
 512 (After cleansing data)
 
 ### JSON Structure
+
 ```JSON
   {
     "id": "ld1-1643399756728-1643399760027-0",
@@ -55,5 +56,19 @@ unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
     "thumbnailPath": "./data/thumbnails/ld1-1643399756728-1643399760027-0.jpg",
     "detailLink": "https://npg.si.edu/object/npg_NPG.70.39"
   },
+```
+```JSON
+  {
+    "id": "ld1-1643399756728-1643399810255-0",
+    "description": "John Winthrop was an English Puritan leader and the first governor of the Massachusetts Bay Colony.",
+    "funFact": "Winthrop is considered one of the most influential figures in early American history.",
+    "mainEvents": [
+      "1587/8: Born in Groton, Suffolk, England",
+      "1629: Led the first major wave of Puritan migration to Massachusetts",
+      "1630: Established the Massachusetts Bay Colony in Boston",
+      "1649: Died in Boston, Massachusetts"
+    ],
+    "portraitMoment": "This portrait, drawn in the early 1600s, seems to capture the moment of Winthrop's early years as governor, a time of significant development and growth for the colony."
+  }
 ```
 See all data [here](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/code/extract_data/data/transformed_data.json)
