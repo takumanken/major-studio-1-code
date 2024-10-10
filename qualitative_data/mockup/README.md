@@ -20,7 +20,7 @@ Google AI Studio (within the free tier)
 ### Model
 Gemini-1.5 Flash
 
-### Strategy to avoid Hallucination
+### Strategy to avoid hallucination
 - To avoid hallucinations, content generation takes the form of summarizing information gathered from a variety of trusted sources, rather than asking Gemini to generate content from scratch.
 
 ## Data
