@@ -61,16 +61,16 @@ Smithsonian Data
 Gemini Reponse
 ```JSON
   {
-    "id": "ld1-1643399756728-1643399810255-0",
-    "description": "John Winthrop was an English Puritan leader and the first governor of the Massachusetts Bay Colony.",
-    "funFact": "Winthrop is considered one of the most influential figures in early American history.",
+    "description": "American painter and illustrator John George Brown (1831-1913) specialized in genre scenes of everyday life, particularly those involving children.",
+    "funFact": "He was known for his sentimental and heartwarming depictions of children, often featuring them in simple, everyday activities.",
+    "id": "ld1-1643399756728-1643399760027-0",
     "mainEvents": [
-      "1587: Born in Groton, Suffolk, England",
-      "1629: Led the first major wave of Puritan migration to Massachusetts",
-      "1630: Established the Massachusetts Bay Colony in Boston",
-      "1649: Died in Boston, Massachusetts"
+      "1831: Born in Durham, England.",
+      "1861: Began working as an illustrator for Harper's Weekly.",
+      "1890: Received a commission for a painting from the French government.",
+      "1913: Died in New York City."
     ],
-    "portraitMoment": "This portrait, drawn in the early 1600s, seems to capture the moment of Winthrop's early years as governor, a time of significant development and growth for the colony."
+    "portraitMoment": "This portrait, drawn in the late 19th century, seems to capture the moment of a renowned artist reflecting on a successful career."
   }
 ```
 See all data [here](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/code/extract_data/data/transformed_data.json)
