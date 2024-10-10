@@ -13,15 +13,28 @@ This visualization aims to enrich portraits with narratives and stories through 
 ### Portrait Interface
 ![Zoom-In](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/mockup/image/portrait_page.png)
 
+## How to use of AI
+### Platform
+Google AI Studio (within the free tier)
+
+### Model
+Gemini-1.5 Flash
+
+### Strategy to avoid Hallucination
+To avoid hallucination, content generation will take the form of a summary of information gathered from various trusted sources, rather than asking Gemini to generate content from scratch.
+
 ## Data
 ### Data Source
 - [National Portrait Gallery](https://www.si.edu/museums/portrait-gallery)
 
-### # of Data Point
-512 (After cleansing data)
+## Search Query
 ```javascript
 unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
 ```
+
+### # of Data Point
+512 (After cleansing data)
+
 ### JSON Structure
 ```JSON
   {
