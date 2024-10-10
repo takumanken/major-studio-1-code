@@ -65,7 +65,7 @@ Gemini Reponse
     "description": "John Winthrop was an English Puritan leader and the first governor of the Massachusetts Bay Colony.",
     "funFact": "Winthrop is considered one of the most influential figures in early American history.",
     "mainEvents": [
-      "1587/8: Born in Groton, Suffolk, England",
+      "1587: Born in Groton, Suffolk, England",
       "1629: Led the first major wave of Puritan migration to Massachusetts",
       "1630: Established the Massachusetts Bay Colony in Boston",
       "1649: Died in Boston, Massachusetts"
