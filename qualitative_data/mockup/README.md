@@ -15,7 +15,7 @@ This visualization aims to enrich portraits with narratives and stories through 
 
 ## How to use of AI
 ### Platform
-Google AI Studio (within the free tier)
+- [Google AI Studio](https://ai.google.dev/aistudio) (within [the free tier](https://ai.google.dev/pricing))
 
 ### Model
 Gemini-1.5 Flash
