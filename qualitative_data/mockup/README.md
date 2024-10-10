@@ -15,12 +15,13 @@ This visualization aims to enrich portraits with narratives and stories through 
 
 ## Data
 ### Data Source
-- Polygon Data: [U.S. National Ice Center](https://usicecenter.gov/Products/AntarcData)
-- Meteorites: [Smithsonian Open Access](https://www.si.edu/openaccess)
+- [National Portrait Gallery](https://www.si.edu/museums/portrait-gallery)
 
 ### # of Data Point
-45,223
-
+512 (After cleansing data)
+```javascript
+unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
+```
 ### JSON Structure
 ```JSON
   {
@@ -42,4 +43,4 @@ This visualization aims to enrich portraits with narratives and stories through 
     "detailLink": "https://npg.si.edu/object/npg_NPG.70.39"
   },
 ```
-See all data [here](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/mockup/data/data.json)
+See all data [here](https://github.com/takumanken/major-studio-1-code/blob/main/qualitative_data/code/extract_data/data/transformed_data.json)
