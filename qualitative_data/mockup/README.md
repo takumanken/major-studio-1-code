@@ -27,7 +27,7 @@ Gemini-1.5 Flash
 ### Data Source
 - [National Portrait Gallery](https://www.si.edu/museums/portrait-gallery)
 
-## Search Query
+### Search Query
 ```javascript
 unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
 ```
