@@ -70,7 +70,7 @@ function extractData(data) {
   const dedupedCategories = [...new Set(remainingTopics.map(topic => topic.split('\\')[0]))];
 
   // Extract date
-  const date = freetext?.date
+  const portraiteYear = freetext?.date
     ? freetext.date.map(item => item.content).join(', ')
     : '';
 
@@ -84,21 +84,18 @@ function extractData(data) {
     ? freetext.name.filter(item => item.label === 'Artist').map(item => item.content.split(',')[0]).join(', ')
     : '';
 
-  // Extract notes
-  const notes = freetext?.notes ? freetext.notes.map(item => item.content) : [];
-
   // Construct the extracted data object
   return {
     id: data.id,
     title: data.title,
     objectType: objectType,
-    date: date,
+    portraiteYear: portraiteYear,
     name: sitterNames[0],
     period: sitterPeriod,
     sex: sex,
     categories: dedupedCategories,
-    notes: notes,
-    keywords: remainingTopics,
+    // notes: notes,
+    // keywords: remainingTopics,
     artistName: artistName,
     isSelfPortrait: data.title.includes('Self-Portrait'),
     imageLink: imageLink,
