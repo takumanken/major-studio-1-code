@@ -37,6 +37,7 @@ unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
 
 ### JSON Structure
 
+Smithsonian Data
 ```JSON
   {
     "id": "ld1-1643399756728-1643399760027-0",
@@ -57,6 +58,7 @@ unit_code:"NPG" AND "portrait" AND "painting" AND online_media_type:"Images"
     "detailLink": "https://npg.si.edu/object/npg_NPG.70.39"
   },
 ```
+Gemini Reponse
 ```JSON
   {
     "id": "ld1-1643399756728-1643399810255-0",
