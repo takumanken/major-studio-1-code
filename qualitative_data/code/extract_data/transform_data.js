@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 // Load and parse the JSON file
-const rawData = fs.readFileSync('data/portraits_painting.json', 'utf-8');
+const rawData = fs.readFileSync('../../data/portraits_painting.json', 'utf-8');
 const originalDataArray = JSON.parse(rawData);
 
 // Function to extract the desired fields from each data object
@@ -100,7 +100,7 @@ function extractData(data) {
     isSelfPortrait: data.title.includes('Self-Portrait'),
     imageLink: imageLink,
     thumbnailLink: thumbnailLink,
-    thumbnailPath: `./data/thumbnails/${data.id}.jpg`,
+    thumbnailPath: `./../../data/thumbnails/${data.id}.jpg`,
     detailLink: data.content?.descriptiveNonRepeating?.record_link,
   };
 }
@@ -111,7 +111,7 @@ const extractedDataArray = originalDataArray
   .filter(item => item !== null);
 
 // Write the extracted data to a new JSON file
-fs.writeFileSync('./data/transformed_data.json', JSON.stringify(extractedDataArray, null, 2), 'utf-8');
+fs.writeFileSync('./../../data/transformed_data.json', JSON.stringify(extractedDataArray, null, 2), 'utf-8');
 
 // Output the extracted data
 console.log('Extracted data has been written to transformed_data.json');
