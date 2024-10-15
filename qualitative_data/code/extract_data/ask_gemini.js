@@ -2,7 +2,7 @@ import { GEMINI_API_KEY } from "../../../secrets.js";
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import fs from 'fs';
 import util from 'util';
-
+import process from 'process';
 
 // Read in the JSON data
 let wikiData, transformedData;
@@ -14,9 +14,22 @@ try {
   process.exit(1);
 }
 
-// Get the first 10 IDs from wikiData
-const start = 11;
-const end = 50;
+// Get start and end arguments from command line
+const args = process.argv.slice(2);
+if (args.length < 2) {
+  console.error("Please provide start and end indices as arguments.");
+  process.exit(1);
+}
+
+const start = parseInt(args[0], 10);
+const end = parseInt(args[1], 10);
+
+if (isNaN(start) || isNaN(end) || start < 0 || end <= start) {
+  console.error("Invalid start or end indices provided. Make sure they are valid numbers and end is greater than start.");
+  process.exit(1);
+}
+
+// Get the target IDs from wikiData
 const targetIds = wikiData.slice(start, end).map(data => data.id);
 
 // Initialize Google Generative AI instance
@@ -44,9 +57,18 @@ const model = genAI.getGenerativeModel({
           mainEvents: {
             type: SchemaType.ARRAY,
             items: {
-              type: SchemaType.STRING,
+              type: SchemaType.OBJECT,
+              properties: {
+                year: {
+                  type: SchemaType.INTEGER,
+                  nullable: false,
+                },
+                description: {
+                  type: SchemaType.STRING,
+                  nullable: false,
+                },
+              },
             },
-            nullable: false,
           },
           portraitMoment: {
             type: SchemaType.STRING,
@@ -61,66 +83,69 @@ const model = genAI.getGenerativeModel({
 
 let responses = [];
 
-// Iterate through the first 10 IDs and generate content for each
-for (let targetId of targetIds) {
+// Iterate through the IDs and generate content for each
+(async () => {
   let processedCount = 0;
-  // Pause to respect API rate limits
   const sleep = util.promisify(setTimeout);
-  await sleep(4000);
 
-  try {
-    // Find the painting in wiki_contents or transformed_data
-    const wikiInfo = wikiData.find(data => data.id === targetId);
-    const basicInfo = transformedData.find(data => data.id === targetId);
+  for (let targetId of targetIds) {
+    // Pause to respect API rate limits
+    await sleep(4000);
 
-    if (!wikiInfo || !basicInfo) {
-      console.error(`Data for ID ${targetId} not found in wikiData or transformedData.`);
-      continue;
-    }
+    try {
+      // Find the painting in wiki_contents or transformed_data
+      const wikiInfo = wikiData.find(data => data.id === targetId);
+      const basicInfo = transformedData.find(data => data.id === targetId);
 
-    const { id, name, portraiteYear } = basicInfo;
-    const { wikiURL, content } = wikiInfo;
+      if (!wikiInfo || !basicInfo) {
+        console.error(`Data for ID ${targetId} not found in wikiData or transformedData.`);
+        continue;
+      }
 
-    // Create the prompt for Gemini
-    const prompt = `
-    You are a historian researching the lives of various historical figures.
-    Your task is to provide information about the life of ${name} that will be used as a reference for the portrait of ${name}.
+      const { id, name, portraiteYear } = basicInfo;
+      const { wikiURL, content } = wikiInfo;
 
-    I will provide the following information about ${name}.
-    You need to follow the following data structure.
+      // Create the prompt for Gemini
+      const prompt = `
+      You are a historian researching the lives of various historical figures.
+      Your task is to provide information about the life of ${name} that will be used as a reference for the portrait of ${name}.
 
-    - id: just returns '${id}'.
-    - wikiurl: just returns '${wikiURL}'.
-    - Description: A description of ${name} from the information provided, in about 30 words. This should reflect the person's historical significance, accomplishments, and fan facts about the person. You should start with "${name} is a...".
-    - mainEvents: List up to five major events in ${name}'s life, including birth, death, and up to three major historical events. This must be formatted as "YYYY: Description". YYYY must be an integer, not ranges or decades, and each description should be no more than 10 words.
-    - portraitMoment: A brief description of what time ${portraiteYear} was in ${name}'s life. Consider the person's age, accomplishments, and events before and after. This field should begin with "This portrait drawn in ${portraiteYear} seems to capture the moment when...". You can be poetic, but you must be historically accurate.
+      I will provide the following information about ${name}.
+      You need to follow the following data structure.
 
-    Information - HTML from Wikipedia, ignore unrelated information:
-    ${content}
-    `;
+      - id: just returns '${id}'.
+      - wikiurl: just returns '${wikiURL}'.
+      - Description: A description of ${name} from the information provided, in about 30 words. This should reflect the person's historical significance, accomplishments, and fan facts about the person. You should start with "${name} is a...".
+      - mainEvents: List up to five major events in ${name}'s life, including birth, death, and up to three major historical events. Year must be "YYYY" format integer, not ranges or decades. Description should be no more than 10 words.
+      - portraitMoment: A brief description of what time ${portraiteYear} was in ${name}'s life. Consider the person's age, accomplishments, and events before and after. This field should begin with "This portrait drawn in ${portraiteYear} seems to capture the moment when...". You can be poetic, but you must be historically accurate.
 
-    // Request Gemini to generate content based on the prompt
-    const result = await model.generateContent([prompt]);
+      Information - HTML from Wikipedia, ignore unrelated information:
+      ${content}
+      `;
 
-    // Parse the JSON response
-    const responseObject = JSON.parse(result.response.text());
-    responses.push(...responseObject);
-    processedCount++;
-    if (processedCount % 5 === 0) {
-      console.log(`Processed ${processedCount} records so far.`);
-    }
+      // Request Gemini to generate content based on the prompt
+      const result = await model.generateContent([prompt]);
 
-      } catch (error) {
-    console.error(`An error occurred while processing ID ${targetId}:`, error);
-    if (error.response) {
-      // Log additional information from the API error response
-      console.error("Status Code:", error.response.status);
-      console.error("Response Data:", error.response.data);
-    } else {
-      console.error("Unexpected error:", error.message);
+      // Parse the JSON response
+      const responseObject = JSON.parse(result.response.text());
+      responses.push(...responseObject);
+      processedCount++;
+      if (processedCount % 5 === 0) {
+        console.log(`Processed ${processedCount} records so far.`);
+      }
+
+    } catch (error) {
+      console.error(`An error occurred while processing ID ${targetId}:`, error);
+      if (error.response) {
+        // Log additional information from the API error response
+        console.error("Status Code:", error.response.status);
+        console.error("Response Data:", error.response.data);
+      } else {
+        console.error("Unexpected error:", error.message);
+      }
     }
   }
-}
 
-// Write the output to the specified JSON file
-fs.writeFileSync(`../../data/gemini_responces_${start}-${end}.json`, JSON.stringify(responses, null, 2), 'utf-8');
+  // Write the output to the specified JSON file
+  fs.writeFileSync(`../../data/gemini_responses_${start}-${end}.json`, JSON.stringify(responses, null, 2), 'utf-8');
+})();
