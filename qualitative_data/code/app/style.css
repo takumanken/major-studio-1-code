@@ -1,0 +1,110 @@
+/* Ensure the body takes the full viewport height */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #0E1821;
+    font-family: Arial, sans-serif;
+    color: #D9D9D9;
+    margin: 0;
+    padding: 0;
+}
+
+.gallery-container {
+    flex: 1;
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* Header styling */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #D9D9D9;
+    background-color: #0E1821;
+    height: 27px;
+    margin: 0 50px;
+    padding: 15px 0 10px 0;
+}
+
+header h1 {
+    color: #D9D9D9;
+    font-family: 'Minion Pro', serif;
+    font-weight: 400;
+    font-size: 25px;
+    margin: 0;
+}
+
+h4 {
+    color: #D9D9D9;
+    font-family: 'Minion Pro', serif;
+    font-weight: 400;
+    font-size: 16px;
+    margin: 0;
+    padding: 10px;
+}
+
+p {
+    color: #D9D9D9;
+    font-family: 'Minion Pro', serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 20px;
+}
+
+footer {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid #D9D9D9;
+    padding: 10px;
+    margin: 0 50px;
+    text-align: center;
+    background-color: #0E1821;
+    color: #D9D9D9;
+}
+
+footer p {
+    font-family: "Minion Pro";
+    font-size: 14px;
+}
+
+/* Styling for filters and buttons */
+.filters {
+    position: sticky;
+    top: 55px;
+    text-align: center;
+    margin: 0 0px;
+    padding: 10px;
+    background-color: #0E1821;
+}
+
+.filters button {
+    background-color: transparent;
+    color: white; 
+    border: 1px solid #D9D9D9;
+    padding: 7px 15px;
+    margin: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Minion Pro";
+    font-weight: 400;
+    border-radius: 5px;
+}
+
+.filters button:hover {
+    background-color: #333;
+}
+
+header a {
+    text-decoration: none;
+    color: #D9D9D9;
+    font-family: 'Minion Pro', serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0;
+}
