@@ -132,7 +132,7 @@ d3.json('../../data/finalized_data.json').then(data => {
         .attr("id", "aiSummaryTitle");
 
     aiSummaryTitleDiv.append("img")
-        .attr("src", "./ai_icon.png")
+        .attr("src", "../../data/ai_icon.png")
         .attr("alt", "AI Icon")
         .style("width", "25px")
         .style("height", "25px")

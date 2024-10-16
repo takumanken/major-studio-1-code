@@ -1,0 +1,56 @@
+/* General body styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Minion Pro';
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0E1821;
+}
+
+/* Container to center content */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+/* Styling for content */
+.content h1 {
+    font-size: 3.1rem;
+    font-weight: 100;
+    color: #f9fafb;
+    margin-bottom: 0;
+}
+
+/* Styling for subheading paragraph */
+.content p {
+    font-size: 1.3rem;
+    color: #d1d5db;
+    margin-top: 0px;
+}
+
+.highlight {
+    color: #FFCD00;
+}
+
+/* Styling for the Explore button */
+.explore-button {
+    display: inline-block;
+    padding: 5px 25px;
+    background-color: #009CDE;
+    color: white;
+    font-size: 1rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+/* Hover effect for button */
+.explore-button:hover {
+    background-color: #2563eb;
+}
