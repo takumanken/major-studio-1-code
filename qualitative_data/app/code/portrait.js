@@ -12,8 +12,8 @@ d3.json('../data/data.json').then(data => {
         return;
     }
 
-    // Set up the portfolio container
-    const container = d3.select("#portfolio-container")
+    // Set up the portrait container
+    const container = d3.select("#portrait-container")
         .style("display", "flex")
         .style("flex-direction", "row")
         .style("padding", "0")
@@ -30,7 +30,7 @@ d3.json('../data/data.json').then(data => {
         .style("margin-bottom", "40px");
 
     portraitSection.append("img")
-        .attr("id", "portfolio-image")
+        .attr("id", "portrait-image")
         .attr("src", portraitData.imageLink)
         .attr("alt", portraitData.name + " Portrait")
         .style("max-width", "100%")
@@ -156,7 +156,7 @@ d3.json('../data/data.json').then(data => {
         .style("margin-top", "10px");
 
     aiSummaryTitleSourceDiv.append("text")
-        .html("Source: <a href='https://www.wikipedia.com/' target='_blank' style='color: lightskyblue;'>Wikipedia</a>")
+        .html(`Source: <a href='${portraitData.wikiURL}' target='_blank' style='color: lightskyblue;'>Wikipedia</a>`)
         .style("font-family", "Minion Pro")
         .style("font-size", "12px")
         .style("margin-top", "0px")
@@ -170,16 +170,12 @@ d3.json('../data/data.json').then(data => {
         .style("margin-right", "50px")
         .style("margin-top", "0px")
         .style("padding", "0")
-        .style("height", "88%")
+        .style("height", "535px")
         .style("display", "flex")
         .style("flex-direction", "column")
         .style("border-radius", "10px");
 
-    const aiSummaryAboutDiv = aiSummaryContentsDiv.append("div")
-        .attr("id", "about")
-        .style("height", "225px");
-
-    aiSummaryAboutDiv.append("h4").text("About")
+    aiSummaryContentsDiv.append("h4").text("About")
         .style("font-family", "Minion Pro")
         .style("font-size", "18px")
         .style("font-weight", "bold")
@@ -190,7 +186,7 @@ d3.json('../data/data.json').then(data => {
         .style("margin-right", "20px")
         .style("padding", "0px");
 
-    aiSummaryAboutDiv.append("p")
+    aiSummaryContentsDiv.append("p")
         .html(portraitData.description)
         .style("font-size", "16px")
         .style("margin-top", "5px")
@@ -200,7 +196,8 @@ d3.json('../data/data.json').then(data => {
         .style("padding", "0px")
         .style("line-height", "1.2");
 
-    aiSummaryAboutDiv.append("h4").text("Moment of the Portrait")
+    aiSummaryContentsDiv.append("h4")
+        .text("Moment of the Portrait")
         .style("font-family", "Minion Pro")
         .style("font-size", "18px")
         .style("font-weight", "bold")
@@ -211,7 +208,7 @@ d3.json('../data/data.json').then(data => {
         .style("margin-right", "20px")
         .style("padding", "0px");
 
-    aiSummaryAboutDiv.append("p")
+    aiSummaryContentsDiv.append("p")
         .text(portraitData.portraitMoment)
         .style("font-size", "16px")
         .style("margin-top", "5px")
@@ -222,12 +219,7 @@ d3.json('../data/data.json').then(data => {
         .style("line-height", "1.2");
 
     // Life Events Timeline
-    const aiSummaryEventsDiv = aiSummaryContentsDiv.append("div")
-        .attr("id", "timeline")
-        .style("flex", "5")
-        .style("height", "350px");
-
-    aiSummaryEventsDiv.append("h4").text("Life Events")
+    aiSummaryContentsDiv.append("h4").text("Life Events")
         .style("font-family", "Minion Pro")
         .style("font-size", "18px")
         .style("font-weight", "bold")
@@ -238,10 +230,16 @@ d3.json('../data/data.json').then(data => {
         .style("margin-right", "20px")
         .style("padding", "0px");
 
-    const svgWidth = 625;
-    const svgHeight = 225;
+    const element = document.querySelector('#ai-summary-contents > h4:nth-child(5)');
+    const rect = element.getBoundingClientRect();
+    const y = rect.top + window.scrollY; // Add window.scrollY to account for any scrolling
+    console.log('Y-coordinate relative to the document:', y);
 
-    const timelineSVG = aiSummaryEventsDiv.append("svg")
+    const svgWidth = 625;
+    const svgHeight = 225 + (570 - y);
+
+    const timelineSVG = aiSummaryContentsDiv.append("svg")
+        .attr("id", "timeline-svg")
         .attr("width", svgWidth)
         .attr("height", svgHeight)
         .style("padding-top", "10px")
@@ -251,7 +249,7 @@ d3.json('../data/data.json').then(data => {
     const timeLineX = 40;
     const timeLineStartY = 10;
     const timeLineEndY = svgHeight - 10;
-    const descriptionX = 150;
+    const descriptionX = 110;
 
     timelineSVG.append("line")
         .attr("x1", timeLineX)

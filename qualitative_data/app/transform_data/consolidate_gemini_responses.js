@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 // Define the directory path and filename patterns
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const dataDir = path.join(__dirname, '../../data/');
+const dataDir = path.join(__dirname, './data/');
 const outputFilename = 'gemini_responses.json';
 
 // Consolidate all matching JSON files

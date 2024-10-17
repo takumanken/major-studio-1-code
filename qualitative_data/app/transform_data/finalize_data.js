@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const geminiResponsesPath = path.join(__dirname, './data/gemini_responses.json');
-const transformedDataPath = path.join(__dirname, './data/transformed_data.json');
+const transformedDataPath = path.join(__dirname, './data/smithonian_data_transformed.json');
 const outputPath = path.join(__dirname, './data/finalized_data.json');
 
 // Function to read JSON file

@@ -18,7 +18,7 @@ d3.json('../data/data.json')
             .on("click", (event, d) => {
                 console.log("Clicked data object: ", d); // This should now be available
                 if (d && d.id) {
-                    window.location.href = `portfolio.html?id=${d.id}`;
+                    window.location.href = `portrait.html?id=${d.id}`;
                 } else {
                     console.error('ID property not found on data object.');
                 }
