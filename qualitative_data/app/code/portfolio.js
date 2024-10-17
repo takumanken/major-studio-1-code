@@ -1,5 +1,5 @@
 // Load the JSON file and process the data
-d3.json('../../data/finalized_data.json').then(data => {
+d3.json('../data/data.json').then(data => {
 
     // Get the ID from the URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -136,7 +136,7 @@ d3.json('../../data/finalized_data.json').then(data => {
         .style("flex", "1")
 
     aiSummaryTitleTextDiv.append("img")
-        .attr("src", "../../data/ai_icon.png")
+        .attr("src", "../image/ai_icon.png")
         .attr("alt", "AI Icon")
         .style("width", "25px")
         .style("height", "25px")
@@ -318,8 +318,6 @@ d3.json('../../data/finalized_data.json').then(data => {
         d.dotY = yearCoodinate[i];
         d.descY = adjustedYearCoodinate[i];
     });
-
-    console.log(sortedmainEvents);
 
     sortedmainEvents.forEach((d, i) => {
         timelineSVG.append("circle")

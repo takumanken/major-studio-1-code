@@ -115,9 +115,9 @@ let responses = [];
 
       - id: just returns '${id}'.
       - wikiurl: just returns '${wikiURL}'.
-      - Description: A description of ${name} from the information provided, in about 30 words. This should reflect the person's historical significance, accomplishments, and fan facts about the person. You should start with "${name} is a...".
-      - mainEvents: List up to five major events in ${name}'s life, including birth, death, and up to three major historical events. Year must be "YYYY" format integer, not ranges or decades. Description should be no more than 10 words.
-      - portraitMoment: A brief description of what time ${portraiteYear} was in ${name}'s life. Consider the person's age, accomplishments, and events before and after. This field should begin with "This portrait drawn in ${portraiteYear} seems to capture the moment when...". You can be poetic, but you must be historically accurate.
+      - Description: A 30-word description of ${name} from the information provided. This should reflect the person's historical significance, accomplishments, and fan facts about the person. You should begin with "${name} is a...".
+      - mainEvents: List up to five major events in ${name}'s life, including birth, death, and up to three major historical events. Year must be "YYYY" format integer, not ranges or decades. Description should be no more than 15 words.
+      - portraitMoment: A 30-word description of what time ${portraiteYear} was in ${name}'s life. Consider the person's age, accomplishments, and events before and after. This field should begin with "This portrait drawn in ${portraiteYear} seems to capture the moment when...". You must be historically accurate and avoid anachronisms.
 
       Information - HTML from Wikipedia, ignore unrelated information:
       ${content}

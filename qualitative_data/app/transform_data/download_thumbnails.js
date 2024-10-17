@@ -3,9 +3,9 @@ import path from 'path';
 import axios from 'axios';
 
 // Directory where thumbnails will be saved
-const THUMBNAILS_DIR = '../../data/thumbnails';
+const THUMBNAILS_DIR = '../';
 // JSON file containing the transformed data
-const JSON_FILE_PATH = '../../data/transformed_data.json';
+const JSON_FILE_PATH = '';
 
 // Create the thumbnails directory if it doesn't exist
 if (!fs.existsSync(THUMBNAILS_DIR)) {

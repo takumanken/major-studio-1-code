@@ -1,5 +1,5 @@
 // Use D3 to load the external JSON file
-d3.json('../../data/finalized_data.json')
+d3.json('../data/data.json')
     .then(data => {
         // Select the portrait gallery container
         const gallery = d3.select("#portrait-gallery")
@@ -26,7 +26,7 @@ d3.json('../../data/finalized_data.json')
 
         // Add the image for each portrait
         portraits.append("img")
-            .attr("src", d => d.thumbnailPath)
+            .attr("src", d => "../image/thumbnails/" + d.id + ".jpg")
             .attr("alt", d => d.name)
             .style("width", "auto")
             .style("height", "200px")
