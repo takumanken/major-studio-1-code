@@ -4,8 +4,8 @@ import * as cheerio from 'cheerio';
 import csv from 'csv-parser';
 
 // File paths
-const INPUT_FILE = "../../data/wiki_url.csv";
-const OUTPUT_FILE = "../../data/wiki_contents.json";
+const INPUT_FILE  = "./data/wiki_url.csv";
+const OUTPUT_FILE = "./data/wiki_contents.json";
 
 // Read CSV data from the input file
 const wikiData = [];
@@ -16,7 +16,6 @@ fs.createReadStream(INPUT_FILE)
     wikiData.push(row);
   })
   .on('end', async () => {
-    console.log('CSV file successfully processed');
     await fetchContent();
   })
   .on('error', (err) => {

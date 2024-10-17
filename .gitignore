@@ -27,3 +27,4 @@ dist-ssr
 # Credentials
 config.js
 secrets.js
+gemini_responses_*.json
