@@ -28,6 +28,16 @@ header {
     padding: 15px 0 10px 0;
 }
 
+header a,
+header h1 {
+    text-decoration: none;
+    color: #D9D9D9;
+    font-family: 'Minion Pro', serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0;
+}
+
 h1 {
     color: #D9D9D9;
     font-family: 'Minion Pro', serif;
@@ -100,11 +110,11 @@ footer p {
     background-color: #333;
 }
 
-header a {
-    text-decoration: none;
-    color: #D9D9D9;
-    font-family: 'Minion Pro', serif;
+.categoryName {
+    font-family: "Minion Pro";
+    font-size: 16px;
     font-weight: 400;
-    font-size: 20px;
+    color: lightgray;
     margin: 0;
+    padding: 10px;
 }

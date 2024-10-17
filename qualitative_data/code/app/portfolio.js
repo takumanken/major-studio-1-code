@@ -27,8 +27,7 @@ d3.json('../../data/finalized_data.json').then(data => {
         .style("margin-left", "100px")
         .style("margin-right", "100px")
         .style("margin-top", "40px")
-        .style("margin-bottom", "40px")
-        .style("background-color", "black");
+        .style("margin-bottom", "40px");
 
     portraitSection.append("img")
         .attr("id", "portfolio-image")
@@ -89,7 +88,7 @@ d3.json('../../data/finalized_data.json').then(data => {
         .style("width", "100%");
 
     basicInfoLeftDiv.append("li")
-        .html("Gender : <strong>" + portraitData.sex + "</strong>")
+        .html("<span class='categoryName'>Gender : </span><strong>" + portraitData.sex + "</strong>")
         .style("font-family", "Minion Pro")
         .style("margin", "10px")
         .style("font-size", "20px");
@@ -100,7 +99,7 @@ d3.json('../../data/finalized_data.json').then(data => {
     const ageAtPortrait = portraitYear - birthYear;
 
     basicInfoLeftDiv.append("li")
-        .html("Age at Portrait : <strong>" + ageAtPortrait + "</strong>")
+        .html("<span class='categoryName'>Age at Portrait : </span><strong>" + ageAtPortrait + "</strong>")
         .style("font-family", "Minion Pro")
         .style("margin", "10px")
         .style("font-size", "20px");
@@ -111,13 +110,13 @@ d3.json('../../data/finalized_data.json').then(data => {
         .style("width", "100%");
 
     basicInfoRightDiv.append("li")
-        .html("Portrait Year : <strong>" + portraitData.portraiteYear + "</strong>")
+        .html("<span class='categoryName'>Portrait Year : </span><strong>" + portraitData.portraiteYear + "</strong>")
         .style("font-family", "Minion Pro")
         .style("margin", "10px")
         .style("font-size", "20px");
 
     basicInfoRightDiv.append("li")
-        .html("Artist : <strong>" + portraitData.artistName + "</strong>")
+        .html("<span class='categoryName'>Artist : </span><strong>" + portraitData.artistName + "</strong>")
         .style("font-family", "Minion Pro")
         .style("margin", "10px")
         .style("font-size", "20px");
@@ -129,20 +128,39 @@ d3.json('../../data/finalized_data.json').then(data => {
 
     // AI Summary Title
     const aiSummaryTitleDiv = aiSummaryDiv.append("div")
-        .attr("id", "aiSummaryTitle");
+        .attr("id", "aiSummaryTitle")
+        .style("display", "flex")
+        .style("flex-direction", "row");
 
-    aiSummaryTitleDiv.append("img")
+    const aiSummaryTitleTextDiv = aiSummaryTitleDiv.append("div")
+        .style("flex", "1")
+
+    aiSummaryTitleTextDiv.append("img")
         .attr("src", "../../data/ai_icon.png")
         .attr("alt", "AI Icon")
         .style("width", "25px")
         .style("height", "25px")
         .style("transform", "translate(0px, 6px)");
 
-    aiSummaryTitleDiv.append("text")
+    aiSummaryTitleTextDiv.append("text")
         .text(" AI Summary")
         .style("font-family", "Minion Pro")
         .style("font-size", "20px")
         .style("margin-top", "0px")
+        .style("color", "white");
+
+    const aiSummaryTitleSourceDiv = aiSummaryTitleDiv.append("div")
+        .style("flex", "1")
+        .style("text-align", "right")
+        .style("margin-right", "50px")
+        .style("margin-top", "10px");
+
+    aiSummaryTitleSourceDiv.append("text")
+        .html("Source: <a href='https://www.wikipedia.com/' target='_blank' style='color: lightskyblue;'>Wikipedia</a>")
+        .style("font-family", "Minion Pro")
+        .style("font-size", "12px")
+        .style("margin-top", "0px")
+        .style("margin-right", "5px")
         .style("color", "white");
 
     // AI Summary Content
@@ -151,14 +169,15 @@ d3.json('../../data/finalized_data.json').then(data => {
         .style("background-color", "#002554")
         .style("margin-right", "50px")
         .style("margin-top", "0px")
-        .style("padding", "10px")
+        .style("padding", "0")
         .style("height", "88%")
         .style("display", "flex")
-        .style("flex-direction", "column");
+        .style("flex-direction", "column")
+        .style("border-radius", "10px");
 
     const aiSummaryAboutDiv = aiSummaryContentsDiv.append("div")
         .attr("id", "about")
-        .style("height", "125px");
+        .style("height", "225px");
 
     aiSummaryAboutDiv.append("h4").text("About")
         .style("font-family", "Minion Pro")
@@ -181,11 +200,7 @@ d3.json('../../data/finalized_data.json').then(data => {
         .style("padding", "0px")
         .style("line-height", "1.2");
 
-    const aiSummaryMomentDiv = aiSummaryContentsDiv.append("div")
-        .attr("id", "moment")
-        .style("height", "125px");
-
-    aiSummaryMomentDiv.append("h4").text("Moment of the Portrait")
+    aiSummaryAboutDiv.append("h4").text("Moment of the Portrait")
         .style("font-family", "Minion Pro")
         .style("font-size", "18px")
         .style("font-weight", "bold")
@@ -196,7 +211,7 @@ d3.json('../../data/finalized_data.json').then(data => {
         .style("margin-right", "20px")
         .style("padding", "0px");
 
-    aiSummaryMomentDiv.append("p")
+    aiSummaryAboutDiv.append("p")
         .text(portraitData.portraitMoment)
         .style("font-size", "16px")
         .style("margin-top", "5px")
@@ -253,34 +268,82 @@ d3.json('../../data/finalized_data.json').then(data => {
         .domain([minYear, maxYear])
         .range([timeLineStartY, timeLineEndY]);
 
+    const portraitYearDescription = "This portrait was drawn.";
+
     portraitData.mainEvents.push({
-        year: portraitYear,
-        description: "This portrait was drawn."
+        year: parseInt(portraitYear),
+        description: portraitYearDescription
     });
 
-    portraitData.mainEvents.forEach((d, i) => {
+    let sortedmainEvents = portraitData.mainEvents.sort((a, b) => a.year - b.year);
+    let yearCoodinate = portraitData.mainEvents.map(d => scale(d.year));
+
+    // Calculate Coordinates makes years look good
+    let thresholdMinimumGap = 20;
+
+    function calculateMinGap(array) {
+    let minGap = Infinity;
+    let minIndex = -1;
+    for (let i = 1; i < array.length; i++) {
+        let gap = array[i] - array[i - 1];
+        if (gap < minGap) {
+        minGap = gap;
+        minIndex = i;
+        }
+    }
+    return { minGap, minIndex };
+    }
+
+    let { minGap, minIndex } = calculateMinGap(yearCoodinate);
+    let adjustedYearCoodinate = yearCoodinate.slice();
+
+    // While thresholdMinimumGap is greater than minGap, adjust the values in the array
+    while (thresholdMinimumGap > minGap) {
+    let prevIndex = minIndex - 1;
+    let followingIndex = minIndex;
+
+    if (adjustedYearCoodinate[prevIndex] === timeLineStartY) {
+        adjustedYearCoodinate[followingIndex] += 2;
+    } else if (adjustedYearCoodinate[followingIndex] === timeLineEndY) {
+        adjustedYearCoodinate[prevIndex] -= 2;
+    } else {
+        adjustedYearCoodinate[followingIndex] += 1;
+        adjustedYearCoodinate[prevIndex] -= 1;
+    }
+
+    ({ minGap, minIndex } = calculateMinGap(adjustedYearCoodinate));
+    }
+
+    sortedmainEvents.forEach((d, i) => {
+        d.dotY = yearCoodinate[i];
+        d.descY = adjustedYearCoodinate[i];
+    });
+
+    console.log(sortedmainEvents);
+
+    sortedmainEvents.forEach((d, i) => {
         timelineSVG.append("circle")
             .attr("cx", timeLineX)
-            .attr("cy", scale(d.year))
+            .attr("cy", d.dotY)
             .attr("r", 6)
-            .attr("fill", d.year == portraitYear ? "#FFCD00" : "white");
+            .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white");
 
         timelineSVG.append("line")
             .attr("x1", timeLineX)
-            .attr("y1", scale(d.year))
+            .attr("y1", d.dotY)
             .attr("x2", descriptionX - 10)
-            .attr("y2", scale(d.year))
-            .attr("stroke", d.year == portraitYear ? "#FFCD00" : "white")
+            .attr("y2", d.descY)
+            .attr("stroke", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .attr("stroke-width", "1");
 
         let age = d.year - birthYear;
 
         timelineSVG.append("text")
             .attr("x", descriptionX)
-            .attr("y", scale(d.year) + 5)
+            .attr("y", d.descY + 5)
             .text(`${d.year} (${age}) : ${d.description}`)
             .style("font-size", "14px")
-            .attr("fill", d.year == portraitYear ? "#FFCD00" : "white")
+            .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .style("font-family", "Minion Pro");
     });
 
