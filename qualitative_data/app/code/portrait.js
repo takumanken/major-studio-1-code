@@ -277,7 +277,7 @@ d3.json('../data/data.json').then(data => {
     let yearCoodinate = portraitData.mainEvents.map(d => scale(d.year));
 
     // Calculate Coordinates makes years look good
-    let thresholdMinimumGap = 20;
+    let thresholdMinimumGap = 17;
 
     function calculateMinGap(array) {
     let minGap = Infinity;
@@ -317,20 +317,31 @@ d3.json('../data/data.json').then(data => {
         d.descY = adjustedYearCoodinate[i];
     });
 
+    // Draw the timeline
     sortedmainEvents.forEach((d, i) => {
+        // 
         timelineSVG.append("circle")
             .attr("cx", timeLineX)
             .attr("cy", d.dotY)
-            .attr("r", 6)
+            .attr("r", 5)
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white");
 
         timelineSVG.append("line")
             .attr("x1", timeLineX)
             .attr("y1", d.dotY)
+            .attr("x2", timeLineX + 35)
+            .attr("y2", d.descY)
+            .attr("stroke", d.description == portraitYearDescription ? "#FFCD00" : "white")
+            .attr("stroke-width", "1");
+
+        timelineSVG.append("line")
+            .attr("x1", timeLineX + 35)
+            .attr("y1", d.descY)
             .attr("x2", descriptionX - 10)
             .attr("y2", d.descY)
             .attr("stroke", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .attr("stroke-width", "1");
+
 
         let age = d.year - birthYear;
 
