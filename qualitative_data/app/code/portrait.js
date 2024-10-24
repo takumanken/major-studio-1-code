@@ -328,13 +328,13 @@ d3.json('../data/data.json').then(data => {
         timelineSVG.append("line")
             .attr("x1", timeLineX)
             .attr("y1", d.dotY)
-            .attr("x2", timeLineX + 35)
+            .attr("x2", timeLineX + 30)
             .attr("y2", d.descY)
             .attr("stroke", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .attr("stroke-width", "1");
 
         timelineSVG.append("line")
-            .attr("x1", timeLineX + 35)
+            .attr("x1", timeLineX + 30)
             .attr("y1", d.descY)
             .attr("x2", descriptionX - 10)
             .attr("y2", d.descY)
@@ -348,7 +348,7 @@ d3.json('../data/data.json').then(data => {
             .attr("x", descriptionX)
             .attr("y", d.descY + 5)
             .text(`${d.year} (${age}) : ${d.description}`)
-            .style("font-size", "14px")
+            .style("font-size", "12px")
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .style("font-family", "Libre Franklin");
     });
