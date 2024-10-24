@@ -156,12 +156,12 @@ d3.json('../data/data.json').then(data => {
         .style("margin-top", "10px");
 
     aiSummaryTitleSourceDiv.append("text")
-        .html(`Source: <a href='${portraitData.wikiURL}' target='_blank' style='color: lightskyblue;'>Wikipedia</a>`)
+        .html(`Source: <a href='${portraitData.wikiURL}' target='_blank' style='color: #007791;'>Wikipedia</a>`)
         .style("font-family", "Libre Franklin")
-        .style("font-size", "12px")
+        .style("font-size", "10px")
         .style("margin-top", "0px")
         .style("margin-right", "5px")
-        .style("color", "white");
+        .style("color", "gray");
 
     // AI Summary Content
     const aiSummaryContentsDiv = aiSummaryDiv.append("div")
