@@ -276,7 +276,7 @@ d3.json('../data/data.json').then(data => {
     let yearCoodinate = portraitData.mainEvents.map(d => scale(d.year));
 
     // Calculate Coordinates makes years look good
-    let thresholdMinimumGap = 17;
+    let thresholdMinimumGap = 20;
 
     function calculateMinGap(array) {
     let minGap = Infinity;
@@ -348,7 +348,8 @@ d3.json('../data/data.json').then(data => {
             .attr("x", descriptionX)
             .attr("y", d.descY + 5)
             .text(`${d.year} (${age}) : ${d.description}`)
-            .style("font-size", "12px")
+            .style("font-size", "13px")
+            .style("font-weight", d.description == portraitYearDescription ? "bold" : "normal")
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .style("font-family", "Libre Franklin");
     });
