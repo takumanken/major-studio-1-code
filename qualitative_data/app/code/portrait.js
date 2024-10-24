@@ -80,12 +80,11 @@ d3.json('../data/data.json').then(data => {
         .style("width", "100%")
         .style("margin-top", "25px")
         .style("margin-bottom", "10px")
-        .style("margin-left", "18px");
+        .style("margin-left", "0px");
 
     const basicInfoLeftDiv = basicInfoDiv.append("div")
         .style("flex", "4")
-        .style("margin-left", "30px")
-        .style("width", "250px");
+        .style("width", "100%");
 
     basicInfoLeftDiv.append("li")
         .html("<span class='categoryName'>Gender : </span><strong>" + portraitData.sex + "</strong>")
@@ -106,7 +105,7 @@ d3.json('../data/data.json').then(data => {
 
     const basicInfoRightDiv = basicInfoDiv.append("div")
         .style("flex", "6")
-        .style("margin-left", "20px")
+        .style("margin-left", "10px")
         .style("width", "100%");
 
     basicInfoRightDiv.append("li")
@@ -130,7 +129,8 @@ d3.json('../data/data.json').then(data => {
     const aiSummaryTitleDiv = aiSummaryDiv.append("div")
         .attr("id", "aiSummaryTitle")
         .style("display", "flex")
-        .style("flex-direction", "row");
+        .style("flex-direction", "row")
+        .style("margin-bottom", "5px");
 
     const aiSummaryTitleTextDiv = aiSummaryTitleDiv.append("div")
         .style("flex", "1")
@@ -145,7 +145,7 @@ d3.json('../data/data.json').then(data => {
     aiSummaryTitleTextDiv.append("text")
         .text(" AI Summary")
         .style("font-family", "Libre Franklin")
-        .style("font-size", "20px")
+        .style("font-size", "18px")
         .style("margin-top", "0px")
         .style("color", "white");
 
@@ -178,7 +178,6 @@ d3.json('../data/data.json').then(data => {
     aiSummaryContentsDiv.append("h4").text("About")
         .style("font-family", "Libre Franklin")
         .style("font-size", "18px")
-        .style("font-weight", "bold")
         .style("color", "white")
         .style("margin-top", "20px")
         .style("margin-bottom", "0px")
