@@ -1,120 +1,96 @@
-/* Ensure the body takes the full viewport height */
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+/* Global Setting */
+
+body, header, footer {
     background-color: #0E1821;
-    font-family: Arial, sans-serif;
-    color: #D9D9D9;
-    margin: 0;
-    padding: 0;
+    font-family: 'Libre Franklin';
+    color: #f9fafb;
 }
 
-.gallery-container {
-    flex: 1;
-    width: 90%;
-    margin: 0 auto;
+/* Header Footer */
+
+header, footer {
+    transition: opacity 0.5s ease;
 }
 
-/* Header styling */
+.hidden {
+    opacity: 0;
+}
+
+.visible {
+    opacity: 1;
+}
+
+/* Header */
+
 header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid #D9D9D9;
-    background-color: #0E1821;
-    height: 29px;
-    margin: 0 50px;
-    padding: 15px 0 10px 0;
+    padding: 30px 10px 10px 80px;
 }
 
-header a,
 header h1 {
-    text-decoration: none;
-    color: #D9D9D9;
-    font-family: 'Minion Pro', serif;
     font-weight: 400;
-    font-size: 20px;
+    padding-left: 3px;
+    font-size: 1.25rem;
+}
+
+header a {
+    color: #F3F1E5;
+    text-decoration: none;
+}
+
+header .filters button {
+    background-color: transparent;
+    color: #F3F1E5;
+    margin: 15px 3px;
+    border: 1px solid #838383;
+    padding: 7px 15px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 400;
+    border-radius: 5px;
+}
+
+header .filters button:hover {
+    background-color: #333;
+}
+
+/* Footer */
+
+footer {
+    position: sticky;
+    bottom: 0;
+    height: 40px;
+    padding: 10px;
+    text-align: center;
+    background-color: #0E1821;
+}
+
+footer p {
+    font-family: "Libre Franklin";
+    font-size: 14px;
+}
+
+/* Body */
+body {
     margin: 0;
 }
 
 h1 {
-    color: #D9D9D9;
-    font-family: 'Minion Pro', serif;
     font-weight: 400;
     font-size: 25px;
     margin: 0;
 }
 
-h4 {
-    color: #D9D9D9;
-    font-family: 'Minion Pro', serif;
-    font-weight: 400;
-    font-size: 16px;
-    margin: 0;
-    padding: 10px;
-}
-
-p {
-    color: #D9D9D9;
-    font-family: 'Minion Pro', serif;
-    font-weight: 400;
-    font-size: 20px;
-    margin: 0;
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-bottom: 20px;
-}
-
-footer {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    border-top: 1px solid #D9D9D9;
-    padding: 10px;
-    margin: 0 50px;
-    text-align: center;
-    background-color: #0E1821;
-    color: #D9D9D9;
-}
-
-footer p {
-    font-family: "Minion Pro";
-    font-size: 14px;
-}
-
-/* Styling for filters and buttons */
-.filters {
-    position: sticky;
-    top: 55px;
-    text-align: center;
-    margin: 0 0px;
-    padding: 10px;
-    background-color: #0E1821;
-}
-
-.filters button {
-    background-color: transparent;
-    color: white; 
-    border: 1px solid #D9D9D9;
-    padding: 7px 15px;
-    margin: 15px;
-    cursor: pointer;
-    font-size: 16px;
-    font-family: "Minion Pro";
-    font-weight: 400;
-    border-radius: 5px;
-}
-
-.filters button:hover {
-    background-color: #333;
-}
-
 .categoryName {
-    font-family: "Minion Pro";
     font-size: 16px;
     font-weight: 400;
     color: lightgray;
     margin: 0;
     padding: 10px;
+}
+
+img {
+    cursor: pointer;
 }

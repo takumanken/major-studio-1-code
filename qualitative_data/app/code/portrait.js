@@ -62,14 +62,14 @@ d3.json('../data/data.json').then(data => {
     nameDiv.append("span")
         .text(portraitData.name)
         .style("font-size", "36px")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("color", "#ffffff")
         .style("margin-bottom", "10px");
 
     nameDiv.append("div")
         .html(portraitData.period)
         .style("font-size", "20px")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("color", "#8D9194");
 
     // Basic information: Gender, Age, Portrait Year, Artist
@@ -80,18 +80,18 @@ d3.json('../data/data.json').then(data => {
         .style("width", "100%")
         .style("margin-top", "25px")
         .style("margin-bottom", "10px")
-        .style("margin-left", "20px");
+        .style("margin-left", "18px");
 
     const basicInfoLeftDiv = basicInfoDiv.append("div")
-        .style("flex", "3")
-        .style("margin-left", "40px")
-        .style("width", "100%");
+        .style("flex", "4")
+        .style("margin-left", "30px")
+        .style("width", "250px");
 
     basicInfoLeftDiv.append("li")
         .html("<span class='categoryName'>Gender : </span><strong>" + portraitData.sex + "</strong>")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("margin", "10px")
-        .style("font-size", "20px");
+        .style("font-size", "18px");
 
     const rx = /[0-9]{4}/g;
     const portraitYear = rx.exec(portraitData.portraiteYear);
@@ -100,24 +100,24 @@ d3.json('../data/data.json').then(data => {
 
     basicInfoLeftDiv.append("li")
         .html("<span class='categoryName'>Age at Portrait : </span><strong>" + ageAtPortrait + "</strong>")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("margin", "10px")
         .style("font-size", "20px");
 
     const basicInfoRightDiv = basicInfoDiv.append("div")
-        .style("flex", "7")
+        .style("flex", "6")
         .style("margin-left", "20px")
         .style("width", "100%");
 
     basicInfoRightDiv.append("li")
         .html("<span class='categoryName'>Portrait Year : </span><strong>" + portraitData.portraiteYear + "</strong>")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("margin", "10px")
         .style("font-size", "20px");
 
     basicInfoRightDiv.append("li")
         .html("<span class='categoryName'>Artist : </span><strong>" + portraitData.artistName + "</strong>")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("margin", "10px")
         .style("font-size", "20px");
 
@@ -144,7 +144,7 @@ d3.json('../data/data.json').then(data => {
 
     aiSummaryTitleTextDiv.append("text")
         .text(" AI Summary")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("font-size", "20px")
         .style("margin-top", "0px")
         .style("color", "white");
@@ -157,7 +157,7 @@ d3.json('../data/data.json').then(data => {
 
     aiSummaryTitleSourceDiv.append("text")
         .html(`Source: <a href='${portraitData.wikiURL}' target='_blank' style='color: lightskyblue;'>Wikipedia</a>`)
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("font-size", "12px")
         .style("margin-top", "0px")
         .style("margin-right", "5px")
@@ -176,7 +176,7 @@ d3.json('../data/data.json').then(data => {
         .style("border-radius", "10px");
 
     aiSummaryContentsDiv.append("h4").text("About")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("font-size", "18px")
         .style("font-weight", "bold")
         .style("color", "white")
@@ -198,7 +198,7 @@ d3.json('../data/data.json').then(data => {
 
     aiSummaryContentsDiv.append("h4")
         .text("Moment of the Portrait")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("font-size", "18px")
         .style("font-weight", "bold")
         .style("color", "white")
@@ -220,7 +220,7 @@ d3.json('../data/data.json').then(data => {
 
     // Life Events Timeline
     aiSummaryContentsDiv.append("h4").text("Life Events")
-        .style("font-family", "Minion Pro")
+        .style("font-family", "Libre Franklin")
         .style("font-size", "18px")
         .style("font-weight", "bold")
         .style("color", "white")
@@ -351,7 +351,7 @@ d3.json('../data/data.json').then(data => {
             .text(`${d.year} (${age}) : ${d.description}`)
             .style("font-size", "14px")
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white")
-            .style("font-family", "Minion Pro");
+            .style("font-family", "Libre Franklin");
     });
 
 });

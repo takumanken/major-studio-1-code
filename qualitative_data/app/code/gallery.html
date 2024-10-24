@@ -1,34 +1,33 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="gallery.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100;300;400;700&display=swap" rel="stylesheet">
     <title>Uncover the Moment</title>
     <link rel="icon" type="image/x-icon" href="../../data/ai_icon.png">
   </head>
-  <body>
-    <header>
-        <h1>Select Portrait</h1>
-      </header>
 
+  <body>
+    <header id="header">
+        <h1>Find your favorite portrait</h1>
+        <div class="filters">
+          <button>GENRE</button>
+          <button>GENDER</button>
+          <button>YEAR</button>
+          <button>AGE</button>
+          <button>SELF PORTRAIT</button>
+      </div>
+    </header>
     <body>
-        <div class="gallery-container">
-            <div class="filters">
-                <button>Genres</button>
-                <button>Gender</button>
-                <button>Portrait Year</button>
-                <button>Age at Portrait</button>
-                <button>Self-Portrait</button>
-            </div>
-            
-            <div id="portrait-gallery" class="portrait-gallery"></div>
-        </div>
-        <script src="gallery.js"></script>
+        <div id="portrait-gallery"></div>
     </body>
 
-    <footer style="height: 50px;">
+    <footer id="footer">
       <img src="../image/smithsonian_logo.png" style="height: 18px; margin-top: 10px;">
     </footer>
   </body>
