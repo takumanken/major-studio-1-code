@@ -24,8 +24,8 @@ d3.json('../data/data.json').then(data => {
         .attr("id", "portrait-section")
         .style("flex", "1")
         .style("padding", "0")
-        .style("margin-left", "100px")
-        .style("margin-right", "100px")
+        .style("margin-left", "50px")
+        .style("margin-right", "50px")
         .style("margin-top", "40px")
         .style("margin-bottom", "40px");
 
@@ -78,8 +78,8 @@ d3.json('../data/data.json').then(data => {
         .style("flex", "1")
         .style("display", "flex")
         .style("width", "100%")
-        .style("margin-top", "25px")
-        .style("margin-bottom", "10px")
+        .style("margin-top", "15px")
+        .style("margin-bottom", "15px")
         .style("margin-left", "0px");
 
     const basicInfoLeftDiv = basicInfoDiv.append("div")
