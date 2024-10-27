@@ -92,13 +92,8 @@ d3.json('../data/data.json').then(data => {
         .style("margin", "10px")
         .style("font-size", "18px");
 
-    const rx = /[0-9]{4}/g;
-    const portraitYear = rx.exec(portraitData.portraiteYear);
-    const birthYear = d3.min(portraitData.mainEvents, d => d.year);
-    const ageAtPortrait = portraitYear - birthYear;
-
     basicInfoLeftDiv.append("li")
-        .html("<span class='categoryName'>Age at Portrait : </span><strong>" + ageAtPortrait + "</strong>")
+        .html("<span class='categoryName'>Age at Portrait : </span><strong>" + portraitData.ageAtPortrait.ageInt + "</strong>")
         .style("font-family", "Libre Franklin")
         .style("margin", "10px")
         .style("font-size", "20px");
@@ -108,8 +103,9 @@ d3.json('../data/data.json').then(data => {
         .style("margin-left", "10px")
         .style("width", "100%");
 
+    console.log(portraitData.portraitYear.yearInt);
     basicInfoRightDiv.append("li")
-        .html("<span class='categoryName'>Portrait Year : </span><strong>" + portraitData.portraiteYear + "</strong>")
+        .html("<span class='categoryName'>Portrait Year : </span><strong>" + portraitData.portraitYear.original + "</strong>")
         .style("font-family", "Libre Franklin")
         .style("margin", "10px")
         .style("font-size", "20px");
@@ -268,7 +264,7 @@ d3.json('../data/data.json').then(data => {
     const portraitYearDescription = "This portrait was drawn.";
 
     portraitData.mainEvents.push({
-        year: parseInt(portraitYear),
+        year: portraitData.portraitYear.yearInt,
         description: portraitYearDescription
     });
 
@@ -342,7 +338,7 @@ d3.json('../data/data.json').then(data => {
             .attr("stroke-width", "1");
 
 
-        let age = d.year - birthYear;
+        let age = d.year - portraitData.birthYear;
 
         timelineSVG.append("text")
             .attr("x", descriptionX)

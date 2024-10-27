@@ -106,7 +106,7 @@ let responses = [];
         continue;
       }
 
-      const { id, name, portraiteYear } = basicInfo;
+      const { id, name, portraitYear } = basicInfo;
       const { wikiURL, content } = wikiInfo;
 
       // Create the prompt for Gemini
@@ -121,7 +121,7 @@ let responses = [];
       - wikiurl: just returns '${wikiURL}'.
       - Description: A description of ${name} from the information provided. This should reflect the person's historical significance, accomplishments, and fan facts about the person. You should begin with "${name} is a...". This must be nore more than 40 words.
       - mainEvents: List up to seven major events in ${name}'s life, including birth, death, and up to five major historical events. Year must be "YYYY" format integer, not ranges or decades. Description must be no more than 15 words.
-      - portraitMoment: Description of what time ${portraiteYear} was in ${name}'s life. Consider the person's age, accomplishments, and events before and after. This field should begin with "This portrait drawn in ${portraiteYear} seems to capture the moment when...". You must be historically accurate and avoid anachronisms. This must be no more than 40 words.
+      - portraitMoment: Description of what time ${portraitYear} was in ${name}'s life. Consider the person's age, accomplishments, and events before and after. This field should begin with "This portrait drawn in ${portraitYear} seems to capture the moment when...". You must be historically accurate and avoid anachronisms. This must be no more than 40 words.
 
       Information - HTML from Wikipedia, ignore unrelated information:
       ${content}

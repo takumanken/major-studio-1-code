@@ -70,9 +70,19 @@ function extractData(data) {
   const dedupedCategories = [...new Set(remainingTopics.map(topic => topic.split('\\')[0]))];
 
   // Extract date
-  const portraiteYear = freetext?.date
+  const portraitYearOriginal = freetext?.date
     ? freetext.date.map(item => item.content).join(', ')
     : '';
+  
+  const portraitYearInt = 
+    portraitYearOriginal.match(/\d{4}/g)
+    ? parseInt(portraitYearOriginal.match(/\d{4}/g)[0])
+    : null;
+  
+  const portraitYearGroup = 
+  portraitYearInt
+    ? `${Math.floor(portraitYearInt / 10) * 10}s`
+    : 'Other';
 
   // Extract sitter period
   const sitterPeriod = freetext?.name
@@ -89,7 +99,12 @@ function extractData(data) {
     id: data.id,
     title: data.title,
     objectType: objectType,
-    portraiteYear: portraiteYear,
+    portraitYear: 
+      {
+        original: portraitYearOriginal,
+        yearInt: portraitYearInt,
+        yearGroup: portraitYearGroup
+      },
     name: sitterNames[0],
     period: sitterPeriod,
     sex: sex,
