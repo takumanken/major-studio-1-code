@@ -40,7 +40,7 @@ header a {
     text-decoration: none;
 }
 
-header .filters button {
+header .filter {
     background-color: transparent;
     color: #F3F1E5;
     margin: 15px 3px;
