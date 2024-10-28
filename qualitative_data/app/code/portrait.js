@@ -14,216 +14,108 @@ d3.json('../data/data.json').then(data => {
 
     // Set up the portrait container
     const container = d3.select("#portrait-container")
-        .style("display", "flex")
-        .style("flex-direction", "row")
-        .style("padding", "0")
-        .style("height", "87vh");
 
-    // Create the portrait section
+    // Create the portrait Div
     const portraitSection = container.append("div")
-        .attr("id", "portrait-section")
-        .style("flex", "1")
-        .style("padding", "0")
-        .style("margin-left", "60px")
-        .style("margin-right", "60px")
-        .style("margin-top", "20px")
-        .style("margin-bottom", "20px");
+        .attr("id", "portrait-section");
 
+    // Portrait image
     portraitSection.append("img")
         .attr("id", "portrait-image")
         .attr("src", portraitData.imageLink)
-        .attr("alt", portraitData.name + " Portrait")
-        .style("max-width", "100%")
-        .style("max-height", "100%")
-        .style("margin", "auto auto")
-        .style("border-radius", "10px")
-        .style("background-color", "black");
+        .attr("alt", portraitData.name + " Portrait");
 
-    portraitSection.style("display", "flex")
-        .style("align-items", "center");
-
-    // Create the information section
+    // Info Section Div
     const infoSection = container.append("div")
-        .attr("id", "info-section")
-        .style("flex", "1")
-        .style("padding", "20px")
-        .style("border-radius", "10px")
-        .style("display", "flex")
-        .style("flex-direction", "column")
-        .style("align-items", "stretch");
-
-    // Name and period section
+        .attr("id", "info-section");
+        
+    // Name and period Div
     const nameDiv = infoSection.append("div")
-        .attr("id", "name")
-        .style("flex", "1")
-        .style("margin-top", "20px")
-        .style("margin-bottom", "0px");
+        .attr("id", "name-div");
 
+    // Name and Period
     nameDiv.append("span")
-        .text(portraitData.name)
-        .style("font-size", "36px")
-        .style("font-family", "Libre Franklin")
-        .style("color", "#ffffff")
-        .style("margin-bottom", "10px");
+        .attr("id", "name")
+        .text(portraitData.name.toUpperCase());
 
-    nameDiv.append("div")
-        .html(portraitData.period)
-        .style("font-size", "20px")
-        .style("font-family", "Libre Franklin")
-        .style("color", "#8D9194");
+    nameDiv.append("p")
+        .attr("id", "period")
+        .html(portraitData.period);
 
-    // Basic information: Gender, Age, Portrait Year, Artist
+    // BasicInfo Div (Gender, Age, Portrait Year, Artist)
     const basicInfoDiv = infoSection.append("div")
-        .attr("id", "basicInfo")
-        .style("flex", "1")
-        .style("display", "flex")
-        .style("width", "100%")
-        .style("margin-top", "25px")
-        .style("margin-bottom", "10px")
-        .style("margin-left", "0px");
+        .attr("id", "basicInfo");
 
-    const basicInfoLeftDiv = basicInfoDiv.append("div")
-        .style("flex", "4")
-        .style("width", "100%");
+    // Gender
+    basicInfoDiv.append("div")
+        .attr("class", "basicInfoItem")
+        .attr("id", "gender")
+        .html("<span class='categoryName'>GENDER</span>" + portraitData.sex);
 
-    basicInfoLeftDiv.append("li")
-        .html("<span class='categoryName'>Gender : </span><strong>" + portraitData.sex + "</strong>")
-        .style("font-family", "Libre Franklin")
-        .style("margin", "10px")
-        .style("font-size", "18px");
+    // Age
+    basicInfoDiv.append("div")
+        .attr("class", "basicInfoItem")
+        .attr("id", "age")
+        .html("<span class='categoryName'>AGE</span>" + portraitData.ageAtPortrait.ageInt);
 
-    basicInfoLeftDiv.append("li")
-        .html("<span class='categoryName'>Age at Portrait : </span><strong>" + portraitData.ageAtPortrait.ageInt + "</strong>")
-        .style("font-family", "Libre Franklin")
-        .style("margin", "10px")
-        .style("font-size", "20px");
+    // Portrait Year
+    basicInfoDiv.append("div")
+        .attr("class", "basicInfoItem")
+        .attr("id", "portraitYear")
+        .html("<span class='categoryName'>YEAR</span>" + portraitData.portraitYear.yearInt)
 
-    const basicInfoRightDiv = basicInfoDiv.append("div")
-        .style("flex", "6")
-        .style("margin-left", "10px")
-        .style("width", "100%");
+    // Artist
+    basicInfoDiv.append("div")
+        .attr("class", "basicInfoItem")
+        .attr("id", "artist")
+        .html("<span class='categoryName'>ARTIST</span>" + portraitData.artistName)
 
-    console.log(portraitData.portraitYear.yearInt);
-    basicInfoRightDiv.append("li")
-        .html("<span class='categoryName'>Portrait Year : </span><strong>" + portraitData.portraitYear.original + "</strong>")
-        .style("font-family", "Libre Franklin")
-        .style("margin", "10px")
-        .style("font-size", "20px");
-
-    basicInfoRightDiv.append("li")
-        .html("<span class='categoryName'>Artist : </span><strong>" + portraitData.artistName + "</strong>")
-        .style("font-family", "Libre Franklin")
-        .style("margin", "10px")
-        .style("font-size", "20px");
-
-    // AI Summary section
+    // AI Summary Div
     const aiSummaryDiv = infoSection.append("div")
-        .attr("id", "aiSummary")
-        .style("flex", "10");
+        .attr("id", "aiSummary");
+
+    // AI Summary Title Div
+    const aiSummaryTitleDiv = aiSummaryDiv.append("div")
+        .attr("id", "aiSummaryTitle");
+
+    // AI Image
+    aiSummaryTitleDiv.append("img")
+        .attr("id", "aiIcon")
+        .attr("src", "../image/ai_icon.png");
 
     // AI Summary Title
-    const aiSummaryTitleDiv = aiSummaryDiv.append("div")
-        .attr("id", "aiSummaryTitle")
-        .style("display", "flex")
-        .style("flex-direction", "row")
-        .style("margin-bottom", "5px");
+    aiSummaryTitleDiv.append("text")
+        .text("AI Summary");
 
-    const aiSummaryTitleTextDiv = aiSummaryTitleDiv.append("div")
-        .style("flex", "1")
-
-    aiSummaryTitleTextDiv.append("img")
-        .attr("src", "../image/ai_icon.png")
-        .attr("alt", "AI Icon")
-        .style("width", "25px")
-        .style("height", "25px")
-        .style("transform", "translate(0px, 6px)");
-
-    aiSummaryTitleTextDiv.append("text")
-        .text(" AI Summary")
-        .style("font-family", "Libre Franklin")
-        .style("font-size", "18px")
-        .style("margin-top", "0px")
-        .style("color", "white");
-
-    const aiSummaryTitleSourceDiv = aiSummaryTitleDiv.append("div")
-        .style("flex", "1")
-        .style("text-align", "right")
-        .style("margin-right", "50px")
-        .style("margin-top", "10px");
-
-    aiSummaryTitleSourceDiv.append("text")
+    // Source
+    aiSummaryTitleDiv.append("text")
+        .attr("id", "source")
         .html(`Source: <a href='${portraitData.wikiURL}' target='_blank' style='color: #007791;'>Wikipedia</a>`)
-        .style("font-family", "Libre Franklin")
+        .style("flex", "1")
         .style("font-size", "10px")
-        .style("margin-top", "0px")
-        .style("margin-right", "5px")
+        .style("text-align", "right")
+        .style("padding-top", "10px")
         .style("color", "gray");
 
     // AI Summary Content
     const aiSummaryContentsDiv = aiSummaryDiv.append("div")
-        .attr("id", "ai-summary-contents")
-        .style("background-color", "#002554")
-        .style("margin-right", "50px")
-        .style("margin-top", "0px")
-        .style("padding", "0")
-        .style("height", "535px")
-        .style("display", "flex")
-        .style("flex-direction", "column")
-        .style("border-radius", "10px");
-
-    aiSummaryContentsDiv.append("h4").text("About")
-        .style("font-family", "Libre Franklin")
-        .style("font-size", "18px")
-        .style("color", "white")
-        .style("margin-top", "20px")
-        .style("margin-bottom", "0px")
-        .style("margin-left", "20px")
-        .style("margin-right", "20px")
-        .style("padding", "0px");
-
-    aiSummaryContentsDiv.append("p")
-        .html(portraitData.description)
-        .style("font-size", "16px")
-        .style("margin-top", "5px")
-        .style("margin-bottom", "10px")
-        .style("margin-left", "20px")
-        .style("margin-right", "20px")
-        .style("padding", "0px")
-        .style("line-height", "1.2");
+        .attr("id", "ai-summary-contents");
 
     aiSummaryContentsDiv.append("h4")
-        .text("Moment of the Portrait")
-        .style("font-family", "Libre Franklin")
-        .style("font-size", "18px")
-        .style("font-weight", "bold")
-        .style("color", "white")
-        .style("margin-top", "20px")
-        .style("margin-bottom", "0px")
-        .style("margin-left", "20px")
-        .style("margin-right", "20px")
-        .style("padding", "0px");
+        .text("ABOUT");
 
     aiSummaryContentsDiv.append("p")
-        .text(portraitData.portraitMoment)
-        .style("font-size", "16px")
-        .style("margin-top", "5px")
-        .style("margin-bottom", "10px")
-        .style("margin-left", "20px")
-        .style("margin-right", "20px")
-        .style("padding", "0px")
-        .style("line-height", "1.2");
+        .html(portraitData.description);
+
+    aiSummaryContentsDiv.append("h4")
+        .text("MOMEMNT OF THE PORTRAIT");
+
+    aiSummaryContentsDiv.append("p")
+        .text(portraitData.portraitMoment);
 
     // Life Events Timeline
-    aiSummaryContentsDiv.append("h4").text("Life Events")
-        .style("font-family", "Libre Franklin")
-        .style("font-size", "18px")
-        .style("font-weight", "bold")
-        .style("color", "white")
-        .style("margin-top", "20px")
-        .style("margin-bottom", "0px")
-        .style("margin-left", "20px")
-        .style("margin-right", "20px")
-        .style("padding", "0px");
+    aiSummaryContentsDiv.append("h4")
+        .text("LIFE EVENTS");
 
     const element = document.querySelector('#ai-summary-contents > h4:nth-child(5)');
     const rect = element.getBoundingClientRect();
@@ -234,7 +126,7 @@ d3.json('../data/data.json').then(data => {
     const svgHeight = 225 + (570 - y);
 
     const timelineSVG = aiSummaryContentsDiv.append("svg")
-        .attr("id", "timeline-svg")
+        .attr("id", "timelineSVG")
         .attr("width", svgWidth)
         .attr("height", svgHeight)
         .style("padding-top", "10px")
@@ -308,13 +200,15 @@ d3.json('../data/data.json').then(data => {
     }
 
     sortedmainEvents.forEach((d, i) => {
+
         d.dotY = yearCoodinate[i];
         d.descY = adjustedYearCoodinate[i];
+
     });
 
     // Draw the timeline
     sortedmainEvents.forEach((d, i) => {
-        // 
+        
         timelineSVG.append("circle")
             .attr("cx", timeLineX)
             .attr("cy", d.dotY)
@@ -337,17 +231,15 @@ d3.json('../data/data.json').then(data => {
             .attr("stroke", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .attr("stroke-width", "1");
 
-
         let age = d.year - portraitData.birthYear;
 
         timelineSVG.append("text")
+            .text(`${d.year} (${age}) : ${d.description}`)
             .attr("x", descriptionX)
             .attr("y", d.descY + 5)
-            .text(`${d.year} (${age}) : ${d.description}`)
+            .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .style("font-size", "13px")
             .style("font-weight", d.description == portraitYearDescription ? "bold" : "normal")
-            .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white")
-            .style("font-family", "Libre Franklin");
     });
 
 });

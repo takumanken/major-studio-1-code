@@ -2,7 +2,7 @@
 
 body, header, footer {
     background-color: #0E1821;
-    font-family: 'Libre Franklin';
+    font-family: 'Futura';
     color: #f9fafb;
 }
 
@@ -30,14 +30,25 @@ header {
 }
 
 header h1 {
-    font-weight: 400;
     padding-left: 3px;
-    font-size: 1.25rem;
+    font-size: 24px;
+    font-weight: 100;
 }
 
 header a {
     color: #F3F1E5;
     text-decoration: none;
+}
+
+header #filter-container {
+    display: flex;
+}
+
+header #count-container {
+    padding: 10px 10px 7px 10px;
+    font: 16px;
+    text-align: left;
+    width: 150px;
 }
 
 header .filter {
@@ -48,7 +59,6 @@ header .filter {
     padding: 7px 10px;
     cursor: pointer;
     font-size: 0.75rem;
-    font-weight: 400;
     border-radius: 5px;
 }
 
@@ -68,7 +78,6 @@ footer {
 }
 
 footer p {
-    font-family: "Libre Franklin";
     font-size: 14px;
 }
 
@@ -78,14 +87,12 @@ body {
 }
 
 h1 {
-    font-weight: 400;
     font-size: 25px;
     margin: 0;
 }
 
 .categoryName {
     font-size: 16px;
-    font-weight: 400;
     color: lightgray;
     margin: 0;
     padding: 10px;
@@ -93,4 +100,222 @@ h1 {
 
 img {
     cursor: pointer;
+}
+
+/* Gallery Page */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    padding: 20px 5px;
+}
+
+.dropdown-btn {
+    padding: 5px 20px;
+    border: 1px solid #838383;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.dropdown-content {
+    display: none;
+    background-color: #0E1821;
+    border: 1px solid #838383;
+    position: absolute;
+    color: #F3F1E5;
+    padding: 8px;
+    min-width: 150px;
+    max-width: 200px;
+}
+
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
+.dropdown-content label {
+    display: flex;
+    align-items: center;
+    margin: 4px;
+    cursor: pointer;
+}
+
+.dropdown-content input {
+    margin-right: 8px;
+  }
+
+#portrait-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 5px;
+    width: 90%;
+    margin: 0 auto;
+    flex: 1;
+}
+
+.portrait-item {
+    position: relative;
+    text-align: center;
+}
+
+.portrait-name {
+    top: 50%;
+    left: 50%;
+    font-size: 20px;
+    margin: 0;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.25s ease-in-out;
+}
+
+.portrait-image {
+    height: 400px;
+    object-fit: cover;
+    transition: filter 0.25s ease-in-out;
+}
+
+/* Portrait Page */
+
+#portrait-container {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    height: 87vh;
+}
+
+/* Portrait Image */
+#portrait-section {
+    flex: 1;
+    display: flex;
+    padding: 0;
+    margin: 20px 60px;
+    align-items: center;
+}
+
+#portrait-section img {
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto auto;
+    border-radius: 10px;
+    background-color: black;
+}
+
+/*----------------------------------------
+Info Section
+----------------------------------------*/
+
+/* Container */
+#info-section {
+    flex: 1;
+    gap: 20px;
+    padding: 20px 70px 20px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Name */
+#name-div {
+    flex: 1;
+    margin-bottom: 0px;
+}
+
+#name {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+#period {
+    margin: 0;
+}
+
+/* Basic Info (Gender, Age, Year, Artist) */
+#basicInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    margin: 10px 0px 10px 0px;
+}
+
+.basicInfoItem {
+    flex: 1;
+    background-color: #142330;
+    border-radius: 10px;
+    margin: 0 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 18px;
+}
+
+.basicInfoItem .categoryName {
+    font-size: 14px;
+    padding: 2px;
+    color: gray;
+}
+
+#gender, #age, #portraitYear, #artist {
+    vertical-align: middle;
+}
+
+#gender, #age, #portraitYear {
+    flex: 2;
+}
+
+#artist {
+    flex: 4;
+}
+
+/* AI Summary */
+#aiSummary {
+    flex: 8;
+}
+
+#aiSummaryTitle {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+    width: 100%;
+    height: 25px;
+}
+
+#aiIcon {
+    width: 25px;
+}
+
+#aiSummaryTitle text {
+    font-size: 18px;
+    padding-left: 5px;
+}
+
+#ai-summary-contents {
+    background-color: #002554;
+    margin-top: 0;
+    padding: 0;
+    height: 535px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+#ai-summary-contents h4 {
+    font-size: 16px;
+    margin: 20px 20px 0 20px;
+    padding: 0;
+    font-weight: 100;
+}
+
+#ai-summary-contents p {
+    font-size: 16px;
+    margin: 5px 20px 10px 20px;
+    padding: 0;
+    font-weight: 100;
+    line-height: 1.2;
 }

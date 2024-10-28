@@ -1,16 +1,23 @@
-// -------------------
-// State Object
-// -------------------
+// ---------------------------------------------------------
+// Data Loading
+// ---------------------------------------------------------
+async function getAllGalleryData() {
+    const response = await fetch('../data/data.json');
+    return await response.json();
+}
+
+// ---------------------------------------------------------
+// Initialize State Object
+// ---------------------------------------------------------
 
 let stateObject = {
     genre: [],
     gender: [],
-    portraitYear: [],
+    year: [],
     age: [],
-    selfPortrait: [],
 }
 
-async function initializeFilter(data) {
+async function initializeStateObject(data) {
 
     // Aggregate counts for each filter
     function aggregateCounts(data, accessor) {
@@ -22,125 +29,140 @@ async function initializeFilter(data) {
         const sorted = rollup.sort((a, b) => b[1] - a[1]);
         return sorted.map(d => d[0]);
     }
-    
-    // Populate filter options
-    function populateFilterOptions(data, elementId) {
-        d3.select(`#${elementId}`)
-            .selectAll("option")
-            .data(data)
-            .enter()
-            .append("option")
-            .text(d => d)
-            .attr("value", d => d);
-    }
 
+    // Aggregate counts    
     aggGenre        = aggregateCounts(data, d => d.categories[0]);
     aggGender       = aggregateCounts(data, d => d.sex);
     aggPortraitYear = aggregateCounts(data, d => d.portraitYear.yearGroup);
     aggAge          = aggregateCounts(data, d => d.ageAtPortrait.ageGroup);
-    aggSelfPortrait = aggregateCounts(data, d => d.isSelfPortrait);
 
     // Update State Object
     stateObject.genre        = aggGenre;
     stateObject.gender       = aggGender;
-    stateObject.portraitYear = aggPortraitYear.sort();
+    stateObject.year         = aggPortraitYear.sort();
     stateObject.age          = aggAge.sort();
-    stateObject.selfPortrait = aggSelfPortrait.sort().reverse();
-
-    // Populate filter options
-    populateFilterOptions(stateObject.genre, "genreFilter");
-    populateFilterOptions(stateObject.gender, "genderFilter");
-    populateFilterOptions(stateObject.portraitYear, "yearFilter");
-    populateFilterOptions(stateObject.age, "ageFilter");
-    populateFilterOptions(stateObject.selfPortrait, "sfFilter");
 
 }
 
-function updateStateObject() {
+// ---------------------------------------------------------
+// Populate Filter
+// ---------------------------------------------------------
 
-    function getFilterValues(elementId) {
-        return Array.from(document.getElementById(elementId).selectedOptions)
-            .map(option => option.value.split(" (")[0]);
-    }
+function createFilter(data) {
 
-    // Update state object
-    const currentGenre = getFilterValues("genreFilter");
-    if (currentGenre.length > 0) stateObject.genre = currentGenre;
+    const filters = [
+        { title: "GENRE", options: ['All', ...stateObject.genre] },
+        { title: "GENDER", options: stateObject.gender },
+        { title: "YEAR", options: ['All', ...stateObject.year] },
+        { title: "AGE", options: ['All', ...stateObject.age] },
+      ];
 
-    const currentGender = getFilterValues("genderFilter");
-    if (currentGender.length > 0) stateObject.gender = currentGender;
-    
-    const currentPortraitYear = getFilterValues("yearFilter");
-    if (currentPortraitYear.length > 0) stateObject.portraitYear = currentPortraitYear;
+    // Select the container
+    const filterContainer = d3.select("#dropdown-container");
 
-    const currentAge = getFilterValues("ageFilter");
-    if (currentAge.length > 0) stateObject.age = currentAge;
+    // Create dropdowns
+    filterContainer
+        .selectAll(".dropdown")
+        .data(filters)
+        .enter()
+        .append("div")
+        .attr("class", "dropdown")
+        .each(function(d) {
+            const dropdown = d3.select(this);
 
-    const currentSelfPortrait = getFilterValues("sfFilter");
-    if (currentSelfPortrait.length > 0) stateObject.selfPortrait = currentSelfPortrait;
+            // Dropdown Button
+            dropdown
+                .append("div")
+                .attr("class", "dropdown-btn")
+                .text(d.title)
+                .on("click", function(event) {
+                    event.stopPropagation();
+                    
+                    filterContainer
+                        .selectAll(".dropdown")
+                        .filter(function() {return this !== dropdown.node();})
+                        .classed("active", false);
+                    
+                    dropdown.classed("active", !dropdown.classed("active"));
+                })
+
+            // Dropdown Content
+            const options = dropdown.append("div")
+                .attr("class", "dropdown-content")
+                .selectAll("label")
+                .data(d.options)
+                .enter()
+                .append("label")
+                .html(option => `<input type="checkbox" value="${option}"> ${option}`)
+                .on("click", event => event.stopPropagation());
+
+            // Handle checkbox changes
+            options.select("input")
+                .on("change", function() {
+
+                    const isAll = this.value === "All";
+                    const checked = this.checked;
+                    const checkboxes = dropdown.selectAll("input");
+                    const allBox = checkboxes.filter("[value='All']");
+        
+                    // Title without "All" suffix
+                    const title = dropdown.select(".dropdown-btn").text();
+
+                    if (isAll) {
+                        // Update checkboxes when "All" is selected
+                        checkboxes.property("checked", checked);
+                    } else if (!(['GENDER', 'SELF PORTRAIT'].includes(title))) {
+                        // Update "All" checkbox when other checkboxes are selected
+                        const total = checkboxes.size() - 1;
+                        const selected = checkboxes.filter(":checked").size() - (allBox.property("checked") ? 1 : 0);
+                        allBox.property("checked", selected === total);
+                    }
+        
+                    // Get selected options
+                    const selectedOptions = checkboxes.filter(":checked").nodes()
+                      .filter(cb => cb.value !== "All")
+                      .map(cb => cb.value);
+
+                    // Update State Object
+                    stateObject[title.toLowerCase()] = selectedOptions;
+                    
+                    // Update data
+                    updateData(data);
+                    
+                })
+
+        });
+
+    // Close dropdowns when clicking outside
+    d3.select(document).on("click", () => {
+        filterContainer.selectAll(".dropdown").classed("active", false);
+    });
 
 }
 
-function updateData(data) {
+// ---------------------------------------------------------
+// Draw Gallery
+// ---------------------------------------------------------
 
-    updateStateObject();
-
-    console.log("updateData", stateObject);
-
-    // Filter function
-    const filteredData = data.filter(d => 
-        stateObject.gender.includes(d.sex)
-        && stateObject.genre.includes(d.categories[0])
-        && stateObject.portraitYear.includes(d.portraitYear.yearGroup)
-        && stateObject.age.includes(d.ageAtPortrait.ageGroup)
-        && stateObject.selfPortrait.includes(d.isSelfPortrait)
-    );
-
-    // let stateObject = {
-    //     genre: [],
-    //     gender: [],
-    //     portraitYear: [],
-    //     age: [],
-    //     selfPortrait: [],
-    // }
-    
-    // Update gallery
-    drawGallery(filteredData);
-
-}
-
-// -------------------
-// Data Loading
-// -------------------
-async function getAllGalleryData() {
-    const response = await fetch('../data/data.json');
-    return await response.json();
-}
-
-// -------------------
-// Drawing Gallery
-// -------------------
 function drawGallery(data) {
-    const portraitWidth = 250;
-    const gapBetweenPortraits = 5;
+
+    d3.select("#count-container")
+        .selectAll("*")
+        .remove();
+
+    d3.select("#count-container")
+        .append("p")
+        .html(`<span>${data.length}</span> Portraits Found`);
 
     d3.select("#portrait-gallery").selectAll("*").remove();
 
-    const gallery = d3.select("#portrait-gallery")
-        .style("display", "grid")
-        .style("grid-template-columns", `repeat(auto-fit, minmax(${portraitWidth}px, 1fr))`)
-        .style("gap", `${gapBetweenPortraits}px`)
-        .style("width", "90%")
-        .style("margin", "0 auto")
-        .style("flex", "1");
+    const gallery = d3.select("#portrait-gallery");
 
     const portraits = gallery.selectAll("div")
         .data(data)
         .enter()
         .append("div")
         .attr("class", "portrait-item")
-        .style("position", "relative")
-        .style("text-align", "center")
         .on("click", (event, d) => {
             window.location.href = `portrait.html?id=${d.id}`;
         })
@@ -162,31 +184,36 @@ function drawGallery(data) {
     portraits.append("img")
         .attr("src", d => `../image/thumbnails/${d.id}.jpg`)
         .attr("class", "portrait-image")
-        .style("width", `${portraitWidth}px`)
-        .style("height", "400px")
-        .style("object-fit", "cover")
-        .style("transition", "filter 0.25s ease-in-out");
+        .style("width", `250px`);
 
     portraits.append("p")
         .text(d => d.name.toUpperCase())
         .style("position", "absolute")
         .attr("class", "portrait-name")
-        .style("top", "50%")
-        .style("left", "50%")
-        .style("font-size", "20px")
-        .style("font-weight", "bold")
-        .style("margin", "0")
-        .style("transform", "translate(-50%, -50%)")
-        .style("visibility", "hidden")
-        .style("opacity", "0")
-        .style("transition", "visibility 0s, opacity 0.25s ease-in-out");
 }
 
-// -------------------
+// ---------------------------------------------------------
 // Helper Functions
-// -------------------
-function addScrollEventToToggleHeaderFooter() {
+// ---------------------------------------------------------
+
+// Update data based on filter conditions
+function updateData(data) {
+
+    const filteredData = data.filter(d => 
+        stateObject.gender.includes(d.sex)
+        && stateObject.genre.includes(d.categories[0])
+        && stateObject.year.includes(d.portraitYear.yearGroup)
+        && stateObject.age.includes(d.ageAtPortrait.ageGroup)
+    );
+
+    // Update gallery
+    drawGallery(filteredData);
+
+}
+
+function hideHeaderFooterWhenScrolling() {
     
+    // Add scroll event to toggle header and footer    
     let isScrolling;
     const header = d3.select("#header");
     const footer = d3.select("#footer");
@@ -205,19 +232,20 @@ function addScrollEventToToggleHeaderFooter() {
             footer.classed("hidden", false);
         }, 500);
     });
+
 }
 
-// -------------------
-// Main
-// -------------------
+// ---------------------------------------------------------
+// Main Function
+// ---------------------------------------------------------
+async function main() {
 
-async function init() {
-    
-    const data = await getAllGalleryData();
-    drawGallery(data);
-    await initializeFilter(data);
-    d3.selectAll(".filter").on("change", () => updateData(data));
-    addScrollEventToToggleHeaderFooter();
+    const AllGalleryData = await getAllGalleryData();
+    initializeStateObject(AllGalleryData);
+    createFilter(AllGalleryData);
+    drawGallery(AllGalleryData);
+    hideHeaderFooterWhenScrolling();
+
 }
 
-init();
+main();
