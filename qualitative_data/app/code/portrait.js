@@ -108,7 +108,7 @@ d3.json('../data/data.json').then(data => {
         .html(portraitData.description);
 
     aiSummaryContentsDiv.append("h4")
-        .text("MOMEMNT OF THE PORTRAIT");
+        .text("MOMENT OF THE PORTRAIT");
 
     aiSummaryContentsDiv.append("p")
         .text(portraitData.portraitMoment);
