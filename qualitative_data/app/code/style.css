@@ -2,7 +2,7 @@
 
 body, header, footer {
     background-color: #0E1821;
-    font-family: 'Futura';
+    font-family: 'Jost';
     color: #f9fafb;
 }
 
@@ -32,7 +32,7 @@ header {
 header h1 {
     padding-left: 3px;
     font-size: 24px;
-    font-weight: 100;
+    font-weight: 400;
 }
 
 header a {
@@ -89,13 +89,6 @@ body {
 h1 {
     font-size: 25px;
     margin: 0;
-}
-
-.categoryName {
-    font-size: 16px;
-    color: lightgray;
-    margin: 0;
-    padding: 10px;
 }
 
 #portrait-gallery img {
@@ -225,6 +218,7 @@ Info Section
 
 #name {
     font-size: 36px;
+    font-weight: 600px;
     margin-bottom: 10px;
 }
 
@@ -252,13 +246,14 @@ Info Section
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .basicInfoItem .categoryName {
     font-size: 14px;
-    padding: 2px;
-    color: gray;
+    padding: 0px;
+    color: #798087;
 }
 
 #gender, #age, #portraitYear, #artist {
@@ -309,13 +304,13 @@ Info Section
     font-size: 16px;
     margin: 20px 20px 0 20px;
     padding: 0;
-    font-weight: 100;
+    font-weight: 500;
 }
 
 #ai-summary-contents p {
     font-size: 16px;
     margin: 5px 20px 10px 20px;
     padding: 0;
-    font-weight: 100;
+    font-weight: 400;
     line-height: 1.2;
 }

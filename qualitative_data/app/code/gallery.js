@@ -152,7 +152,8 @@ function drawGallery(data) {
 
     d3.select("#count-container")
         .append("p")
-        .html(`<span>${data.length}</span> Portraits Found`);
+        .html(`<span>${data.length}</span> Portraits Found`)
+        .style("font-size", "18px");
 
     d3.select("#portrait-gallery").selectAll("*").remove();
 
