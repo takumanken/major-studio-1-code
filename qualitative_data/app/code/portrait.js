@@ -120,10 +120,9 @@ d3.json('../data/data.json').then(data => {
     const element = document.querySelector('#ai-summary-contents > h4:nth-child(5)');
     const rect = element.getBoundingClientRect();
     const y = rect.top + window.scrollY; // Add window.scrollY to account for any scrolling
-    console.log('Y-coordinate relative to the document:', y);
 
     const svgWidth = 625;
-    const svgHeight = 225 + (570 - y);
+    const svgHeight = 225 + (590 - y);
 
     const timelineSVG = aiSummaryContentsDiv.append("svg")
         .attr("id", "timelineSVG")
@@ -153,7 +152,7 @@ d3.json('../data/data.json').then(data => {
         .domain([minYear, maxYear])
         .range([timeLineStartY, timeLineEndY]);
 
-    const portraitYearDescription = "This portrait was drawn.";
+    const portraitYearDescription = "This portrait was drawn";
 
     portraitData.mainEvents.push({
         year: portraitData.portraitYear.yearInt,
@@ -212,7 +211,7 @@ d3.json('../data/data.json').then(data => {
         timelineSVG.append("circle")
             .attr("cx", timeLineX)
             .attr("cy", d.dotY)
-            .attr("r", 5)
+            .attr("r", 6)
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white");
 
         timelineSVG.append("line")
@@ -234,12 +233,14 @@ d3.json('../data/data.json').then(data => {
         let age = d.year - portraitData.birthYear;
 
         timelineSVG.append("text")
-            .text(`${d.year} (${age}) : ${d.description}`)
+            .html(`
+                <tspan style="font-weight:bold">${d.year}</tspan>  (${age} y/o) : ${d.description}
+            `)
             .attr("x", descriptionX)
             .attr("y", d.descY + 5)
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white")
-            .style("font-size", "13px")
-            .style("font-weight", d.description == portraitYearDescription ? "bold" : "normal")
+            .style("font-size", "14px")
+            .style("font-weight", "normal")
     });
 
 });

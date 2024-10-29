@@ -74,6 +74,7 @@ function innerJoin(array1, array2, key) {
     record.deathYear = deathYear;
     record.ageAtPortrait = { ageInt: age, ageGroup: ageGroup };
     record.isSelfPortrait = (record.isSelfPortrait) ? 'Yes' : 'No';
+    record.categories = record.categories.map(category => category.replace(" and ", " & "));
 
   });
   
