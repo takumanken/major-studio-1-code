@@ -68,7 +68,7 @@ d3.json('../data/data.json').then(data => {
     basicInfoDiv.append("div")
         .attr("class", "basicInfoItem")
         .attr("id", "artist")
-        .html("<span class='categoryName'>ARTIST</span>" + portraitData.artistName)
+        .html("<span class='categoryName'>ARTIST</span>" + (portraitData.artistName || "Unknown Artist"));
 
     // AI Summary Div
     const aiSummaryDiv = infoSection.append("div")
