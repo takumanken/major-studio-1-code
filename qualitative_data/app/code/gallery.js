@@ -2,8 +2,7 @@
 // Data Loading
 // ---------------------------------------------------------
 async function getAllGalleryData() {
-    const response = await fetch('../data/data.json');
-    const data = await response.json();
+    const data = await d3.json('../data/data.json');
     const orderedData = data.sort((a, b) => a.name.localeCompare(b.name));
     return orderedData;
 }
