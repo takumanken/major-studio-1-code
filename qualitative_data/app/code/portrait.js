@@ -56,13 +56,13 @@ d3.json('../data/data.json').then(data => {
     basicInfoDiv.append("div")
         .attr("class", "basicInfoItem")
         .attr("id", "age")
-        .html("<span class='categoryName'>AGE</span>" + portraitData.ageAtPortrait.ageInt);
+        .html("<span class='categoryName'>AGE</span>" + (portraitData.ageAtPortrait.ageInt || "Unknown"));
 
     // Portrait Year
     basicInfoDiv.append("div")
         .attr("class", "basicInfoItem")
         .attr("id", "portraitYear")
-        .html("<span class='categoryName'>YEAR</span>" + portraitData.portraitYear.yearInt)
+        .html("<span class='categoryName'>YEAR</span>" + (portraitData.portraitYear.yearInt || "Unknown"));
 
     // Artist
     basicInfoDiv.append("div")
@@ -154,10 +154,12 @@ d3.json('../data/data.json').then(data => {
 
     const portraitYearDescription = "This portrait was drawn";
 
-    portraitData.mainEvents.push({
-        year: portraitData.portraitYear.yearInt,
-        description: portraitYearDescription
-    });
+    if (portraitData.portraitYear.yearInt) {
+        portraitData.mainEvents.push({
+            year: portraitData.portraitYear.yearInt,
+            description: portraitYearDescription
+        });
+    }
 
     let sortedmainEvents = portraitData.mainEvents.sort((a, b) => a.year - b.year);
     let yearCoodinate = portraitData.mainEvents.map(d => scale(d.year));

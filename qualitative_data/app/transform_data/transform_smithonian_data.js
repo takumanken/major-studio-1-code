@@ -82,7 +82,7 @@ function extractData(data) {
   const portraitYearGroup = 
   portraitYearInt
     ? `${Math.floor(portraitYearInt / 10) * 10}s`
-    : 'Other';
+    : 'Unknown';
 
   // Extract sitter period
   const sitterPeriod = freetext?.name

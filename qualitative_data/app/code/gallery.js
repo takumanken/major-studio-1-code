@@ -53,10 +53,10 @@ async function initializeStateObject(data) {
 function createFilter(data) {
 
     const filters = [
-        { title: "GENRE", options: ['All', ...stateObject.genre] },
+        { title: "GENRE", options: ['(All)', ...stateObject.genre] },
         { title: "GENDER", options: stateObject.gender },
-        { title: "YEAR", options: ['All', ...stateObject.year] },
-        { title: "AGE", options: ['All', ...stateObject.age] },
+        { title: "YEAR", options: ['(All)', ...stateObject.year] },
+        { title: "AGE", options: ['(All)', ...stateObject.age] },
       ];
 
     // Select the container
@@ -102,10 +102,10 @@ function createFilter(data) {
             options.select("input")
                 .on("change", function() {
 
-                    const isAll = this.value === "All";
+                    const isAll = this.value === "(All)";
                     const checked = this.checked;
                     const checkboxes = dropdown.selectAll("input");
-                    const allBox = checkboxes.filter("[value='All']");
+                    const allBox = checkboxes.filter("[value='(All)']");
         
                     // Title without "All" suffix
                     const title = dropdown.select(".dropdown-btn").text();
@@ -122,7 +122,7 @@ function createFilter(data) {
         
                     // Get selected options
                     const selectedOptions = checkboxes.filter(":checked").nodes()
-                      .filter(cb => cb.value !== "All")
+                      .filter(cb => cb.value !== "(All)")
                       .map(cb => cb.value);
 
                     // Update State Object
