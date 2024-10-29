@@ -37,7 +37,7 @@ function innerJoin(array1, array2, key) {
   const transformedData = await readJsonFile(transformedDataPath);
 
   // Perform the inner join using 'id' as the key
-  const joinedData = innerJoin(geminiResponses, transformedData, 'id');
+  let joinedData = innerJoin(geminiResponses, transformedData, 'id');
 
   // Calculate the birth year, death year, age at portrait, and age group
   joinedData.forEach(record => {
@@ -77,6 +77,9 @@ function innerJoin(array1, array2, key) {
     record.categories = record.categories.map(category => category.replace(" and ", " & "));
 
   });
+
+  joinedData = joinedData.filter(record => record.ageAtPortrait.ageInt !== null);
+  joinedData = joinedData.filter(record => record.portraitYear.yearInt !== null);
   
   // Write the joined data to a new file
   fs.writeFile(outputPath, JSON.stringify(joinedData, null, 2), () => {
