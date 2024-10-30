@@ -108,13 +108,13 @@ function createFilter(data) {
         
                     // Title without "All" suffix
                     const title = dropdown.select(".dropdown-btn").text();
+                    const total = checkboxes.size() - allBox.size();
 
                     if (isAll) {
                         // Update checkboxes when "All" is selected
                         checkboxes.property("checked", checked);
                     } else if (!(['GENDER', 'SELF PORTRAIT'].includes(title))) {
                         // Update "All" checkbox when other checkboxes are selected
-                        const total = checkboxes.size() - 1;
                         const selected = checkboxes.filter(":checked").size() - (allBox.property("checked") ? 1 : 0);
                         allBox.property("checked", selected === total);
                     }
@@ -126,6 +126,14 @@ function createFilter(data) {
 
                     // Update State Object
                     stateObject[title.toLowerCase()] = selectedOptions;
+
+                    // Update Filter button state
+                    if (stateObject[title.toLowerCase()].length !== total) {
+                        dropdown.select(".dropdown-btn").classed("filtered", true);
+                    }
+                    else {
+                        dropdown.select(".dropdown-btn").classed("filtered", false);
+                    }
                     
                     // Update data
                     updateData(data);

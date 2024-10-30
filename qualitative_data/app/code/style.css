@@ -112,8 +112,13 @@ h1 {
     background-color: transparent;
     cursor: pointer;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     letter-spacing: 0.5px;
+}
+
+.dropdown-btn.filtered {
+    background-color: #009CDD;
+    border: 1px solid #009CDD;
 }
 
 .dropdown-content {
