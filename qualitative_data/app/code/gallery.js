@@ -181,14 +181,16 @@ function drawGallery(data) {
                 .style("visibility", "visible")
                 .style("opacity", "1");
             d3.select(this).select("img")
-                .style("filter", "brightness(0.5)");
+                .style("filter", "brightness(0.5)")
+                .style("transform", "scale(1.03)");
         })
         .on("mouseout", function() {
             d3.select(this).select("p")
                 .style("visibility", "hidden")
                 .style("opacity", "0");
             d3.select(this).select("img")
-                .style("filter", "none");
+                .style("filter", "none")
+                .style("transform", "none");
         });
 
     portraits.append("img")
