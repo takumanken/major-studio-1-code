@@ -152,31 +152,37 @@ d3.json('../data/data.json').then(data => {
         .domain([minYear, maxYear])
         .range([timeLineStartY, timeLineEndY]);
 
+    // Sort the events (death year events should be at the end)
+    let deathYearEvents = portraitData.mainEvents.filter(d => d.year === portraitData.deathYear);
+    let otherYearEvents = portraitData.mainEvents.filter(d => d.year !== portraitData.deathYear);
+       
     const portraitYearDescription = "This portrait was drawn";
 
     if (portraitData.portraitYear.yearInt) {
-        portraitData.mainEvents.push({
+        otherYearEvents.push({
             year: portraitData.portraitYear.yearInt,
             description: portraitYearDescription
         });
     }
 
-    let sortedmainEvents = portraitData.mainEvents.sort((a, b) => a.year - b.year);
-    let yearCoodinate = portraitData.mainEvents.map(d => scale(d.year));
+    const sortedmainEvents = otherYearEvents.sort((a, b) => a.year - b.year);
+    sortedmainEvents.push(...deathYearEvents);
+
+    let yearCoodinate = sortedmainEvents.map(d => scale(d.year));
 
     // Calculate Coordinates makes years look good
     let thresholdMinimumGap = 20;
 
     function calculateMinGap(array) {
-    let minGap = Infinity;
-    let minIndex = -1;
-    for (let i = 1; i < array.length; i++) {
-        let gap = array[i] - array[i - 1];
-        if (gap < minGap) {
-        minGap = gap;
-        minIndex = i;
+        let minGap = Infinity;
+        let minIndex = -1;
+        for (let i = 1; i < array.length; i++) {
+            let gap = array[i] - array[i - 1];
+            if (gap < minGap) {
+            minGap = gap;
+            minIndex = i;
+            }
         }
-    }
     return { minGap, minIndex };
     }
 
@@ -201,10 +207,8 @@ d3.json('../data/data.json').then(data => {
     }
 
     sortedmainEvents.forEach((d, i) => {
-
         d.dotY = yearCoodinate[i];
         d.descY = adjustedYearCoodinate[i];
-
     });
 
     // Draw the timeline

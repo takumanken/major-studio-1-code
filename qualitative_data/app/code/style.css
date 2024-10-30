@@ -289,7 +289,7 @@ Info Section
 }
 
 #ai-summary-contents h4 {
-    font-size: 16px;
+    font-size: 17px;
     margin: 20px 20px 0 20px;
     padding: 0;
     font-weight: 500;
@@ -299,6 +299,6 @@ Info Section
     font-size: 16px;
     margin: 5px 20px 10px 20px;
     padding: 0;
-    font-weight: 400;
+    font-weight: 250;
     line-height: 1.2;
 }
