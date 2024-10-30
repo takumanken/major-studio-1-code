@@ -26,7 +26,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    padding: 30px 80px 3px 80px;
+    padding: 30px 80px 10px 80px;
 }
 
 header h1 {
@@ -46,13 +46,17 @@ header #filter-container {
 }
 
 header #count-container {
-    padding: 4px 10px 8px 0;
+    padding: 0;
     text-align: left;
     width: 150px;
 }
 
-/* Footer */
+header #count-container p{
+    padding: 0;
+    margin: 0;
+}
 
+/* Footer */
 footer {
     position: fixed;
     bottom: 0;
@@ -103,17 +107,19 @@ h1 {
 .dropdown {
     position: relative;
     display: inline-block;
-    padding: 10px 5px;
+    padding: 0;
 }
 
 .dropdown-btn {
     padding: 2px 20px;
+    margin: 0 5px;
     border: 1px solid #838383;
     background-color: transparent;
     cursor: pointer;
     border-radius: 5px;
     font-size: 14px;
     letter-spacing: 0.5px;
+
 }
 
 .dropdown-btn.filtered {
