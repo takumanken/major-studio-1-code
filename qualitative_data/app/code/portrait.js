@@ -119,7 +119,11 @@ d3.json('../data/data.json').then(data => {
 
     const infoSectionDivBottomY = d3.select('#info-section').node().getBoundingClientRect().height;
     const LifeEventHeaderBottomY = d3.select('#ai-summary-contents > h4:nth-child(5)').node().getBoundingClientRect().bottom;
-    const LifeEventsSVGHeight = infoSectionDivBottomY - LifeEventHeaderBottomY + 20;
+    let LifeEventsSVGHeight = infoSectionDivBottomY - LifeEventHeaderBottomY + 20;
+    if (LifeEventsSVGHeight < 100) {LifeEventsSVGHeight = 100;} // Minimum height
+    if (LifeEventsSVGHeight > 600) {LifeEventsSVGHeight = 400;} // Maximum height
+
+
     console.log(LifeEventsSVGHeight);
     const LifeEventsSVGWidth = 625;
 
@@ -247,5 +251,32 @@ d3.json('../data/data.json').then(data => {
             .style("font-size", "14px")
             .style("font-weight", "normal");
     });
+
+    // Hide header and footer when scrolling
+    function hideHeaderFooterWhenScrolling() {
+
+        // Add scroll event to toggle header and footer    
+        let isScrolling;
+        const header = d3.select("#header");
+        const footer = d3.select("#footer");
+
+        d3.select(window).on("scroll", () => {
+            // Clear the previous timeout
+            clearTimeout(isScrolling);
+
+            // Hide header and footer while scrolling
+            header.classed("hidden", true);
+            footer.classed("hidden", true);
+
+            // Show header and footer again after scrolling stops
+            isScrolling = setTimeout(() => {
+                header.classed("hidden", false);
+                footer.classed("hidden", false);
+            }, 500);
+        });
+
+    }
+
+    hideHeaderFooterWhenScrolling();
 
 });
