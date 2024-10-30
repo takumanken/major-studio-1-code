@@ -46,7 +46,7 @@ header #filter-container {
 }
 
 header #count-container {
-    padding: 0;
+    padding: 7px 0 0 0;
     text-align: left;
     width: 150px;
 }

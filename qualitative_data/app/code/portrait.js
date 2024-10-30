@@ -126,10 +126,7 @@ d3.json('../data/data.json').then(data => {
     if (LifeEventsSVGHeight < 100) {LifeEventsSVGHeight = 100;} // Minimum height
     if (LifeEventsSVGHeight > 600) {LifeEventsSVGHeight = 400;} // Maximum height
 
-
-    console.log(LifeEventsSVGHeight);
     const LifeEventsSVGWidth = 625;
-
     const timelineSVG = aiSummaryContentsDiv.append("svg")
         .attr("id", "timelineSVG")
         .attr("width", LifeEventsSVGWidth)
