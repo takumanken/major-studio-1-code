@@ -56,14 +56,18 @@ header #count-container {
 footer {
     position: sticky;
     bottom: 0;
-    height: 40px;
-    padding: 10px;
-    text-align: center;
-    background-color: #0E1821;
+    height: 10px;
+    padding: 5px 0 15px 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 footer p {
-    font-size: 14px;
+    font-size: 12px;
+    padding-top: 11px;
+    opacity: 0.3;
 }
 
 /* Body */
@@ -105,7 +109,6 @@ h1 {
     border: 1px solid #2f2f2f;
     opacity: 0.9;
     position: absolute;
-    color: #F3F1E5;
     padding: 15px;
     width: fit-content;
     white-space: nowrap;
@@ -163,7 +166,7 @@ h1 {
     display: flex;
     flex-direction: row;
     padding: 0;
-    height: 87vh;
+    height: 90vh;
 }
 
 /* Portrait Image */
@@ -195,7 +198,7 @@ Info Section
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: normal;
 }
 
 /* Name */
@@ -259,9 +262,12 @@ Info Section
 /* AI Summary */
 #aiSummary {
     flex: 8;
+    display: flex;
+    flex-direction: column;
 }
 
 #aiSummaryTitle {
+    flex-basis: 25px;
     display: flex;
     flex-direction: row;
     margin-bottom: 5px;
@@ -282,13 +288,13 @@ Info Section
     background-color: #002554;
     margin-top: 0;
     padding: 0;
-    height: 550px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
 }
 
 #ai-summary-contents h4 {
+    height: 25px;
     font-size: 17px;
     margin: 20px 20px 0 20px;
     padding: 0;
@@ -296,9 +302,15 @@ Info Section
 }
 
 #ai-summary-contents p {
+    flex: 50px;
     font-size: 16px;
     margin: 5px 20px 10px 20px;
     padding: 0;
     font-weight: 250;
     line-height: 1.2;
+}
+
+#ai-summary-contents svg {
+    flex-grow: 1;
+    margin: 0 40px 0px 0px;
 }

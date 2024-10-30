@@ -117,24 +117,23 @@ d3.json('../data/data.json').then(data => {
     aiSummaryContentsDiv.append("h4")
         .text("LIFE EVENTS");
 
-    const element = document.querySelector('#ai-summary-contents > h4:nth-child(5)');
-    const rect = element.getBoundingClientRect();
-    const y = rect.top + window.scrollY; // Add window.scrollY to account for any scrolling
-
-    const svgWidth = 625;
-    const svgHeight = 225 + (590 - y);
+    const infoSectionDivBottomY = d3.select('#info-section').node().getBoundingClientRect().height;
+    const LifeEventHeaderBottomY = d3.select('#ai-summary-contents > h4:nth-child(5)').node().getBoundingClientRect().bottom;
+    const LifeEventsSVGHeight = infoSectionDivBottomY - LifeEventHeaderBottomY + 20;
+    console.log(LifeEventsSVGHeight);
+    const LifeEventsSVGWidth = 625;
 
     const timelineSVG = aiSummaryContentsDiv.append("svg")
         .attr("id", "timelineSVG")
-        .attr("width", svgWidth)
-        .attr("height", svgHeight)
+        .attr("width", LifeEventsSVGWidth)
+        .attr("height", LifeEventsSVGHeight)
         .style("padding-top", "10px")
         .style("padding-bottom", "10px")
         .style("padding-left", "20px");
 
     const timeLineX = 40;
     const timeLineStartY = 10;
-    const timeLineEndY = svgHeight - 10;
+    const timeLineEndY = LifeEventsSVGHeight - 10;
     const descriptionX = 110;
 
     timelineSVG.append("line")
@@ -246,7 +245,7 @@ d3.json('../data/data.json').then(data => {
             .attr("y", d.descY + 5)
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .style("font-size", "14px")
-            .style("font-weight", "normal")
+            .style("font-weight", "normal");
     });
 
 });
