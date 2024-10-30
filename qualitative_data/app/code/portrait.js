@@ -20,10 +20,13 @@ d3.json('../data/data.json').then(data => {
         .attr("id", "portrait-section");
 
     // Portrait image
-    portraitSection.append("img")
+    const portraitLink = portraitSection.append("a")
+        .attr("href", portraitData.detailLink)
         .attr("id", "portrait-image")
+        .attr("target", "_blank");
+
+    portraitLink.append("img")
         .attr("src", portraitData.imageLink)
-        .attr("alt", portraitData.name + " Portrait");
 
     // Info Section Div
     const infoSection = container.append("div")
