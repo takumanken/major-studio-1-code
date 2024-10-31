@@ -196,13 +196,16 @@ h1 {
 #portrait-section {
     flex: 1;
     margin: 20px 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #portrait-section img {
-    min-width: 300px;
+    min-width: 600px;
     max-width: 100%;
-    min-height: 500px;
-    max-height: 100%;
+    min-height: 600px;
+    max-height: 85vh;
     object-fit: contain;
     margin: auto auto;
     border-radius: 5px;

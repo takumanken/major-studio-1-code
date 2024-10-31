@@ -146,7 +146,7 @@ d3.json('../data/data.json').then(data => {
         .attr("x2", timeLineX)
         .attr("y2", timeLineEndY)
         .attr("stroke", "white")
-        .attr("stroke-width", "2");
+        .attr("stroke-width", "1");
 
     const minYear = d3.min(portraitData.mainEvents, d => d.year);
     const maxYear = d3.max(portraitData.mainEvents, d => d.year);
@@ -194,19 +194,19 @@ d3.json('../data/data.json').then(data => {
 
     // While thresholdMinimumGap is greater than minGap, adjust the values in the array
     while (thresholdMinimumGap > minGap) {
-    let prevIndex = minIndex - 1;
-    let followingIndex = minIndex;
+        let prevIndex = minIndex - 1;
+        let followingIndex = minIndex;
 
-    if (adjustedYearCoodinate[prevIndex] === timeLineStartY) {
-        adjustedYearCoodinate[followingIndex] += 2;
-    } else if (adjustedYearCoodinate[followingIndex] === timeLineEndY) {
-        adjustedYearCoodinate[prevIndex] -= 2;
-    } else {
-        adjustedYearCoodinate[followingIndex] += 1;
-        adjustedYearCoodinate[prevIndex] -= 1;
-    }
+        if (adjustedYearCoodinate[prevIndex] === timeLineStartY) {
+            adjustedYearCoodinate[followingIndex] += 2;
+        } else if (adjustedYearCoodinate[followingIndex] === timeLineEndY) {
+            adjustedYearCoodinate[prevIndex] -= 2;
+        } else {
+            adjustedYearCoodinate[followingIndex] += 1;
+            adjustedYearCoodinate[prevIndex] -= 1;
+        }
 
-    ({ minGap, minIndex } = calculateMinGap(adjustedYearCoodinate));
+        ({ minGap, minIndex } = calculateMinGap(adjustedYearCoodinate));
     }
 
     sortedmainEvents.forEach((d, i) => {
@@ -220,7 +220,7 @@ d3.json('../data/data.json').then(data => {
         timelineSVG.append("circle")
             .attr("cx", timeLineX)
             .attr("cy", d.dotY)
-            .attr("r", 6)
+            .attr("r", 5)
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white");
 
         timelineSVG.append("line")
