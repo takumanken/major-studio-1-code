@@ -133,12 +133,12 @@ d3.json('../data/data.json').then(data => {
         .attr("height", LifeEventsSVGHeight)
         .style("padding-top", "10px")
         .style("padding-bottom", "10px")
-        .style("padding-left", "20px");
+        .style("padding-left", "30px");
 
     const timeLineX = 40;
     const timeLineStartY = 10;
     const timeLineEndY = LifeEventsSVGHeight - 10;
-    const descriptionX = 110;
+    const descriptionX = 120;
 
     timelineSVG.append("line")
         .attr("x1", timeLineX)
@@ -146,7 +146,7 @@ d3.json('../data/data.json').then(data => {
         .attr("x2", timeLineX)
         .attr("y2", timeLineEndY)
         .attr("stroke", "white")
-        .attr("stroke-width", "1");
+        .attr("stroke-width", "2");
 
     const minYear = d3.min(portraitData.mainEvents, d => d.year);
     const maxYear = d3.max(portraitData.mainEvents, d => d.year);
@@ -220,19 +220,19 @@ d3.json('../data/data.json').then(data => {
         timelineSVG.append("circle")
             .attr("cx", timeLineX)
             .attr("cy", d.dotY)
-            .attr("r", 5)
+            .attr("r", 6)
             .attr("fill", d.description == portraitYearDescription ? "#FFCD00" : "white");
 
         timelineSVG.append("line")
             .attr("x1", timeLineX)
             .attr("y1", d.dotY)
-            .attr("x2", timeLineX + 30)
+            .attr("x2", timeLineX + 35)
             .attr("y2", d.descY)
             .attr("stroke", d.description == portraitYearDescription ? "#FFCD00" : "white")
             .attr("stroke-width", "1");
 
         timelineSVG.append("line")
-            .attr("x1", timeLineX + 30)
+            .attr("x1", timeLineX + 35)
             .attr("y1", d.descY)
             .attr("x2", descriptionX - 10)
             .attr("y2", d.descY)
