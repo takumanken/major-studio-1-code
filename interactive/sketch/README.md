@@ -39,7 +39,7 @@ Implement a sorting control on the gallery page to improve the user experience w
 Display the number of results or "hits" that match the current filter criteria, allowing users to see how many portraits will be shown before they apply a filter.
 ![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/portrait_3.png)
 
-#### 4. All: Responsive Design
+#### 4. Responsive Design
 Implement a fully responsive design to ensure an optimal viewing experience across all devices, with particular attention to smartphone users. This will enhance accessibility and usability, allowing seamless interaction with the website on different screen sizes.
 
 ## 3. Animal Explorer
