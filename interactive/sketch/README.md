@@ -18,7 +18,7 @@ Add contour lines to represent elevation across Antarctica, providing users with
 ![1](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/meteorite.png)
 
 ### Considerations
-- Data Availability: Displaying Antarctica’s elevation contours may require advanced geoprocessing tools, such as QGIS, to prepare the data accurately for integration.
+- Data Availability and Geo Processing: Data availability for Antarctica’s elevation contours can be challengining and displaying it may require advanced geoprocessing.
 - Interactive Filter Implementation: Implementing the filter to align precisely with the design may require advanced coding techniques.
 
 ## 2. Uncover the Moment - Interactivity Enhancement
