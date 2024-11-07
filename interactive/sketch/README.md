@@ -47,8 +47,8 @@ Implement a fully responsive design to ensure an optimal viewing experience acro
 ### Overview
 This project will create a data visualization showcasing several animal classifications, including size, lifespan, sleep habits, and conservation status. Animal photos will be sourced from [Smithsonian's National Zoo & Conservation Biology Institute](https://www.si.edu/search/collection-images?edan_q=&edan_fq%5B0%5D=data_source%3A%22Smithsonian%27s%20National%20Zoo%20%26%20Conservation%20Biology%20Institute%22&edan_fq%5B1%5D=media_usage%3A%22CC0%22) and animal metadata (used for the classifications) will be gathered by scraping [animal descriptions from Smithsonian's National Zoo.](https://nationalzoo.si.edu/animals/abyssinian-ground-hornbill). 
 
-![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/animal_explorer_1.png)
-![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/animal_explorer_2.png)
+![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/animal_explorer_1.jpeg)
+![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/animal_explorer_2.jpeg)
 
 ### Visualization Idea
 - The data will be displayed in a dot plot format, where each dot represents an animal species, with a representative photo centered within each dot.
