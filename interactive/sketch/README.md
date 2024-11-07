@@ -1,6 +1,6 @@
 # Interactive Data Visualization Sketches
 
-## Meteorites in Antarctica - Interactivity Enhancement
+## 1. Meteorites in Antarctica - Interactivity Enhancement
 
 This project aims to enhance the previous [Meteorites in Antarctica](https://takumanken.github.io/major-studio-1-code/quantitave_data/code/app/) visualization by adding three new interactive features:
 
@@ -18,31 +18,31 @@ Add contour lines to represent elevation across Antarctica, providing users with
 ![1](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/meteorite.png)
 
 ### Considerations
-Data Availability: Displaying Antarctica’s elevation contours may require advanced geoprocessing tools, such as QGIS, to prepare the data accurately for integration.
-Interactive Filter Implementation: Implementing the filter to align precisely with the design may require advanced coding techniques.
+- Data Availability: Displaying Antarctica’s elevation contours may require advanced geoprocessing tools, such as QGIS, to prepare the data accurately for integration.
+- Interactive Filter Implementation: Implementing the filter to align precisely with the design may require advanced coding techniques.
 
-## Uncover the Moment - Interactivity Enhancement
+## 2. Uncover the Moment - Interactivity Enhancement
 
 This project aims to enhance the previous [Uncover the Moment](https://takumanken.github.io/major-studio-1-code/qualitative_data/app/code/index.html) visualization by adding new interactive features.
 
 ### Scope of Enhancement
 
-### 1. Cover Page: Adding Animation Effect to the title
+#### 1. Cover Page: Adding Animation Effect to the title
 Add animation effects to the main and subtitles on the cover page to draw users’ attention. 
 ![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/portrait_1.png)
 
-### 2. Gallery Page: Adding Sort Control and Scrolling Effect
+#### 2. Gallery Page: Adding Sort Control and Scrolling Effect
 Implement a sorting control on the gallery page to improve the user experience when searching and browsing. Also, smooth scrolling effect will be added to create a more interactive and fluid user experience.
 ![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/portrait_2.png)
 
-### 3. Gallery Page: Adding number of hits of filter
+#### 3. Gallery Page: Adding number of hits of filter
 Display the number of results or "hits" that match the current filter criteria, allowing users to see how many portraits will be shown before they apply a filter.
 ![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/portrait_3.png)
 
-### 4. All: Responsive Design
+#### 4. All: Responsive Design
 Implement a fully responsive design to ensure an optimal viewing experience across all devices, with particular attention to smartphone users. This will enhance accessibility and usability, allowing seamless interaction with the website on different screen sizes.
 
-## Animal Explorer
+## 3. Animal Explorer
 
 ### Overview
 This project will create a data visualization showcasing several animal classifications, including size, lifespan, sleep habits, and conservation status. Animal photos will be sourced from [Smithsonian's National Zoo & Conservation Biology Institute](https://www.si.edu/search/collection-images?edan_q=&edan_fq%5B0%5D=data_source%3A%22Smithsonian%27s%20National%20Zoo%20%26%20Conservation%20Biology%20Institute%22&edan_fq%5B1%5D=media_usage%3A%22CC0%22) and animal metadata (used for the classifications) will be gathered by scraping [animal descriptions from Smithsonian's National Zoo.](https://nationalzoo.si.edu/animals/abyssinian-ground-hornbill). 
