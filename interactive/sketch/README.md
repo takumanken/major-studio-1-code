@@ -39,6 +39,30 @@ Implement a sorting control on the gallery page to improve the user experience w
 Display the number of results or "hits" that match the current filter criteria, allowing users to see how many portraits will be shown before they apply a filter.
 ![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/portrait_3.png)
 
-### 4. Description Page: Adding Chat-bot feature (Optional)
-Introduce an chatbot feature on the description page, enabling users to ask questions and gain deeper insights about the content. Careful controls will be implemented to minimize AI-generated misinformation ("hallucinations"), ensuring responses remain relevant and within information avaialable from specified source.
-![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/portrait_4.png)
+### 4. All: Responsive Design
+Implement a fully responsive design to ensure an optimal viewing experience across all devices, with particular attention to smartphone users. This will enhance accessibility and usability, allowing seamless interaction with the website on different screen sizes.
+
+## Animal Explorer
+
+### Overview
+This project will create a data visualization showcasing several animal classifications, including size, lifespan, sleep habits, and conservation status. Animal photos will be sourced from [Smithsonian's National Zoo & Conservation Biology Institute](https://www.si.edu/search/collection-images?edan_q=&edan_fq%5B0%5D=data_source%3A%22Smithsonian%27s%20National%20Zoo%20%26%20Conservation%20Biology%20Institute%22&edan_fq%5B1%5D=media_usage%3A%22CC0%22) and animal metadata (used for the classifications) will be gathered by scraping [animal descriptions from Smithsonian's National Zoo.](https://nationalzoo.si.edu/animals/abyssinian-ground-hornbill). 
+
+![](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/portrait_3.png)
+
+### Visualization Idea
+- The data will be displayed in a dot plot format, where each dot represents an animal species, with a representative photo centered within each dot.
+- Dots will have borders that indicate the animal type by color: Amphibians, Birds, Fish, Invertebrates, Mammals, or Reptiles.
+- Each dot will cluster around groups that correspond to the selected classification criteria (e.g., size, lifespan).
+- Each dot will be gathered around corresponding group based on the selected criteria.
+
+### Interactivity & Animation
+- Filter by Animal Type: Users can filter animals by their type (e.g., only view mammals or birds).
+- Criteria Selection: Users can change the classification criteria to view animals grouped by different attributes, such as size or lifespan.
+- Dynamic Animation: Dots will animate as criteria or filter selections change.
+
+### Data Points
+The visualization will include approximately 318 animal species based on available descriptions from the Smithsonian's National Zoo.
+
+### Considerations/Challenges
+- Metadata Formatting: The metadata on the Smithsonian description pages is unstandardized. An efficient method for categorizing and classifying this data will be necessary.
+- Naming Consistency: Inconsistencies exist in naming conventions for animal species across sources. Efficient methods for identifying and matching species data between the photo collection and zoo descriptions are needed to ensure accurate data integration.
