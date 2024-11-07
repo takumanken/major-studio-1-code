@@ -13,7 +13,7 @@ Add filtering capabilities to the histograms on the left (Weight and Collected Y
 Introduce a zoom-in functionality on the map to enable users to closely examine specific areas, facilitating a more detailed exploration of meteorite distribution.
 
 #### 3. Antarctica Landmass Contour
-Add contour lines to represent elevation across Antarctica, providing users with additional geographic context to better understand meteorite collection locations.
+Add elevation contours to represent elevation across Antarctica, providing users with additional geographic context to better understand meteorite collection locations.
 
 ![1](https://github.com/takumanken/major-studio-1-code/blob/main/interactive/sketch/image/meteorite.png)
 
