@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Scrolling</title>
+  <style>
+    body, html {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .content-container {
+      text-align: center;
+      font-size: 2em;
+      max-width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-container" id="content">
+    Start Scrolling to Change Content
+  </div>
+
+  <script>
+    const contentContainer = document.getElementById('content');
+    const messages = [
+      "Welcome to our website!",
+      "Scroll down to see more.",
+      "Here’s some more content.",
+      "Keep scrolling for surprises!",
+      "You’ve reached the end!"
+    ];
+
+    let index = 0;
+
+    window.addEventListener('wheel', (event) => {
+      if (event.deltaY > 0) {
+        // Scroll down
+        index = (index + 1) % messages.length;
+      } else {
+        // Scroll up
+        index = (index - 1 + messages.length) % messages.length;
+      }
+
+      contentContainer.textContent = messages[index];
+    });
+  </script>
+</body>
+</html>

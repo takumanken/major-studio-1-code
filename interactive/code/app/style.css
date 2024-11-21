@@ -1,0 +1,19 @@
+/* Title */
+
+#title-div h1 {
+ font-size: 42px;   
+}
+
+#title-div h2 {
+    font-size: 24px;
+}
+
+/* SI Stats */
+.si_stats_metrics_name {
+    font-size: 24px;
+}
+
+.si_stats_metrics_number {
+    font-size: 80px;
+    margin: 0 0;
+}
