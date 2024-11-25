@@ -1,313 +1,673 @@
-const body = d3.select("body").style("margin", "0");
+// ------------------------------
+// Constants
+// ------------------------------
+
+const body = d3.select("body").style("margin", "0").style("font-family", "Inria Sans");
+
+// Color
+const baseColor = "#36B5C8";
+
+// Map Projection
+const projection = d3.geoStereographic().center([0, -90]).scale(675);
+const path = d3.geoPath().projection(projection);
+
+// ------------------------------
+// Data Load functions
+// ------------------------------
+
+// Load Data
+async function loadAntarcticaGeoJSON() {
+  return d3.json("./data/antarctica_wgs84.geojson");
+}
+
+async function loadAttributedLocationData() {
+  return await d3.json("./data/attributed_locations.json");
+}
+
+async function loadAntarcticaMeteoritesData() {
+  return await d3.json("./data/antarctica_meteorites.json");
+}
+
+async function loadElevationData() {
+  return await d3.json("./data/antarctica_elevation.geojson");
+}
+
+async function getBiaMapData() {
+  return await d3.json("./data/bia_wgs84.geojson");
+}
+
+// ------------------------------
+// Structuring Functions
+// ------------------------------
+
+function addSection(sectionId) {
+  const marginTop = "100px";
+  const marginBottom = "100px";
+  const sectionWidth = "55vw";
+
+  const mainDiv = body
+    .append("div")
+    .attr("id", sectionId)
+    .attr("class", "step")
+    .style("width", "100%")
+    .style("height", "100vh")
+    .style("background-color", "white")
+    .style("display", "flex")
+    .style("place-items", "center")
+    .style("flex-direction", "column");
+
+  const TextDiv = mainDiv
+    .append("div")
+    .attr("id", `${sectionId}_text_div`)
+    .style("height", "100px")
+    .style("margin-top", marginTop)
+    .style("width", sectionWidth)
+    .style("display", "flex")
+    .style("flex-direction", "row");
+
+  const blueBoxDiv = TextDiv.append("div")
+    .attr("id", `${sectionId}_blue_box_div`)
+    .style("background-color", baseColor)
+    .style("border-radius", "5px")
+    .style("flex-grow", "0")
+    .style("flex-shrink", "0")
+    .style("flex-basis", "10px");
+
+  const DescriptionDiv = TextDiv.append("div")
+    .attr("id", `${sectionId}_description_div`)
+    .style("flex-grow", "1")
+    .style("font-size", "1.5rem")
+    .style("padding-left", "15px")
+    .style("padding-top", "5px")
+    .style("font-weight", "400");
+
+  const imageDiv = mainDiv
+    .append("div")
+    .attr("id", `${sectionId}_image_div`)
+    .style("width", sectionWidth)
+    .style("display", "flex")
+    .style("flex-grow", "1")
+    .style("margin-top", marginTop)
+    .style("margin-bottom", marginBottom);
+
+  return [DescriptionDiv, imageDiv];
+}
+
+function drawAntarcticaMap(div, antarcticaGeoJSON) {
+  const svgWidth = 600;
+  const svgHeight = 550;
+
+  const antarcticaMapSVG = div
+    .append("svg")
+    .attr("id", "map")
+    .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
+    .style("flex", "1")
+    .style("height", svgHeight)
+    .style("width", svgWidth);
+
+  // Background
+  antarcticaMapSVG
+    .append("g")
+    .attr("id", "backgroundMap")
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("rx", 10)
+    .attr("height", svgHeight)
+    .attr("width", svgWidth)
+    .attr("fill", baseColor);
+
+  // SVG Group for Map
+  const svgMap = antarcticaMapSVG.append("g").attr("class", `antarcticaMap`).attr("transform", "translate(-215, 0)");
+
+  svgMap
+    .selectAll("path.land")
+    .data(antarcticaGeoJSON.features)
+    .enter()
+    .append("path")
+    .attr("fill", "gray")
+    .attr("class", "land")
+    .attr("d", path)
+    .attr("fill", "white");
+
+  return antarcticaMapSVG;
+}
+
+function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
+  // Hexbin Setup
+  const hexbin = d3
+    .hexbin()
+    .radius(3)
+    .x((d) => d.x)
+    .y((d) => d.y);
+
+  antarcticaMeteoritesData.forEach((record) => {
+    const [x, y] = projection([record.longitude, record.latitude]);
+    record.x = x;
+    record.y = y;
+    record.value = 1;
+  });
+
+  // Generate hexbin data
+  const bins = hexbin(antarcticaMeteoritesData);
+
+  // Draw Hexbin Heatmap
+  svg
+    .append("g")
+    .attr("class", "hexmap")
+    .selectAll("path")
+    .data(bins)
+    .enter()
+    .append("path")
+    .attr("d", (d) => hexbin.hexagon())
+    .attr("transform", (d) => `translate(${d.x - 215}, ${d.y})`)
+    .attr("fill", (d) => {
+      if (d.length > 1000) {
+        return "#E6955E";
+      } else if (d.length > 500) {
+        return "#ECF06A";
+      } else if (d.length > 0) {
+        return "#9DC165";
+      }
+    })
+    .attr("stroke", "gray")
+    .attr("stroke-width", 0.5);
+}
+
+function drawElevationMap(AntarcticaMapSVG, elevationData) {
+  AntarcticaMapSVG.append("g")
+    .attr("id", "antarctica_elevation")
+    .selectAll("path.land")
+    .data(elevationData.features)
+    .enter()
+    .append("path")
+    .attr("class", "land")
+    .attr("d", path)
+    .style("fill", (d) => {
+      const elevation = d.properties.elevation;
+      if (elevation === 0) {
+        return "#FFFFFF";
+      } else if (elevation === 1000) {
+        return "#EDEDED";
+      } else if (elevation === 2000) {
+        return "#D8D8D8";
+      } else if (elevation === 3000) {
+        return "#C6C6C6";
+      } else if (elevation >= 3500) {
+        return "#BABABA";
+      }
+    })
+    .attr("transform", "translate(-215, 0)");
+}
 
 // ------------------------------
 // Title Section
 // ------------------------------
 
-const titleDiv = body
-  .append("div")
-  .attr("id", "title_div")
-  .attr("class", "step")
-  .style("display", "flex")
-  .style("background-color", "#aacfe4ff")
-  .style("height", "100vh")
-  .style("display", "flex")
-  .style("flex-direction", "column")
-  .style("justify-content", "center")
-  .style("align-items", "center");
+function drawTitleSection() {
+  const titleDiv = body
+    .append("div")
+    .attr("id", "title_div")
+    .attr("class", "step")
+    .style("display", "flex")
+    .style("background-color", baseColor)
+    .style("height", "100vh")
+    .style("display", "flex")
+    .style("padding-left", "5vw")
+    .style("align-items", "center");
 
-titleDiv.append("h1").text("Smithsonian’s Meteorite & Blue Ice in Antarctica");
-titleDiv.append("h2").text("Get to know their intimate bond… and CRISIS");
-
-// ------------------------------
-// Smithsonoan Meteorite Stats
-// ------------------------------
-
-const siStatsDiv = body
-  .append("div")
-  .attr("class", "step")
-  .style("height", "100vh")
-  .attr("id", "si_stats_div")
-  .style("background-color", "white")
-  .style("display", "grid")
-  .style("place-items", "center");
-
-const siStatsInnerDiv = siStatsDiv
-  .append("div")
-  .attr("id", "si_stats_inner_div")
-  .style("display", "grid")
-  .style("grid-template-rows", "10vh 20vh 10vh")
-  .style("grid-template-columns", "1fr 1fr")
-  .style("width", "50vw");
-
-// Header
-const siStatsHeader = siStatsInnerDiv.append("div").attr("class", "si-stats").style("grid-column", "1 / -1");
-siStatsHeader
-  .append("span")
-  .attr("class", "si_stats_title")
-  .text("Smithsonian’s National Meteorite Collection")
-  .style("font-size", "24px");
-
-// Specimen
-const siStatsLeft = siStatsInnerDiv.append("div");
-siStatsLeft.append("p").attr("class", "si_stats_metrics_name").text("Specimen");
-siStatsLeft.append("p").attr("class", "si_stats_metrics_number").text("55,000+");
-
-// Distinct Meteorite
-const siStatsRight = siStatsInnerDiv.append("div");
-siStatsRight.append("p").attr("class", "si_stats_metrics_name").text("Distinct Meteorite");
-siStatsRight.append("p").attr("class", "si_stats_metrics_number").text("20,000+");
-
-// Source
-const siStatsFooter = siStatsInnerDiv.append("div").attr("class", "si-stats-footer").style("grid-column", "1 / -1");
-siStatsFooter
-  .append("span")
-  .text("Source: ")
-  .append("a")
-  .attr(
-    "href",
-    "https://naturalhistory.si.edu/education/teaching-resources/earth-science/meteorites-messengers-outer-space"
-  )
-  .text("naturalhistory.si.edu");
-
-// ------------------------------
-// Attributed Locations
-// ------------------------------
-
-const attrLocationDiv = body
-  .append("div")
-  .attr("class", "step")
-  .style("height", "100vh")
-  .attr("id", "attr_location_div")
-  .style("background-color", "white")
-  .style("display", "grid")
-  .style("place-items", "center");
-
-const attrLocationDivInnerDiv = attrLocationDiv
-  .append("div")
-  .attr("id", "attr_location_inner_div")
-  .style("display", "grid")
-  .style("grid-template-rows", "10vh 50vh")
-  .style("grid-template-columns", "40vw 30vw");
-
-// Title
-const attrLocationTitleDiv = attrLocationDivInnerDiv.append("div").style("grid-column", "1 / -1");
-attrLocationTitleDiv.append("span").text("Attributed Locations");
-
-// Chart
-async function getattributedLocationData() {
-  const data = await d3.json("./data/attributed_locations.json");
-  return data;
+  titleDiv
+    .append("h1")
+    .text("Why are meteorites always found in Antarctica?")
+    .style("font-size", "72px")
+    .style("color", "white")
+    .style("font-weight", "700")
+    .style("width", "1200px");
 }
 
-const attrLocationChartDiv = attrLocationDivInnerDiv.append("div");
-const attrLocationChartSVG = attrLocationChartDiv.append("svg").style("width", "100%").style("height", "100%");
+// ------------------------------
+// Sec1. Smithsonian Collection Stats
+// ------------------------------
 
-const XofattrLocationChartMargin = { left: 100, right: 50 };
-const attrLocationChartWidth = 460;
-const attrLocationChartHeight = 400;
+function drawSiStats() {
+  const siStatsSectionId = "si_stats";
+  const [siStatsDescDiv, siStatsImageDiv] = addSection(siStatsSectionId);
 
-getattributedLocationData().then((data) => {
+  // Description
+  siStatsDescDiv
+    .append("p")
+    .html(
+      "<b>The Smithsonian Institution is renowned for its extensive collection of meteorites.</b><br>This collection, housed in the National Museum of Natural History, includes over 55,000 specimens representing more than 20,000 distinct meteorites."
+    )
+    .style("margin", 0);
+
+  siStatsImageDiv.style("display", "flex").style("flex-direction", "row").style("align-items", "center");
+
+  // Specimen
+  const siStatsLeft = siStatsImageDiv.append("div").style("flex", "1");
+  siStatsLeft
+    .append("p")
+    .attr("class", "si_stats_metrics_name")
+    .text("Specimen")
+    .style("font-size", "2rem")
+    .style("color", "#9D9D9D")
+    .style("margin", "0");
+  siStatsLeft.append("p").attr("class", "si_stats_metrics_number").text("55,000+").style("font-size", "5rem");
+
+  // Distinct Meteorite
+  const siStatsRight = siStatsImageDiv.append("div").style("flex", "1");
+  siStatsRight
+    .append("p")
+    .attr("class", "si_stats_metrics_name")
+    .text("Distinct Meteorite")
+    .style("font-size", "2rem")
+    .style("color", "#9D9D9D")
+    .style("margin", "0");
+
+  siStatsRight.append("p").attr("class", "si_stats_metrics_number").text("20,000+").style("font-size", "5rem");
+}
+
+// ------------------------------
+// Sec2. Collected Location
+// ------------------------------
+
+function drawCollectedLocation(AttributedLocationData) {
+  const LocationSectionId = "collected_location";
+  const [LocationDescDiv, LocationImageDiv] = addSection(LocationSectionId);
+
+  // Description
+  LocationDescDiv.append("p")
+    .html(
+      "<b>Where are these meteorites collected? According to the Smithsonian’s collection, 71% of the meteorites were found in Antarctica</b>—a significantly higher proportion than from any other continent."
+    )
+    .style("margin", 0);
+
+  // Chart
+  LocationImageDiv.style("flex-direction", "column");
+
+  const attrLocationChartDiv = LocationImageDiv.append("div");
+
+  attrLocationChartDiv
+    .append("p")
+    .text("Attributed Locations")
+    .style("margin", "0 0 30px 55px")
+    .style("font-weight", 100);
+
+  const attrLocationChartSVG = LocationImageDiv.append("svg").style("width", "100%").style("height", "100%");
+
+  const XofattrLocationChartMargin = { left: 200, right: 50 };
+  const attrLocationChartWidth = 750;
+  const attrLocationChartHeight = 400;
+
   // Define X axis Scale
   const attrLocationChartXScale = d3
     .scaleLinear()
-    .domain([0, d3.max(data.map((d) => d[1].length_ratio))])
+    .domain([0, d3.max(AttributedLocationData.map((d) => d[1].length_ratio))])
     .range([0, attrLocationChartWidth - XofattrLocationChartMargin.left]);
 
   // Define Y axis Scale
   const attrLocationChartYScale = d3
     .scaleBand()
     .range([0, attrLocationChartHeight])
-    .domain(data.map((d) => d[0]))
-    .padding(0.1);
+    .domain(AttributedLocationData.map((d) => d[0]))
+    .padding(0.65);
 
   // Draw Y axis
-  attrLocationChartSVG
+  const yAxis = attrLocationChartSVG
     .append("g")
-    .call(d3.axisLeft(attrLocationChartYScale))
-    .attr("transform", `translate(${XofattrLocationChartMargin.left},0)`);
+    .call(d3.axisLeft(attrLocationChartYScale).tickPadding(15).tickSize(0))
+    .attr("transform", `translate(${XofattrLocationChartMargin.left},0)`)
+    .style("font-size", "1rem")
+    .style("font-weight", 100)
+    .attr("x", -100);
+
+  // Format Y Axis
+  yAxis.select(".domain").attr("stroke", "#E8E8E8").attr("stroke-width", "2");
 
   // Draw Bar
   attrLocationChartSVG
     .selectAll("rect")
-    .data(data)
+    .data(AttributedLocationData)
     .enter()
     .append("rect")
     .attr("x", XofattrLocationChartMargin.left)
     .attr("y", (d) => attrLocationChartYScale(d[0]))
     .attr("width", (d) => attrLocationChartXScale(d[1].length_ratio))
     .attr("height", attrLocationChartYScale.bandwidth())
-    .attr("fill", (d) => (d[0] === "Antarctica" ? "#3a7dce" : "#d9d9d9"));
+    .attr("fill", (d) => (d[0] === "Antarctica" ? baseColor : "#DBDBDB"));
 
-  // Draw Label
+  // Draw Chart Label
   attrLocationChartSVG
     .selectAll(".text")
-    .data(data)
+    .data(AttributedLocationData)
     .enter()
     .append("text")
     .text((d) => Math.round(d[1].length_ratio * 100) + "%")
     .attr("x", (d) => XofattrLocationChartMargin.left + attrLocationChartXScale(d[1].length_ratio) + 15)
-    .attr("y", (d) => attrLocationChartYScale(d[0]) + 35)
-    .attr("fill", (d) => (d[0] === "Antarctica" ? "#3a7dce" : "#999999"));
-});
-
-// Text
-const attrLocationTextDiv = attrLocationDivInnerDiv.append("div");
-attrLocationTextDiv.append("span").text("71% is from Antarctica").style("font-size", "72px").style("color", "#3a7dce");
-
-// ------------------------------
-// Reason One
-// ------------------------------
-
-const antarcticaReasonOneDiv = body
-  .append("div")
-  .attr("id", "antarctica_reason_one")
-  .attr("class", "step")
-  .style("height", "100vh")
-  .style("background-color", "#3a7dceff");
-
-const antarcticaMapDiv = antarcticaReasonOneDiv
-  .append("div")
-  .style("display", "flex")
-  .style("flex-direction", "row")
-  .style("height", "90vh");
-
-const antarcticaMapSVG = drawAntarcticaMap(antarcticaMapDiv);
-
-function drawAntarcticaMap(div) {
-  const antarcticaMapSVG = div
-    .append("svg")
-    .attr("id", "map")
-    .attr("viewBox", "0 0 1000 1000")
-    .style("flex", "1")
-    .style("height", "100%")
-    .style("width", "100%");
-
-  const svgMap = antarcticaMapSVG.append("g").attr("id", "map").attr("transform", "translate(155, 350) scale(0.9)");
-
-  d3.json("./data/antarctica_wgs84.geojson").then((AntarcticaGeoJSON) => {
-    const projection = d3.geoStereographic().center([135, -82.8628]).scale(1300).precision(0.1);
-    const path = d3.geoPath().projection(projection);
-
-    svgMap
-      .selectAll("path.land")
-      .data(AntarcticaGeoJSON.features)
-      .enter()
-      .append("path")
-      .attr("fill", "white")
-      .attr("class", "land")
-      .attr("d", path);
-  });
-
-  return antarcticaMapSVG;
+    .attr("y", (d) => attrLocationChartYScale(d[0]) + 21)
+    .attr("fill", (d) => (d[0] === "Antarctica" ? baseColor : "#858585"))
+    .style("font-size", "1.5rem")
+    .style("font-weight", 200);
 }
 
-const circleCoordinates = [
-  { cx: 200, cy: 200 },
-  { cx: 270, cy: 200 },
-  { cx: 340, cy: 200 },
-  { cx: 165, cy: 270 },
-  { cx: 235, cy: 270 },
-  { cx: 305, cy: 270 },
-  { cx: 375, cy: 270 },
-  { cx: 445, cy: 270 },
-  { cx: 130, cy: 340 },
-  { cx: 200, cy: 340 },
-  { cx: 270, cy: 340 },
-  { cx: 340, cy: 340 },
-  { cx: 410, cy: 340 },
-  { cx: 480, cy: 340 },
-  { cx: -55, cy: 410 },
-  { cx: 25, cy: 410 },
-  { cx: 95, cy: 410 },
-  { cx: 165, cy: 410 },
-  { cx: 235, cy: 410 },
-  { cx: 305, cy: 410 },
-  { cx: 375, cy: 410 },
-  { cx: 445, cy: 410 },
-  { cx: 515, cy: 410 },
-  { cx: 585, cy: 410 },
-  { cx: -80, cy: 480 },
-  { cx: -10, cy: 480 },
-  { cx: 270, cy: 480 },
-  { cx: 340, cy: 480 },
-  { cx: 410, cy: 480 },
-  { cx: 480, cy: 480 },
-  { cx: 550, cy: 480 },
-  { cx: 305, cy: 550 },
-  { cx: 375, cy: 550 },
-  { cx: 445, cy: 550 },
-  { cx: 515, cy: 550 },
-  { cx: 585, cy: 550 },
-  { cx: 340, cy: 620 },
-  { cx: 410, cy: 620 },
-  { cx: 480, cy: 620 },
-  { cx: 550, cy: 620 },
-  { cx: 375, cy: 690 },
-  { cx: 445, cy: 690 },
-  { cx: 515, cy: 690 },
-];
-
-antarcticaMapSVG
-  .selectAll("circle")
-  .data(circleCoordinates)
-  .enter()
-  .append("circle")
-  .style("cx", (d) => d.cx + 300)
-  .style("cy", (d) => d.cy + 75)
-  .style("r", 6)
-  .style("fill", "#595959ff");
-
-const antarcticaReasonOneTextDiv = antarcticaMapDiv
-  .append("div")
-  .attr("id", "map")
-  .style("flex", "1")
-  .style("text-align", "center")
-  .style("margin-top", "250px");
-
-antarcticaReasonOneTextDiv.append("h1").text("Reason #1").style("color", "white");
-antarcticaReasonOneTextDiv.append("h1").text("Easier to Spot").style("color", "white").style("font-size", "72px");
-antarcticaReasonOneTextDiv
-  .append("h1")
-  .text("Meteorites")
-  .style("color", "white")
-  .style("font-size", "72px")
-  .style("margin", "0 0px");
-
 // ------------------------------
-// Reason Two
+// Section3. Antarctica's Climate
 // ------------------------------
 
-const antarcticaReasonTwoDiv = body
-  .append("div")
-  .attr("id", "antarctica_reason_two")
-  .attr("class", "step")
-  .style("height", "100vh")
-  .style("background-color", "#3a7dceff");
+function drawAntarcticaClimate(antarcticaGeoJSON) {
+  const climateSectionId = "antarctica_climate";
+  const [climateDescDiv, climateImageDiv] = addSection(climateSectionId);
 
-const antarcticaMapTwoDiv = antarcticaReasonTwoDiv
-  .append("div")
-  .style("display", "flex")
-  .style("flex-direction", "row")
-  .style("height", "90vh");
+  // Description
+  climateDescDiv
+    .append("p")
+    .html(
+      "What makes Antarctica so ideal for meteorites? One key reason is its climate. <b>The extremely cold temperatures slow weathering, while the dry conditions limit chemical alterations</b>, preserving meteorites in remarkably pristine condition for many years."
+    )
+    .style("margin", 0);
 
-const antarcticaMapSVGTwo = drawAntarcticaMap(antarcticaMapTwoDiv);
+  const climateAntarcticaMapSVG = drawAntarcticaMap(climateImageDiv, antarcticaGeoJSON);
+
+  climateAntarcticaMapSVG
+    .append("text")
+    .text("Avg. Temp.")
+    .attr("x", 290)
+    .attr("y", 240)
+    .style("fill", baseColor)
+    .style("font-size", "1.25rem")
+    .style("font-weight", 100);
+
+  climateAntarcticaMapSVG
+    .append("text")
+    .text("-71 °F")
+    .attr("x", 285)
+    .attr("y", 300)
+    .style("fill", baseColor)
+    .style("font-size", "4rem")
+    .style("font-weight", 300);
+}
 
 // ------------------------------
-// Scrollama Setup
+// Section4. Visual Contrast
 // ------------------------------
 
-const scroller = scrollama();
+function drawVisualContrast(antarcticaGeoJSON) {
+  const visContrastSectionId = "antarctica_visual_contrast";
+  const [visContrastDescDiv, visContrastImageDiv] = addSection(visContrastSectionId);
 
-scroller
-  .setup({
-    step: ".step",
-  })
-  .onStepEnter((response) => {
-    // console.log("onStepEnter");
-    // console.log(response);
-  })
-  .onStepExit((response) => {
-    // console.log("onStepExit");
-    // console.log(response);
-  });
+  // Description
+  visContrastDescDiv
+    .append("p")
+    .html(
+      "Another reason is the stark visual contrast. <b>Most meteorites are dark-colored, making them much easier to spot on the white ice sheets</b> compared to vegetated, gravel-covered, or urban areas."
+    )
+    .style("margin", 0);
+
+  const visContrastAntarcticaMapSVG = drawAntarcticaMap(visContrastImageDiv, antarcticaGeoJSON);
+
+  const meteoriteCoordinates = [
+    { x: 150, y: 250 },
+    { x: 250, y: 110 },
+    { x: 250, y: 230 },
+    { x: 350, y: 170 },
+    { x: 350, y: 290 },
+    { x: 450, y: 230 },
+    { x: 450, y: 350 },
+    { x: 400, y: 420 },
+  ];
+
+  visContrastAntarcticaMapSVG
+    .append("g")
+    .selectAll("image")
+    .data(meteoriteCoordinates)
+    .enter()
+    .append("image")
+    .attr("id", "meteorite_images")
+    .attr("xlink:href", "./data/meteorite.png")
+    .attr("width", 25)
+    .attr("x", (d) => d.x)
+    .attr("y", (d) => d.y);
+}
+
+// ------------------------------
+// Section5. Collection Spot
+// ------------------------------
+
+function drawCollectionSpot(antarcticaGeoJSON, antarcticaMeteoritesData) {
+  const CollectionSpotSectionId = "collection_spot";
+  const [collectionSpotDescDiv, collectionSpotImageDiv] = addSection(CollectionSpotSectionId);
+
+  // Description
+  collectionSpotDescDiv
+    .append("p")
+    .html(
+      "So, where in Antarctica are meteorites found? Interestingly, their distribution across the continent is highly uneven. <b>According to the Smithsonian's collection, most meteorites are discovered in the highlighted areas shown on the map.</b>"
+    )
+    .style("margin", 0);
+
+  // Draw Hexbin on Map
+  const correctionSpotAntarcticaMapSVG = drawAntarcticaMap(collectionSpotImageDiv, antarcticaGeoJSON);
+  addCollectionSpotHeatmap(correctionSpotAntarcticaMapSVG, antarcticaMeteoritesData);
+}
+
+// ------------------------------
+// Section6. Elevation
+// ------------------------------
+
+function drawElevation(antarcticaGeoJSON, antarcticaMeteoritesData, elevationData) {
+  const elevationSectionId = "elevation";
+  const [elevationDescDiv, elevationImageDiv] = addSection(elevationSectionId);
+
+  // Description
+  elevationDescDiv
+    .append("p")
+    .html(
+      "What are the characteristics of these areas? Firstly, they are low-lying regions. <b>Lower areas tend to accumulate less snow, allowing meteorites to remain on the surface.</b> This makes them easier to spot compared to higher-altitude regions with deeper snow cover."
+    )
+    .style("margin", 0);
+
+  const elevationAntarcticaMapSVG = drawAntarcticaMap(elevationImageDiv, antarcticaGeoJSON);
+  drawElevationMap(elevationAntarcticaMapSVG, elevationData);
+  addCollectionSpotHeatmap(elevationAntarcticaMapSVG, antarcticaMeteoritesData);
+}
+
+// ------------------------------
+// Section7. Snow Flow
+// ------------------------------
+
+function drawSnowFlow(antarcticaGeoJSON, antarcticaMeteoritesData, elevationData) {
+  const snowFlowSectionId = "snow_flow";
+  const [snowFlowDescDiv, snowFlowImageDiv] = addSection(snowFlowSectionId);
+
+  snowFlowDescDiv
+    .append("p")
+    .html(
+      "Another factor is the slow movement of snow flow in Antarctica. <br>Over thousands of years, <b>snow gradually flows from higher to lower elevations, carrying meteorites that originally fell in higher regions into lower areas.</b>"
+    )
+    .style("margin", 0);
+
+  const snowFlowAntarcticaMapSVG = drawAntarcticaMap(snowFlowImageDiv, antarcticaGeoJSON);
+  drawElevationMap(snowFlowAntarcticaMapSVG, elevationData);
+  addCollectionSpotHeatmap(snowFlowAntarcticaMapSVG, antarcticaMeteoritesData);
+}
+
+// ------------------------------
+// Blue Ice Area
+// ------------------------------
+
+function drawBlueIceAreas(antarcticaGeoJSON, biaMapData, antarcticaMeteoritesData, elevationData) {
+  const biaSectionId = "bia";
+  const [biaDescDiv, biaImageDiv] = addSection(biaSectionId);
+
+  biaDescDiv
+    .append("p")
+    .html(
+      "<b>The most important reason, however, is that these regions are Blue Ice Areas</b>—ideal spots for collecting meteorites due to unique and remarkable conditions."
+    )
+    .style("margin", 0);
+
+  const biaMapSVG = drawAntarcticaMap(biaImageDiv, antarcticaGeoJSON);
+  const biaGroup = biaMapSVG.append("g").attr("class", "bia-group");
+  biaGroup
+    .selectAll("path")
+    .data(biaMapData.features)
+    .enter()
+    .append("path")
+    .attr("class", "bia-path")
+    .attr("d", path)
+    .attr("fill", "#0091FF")
+    .attr("transform", "translate(-215, 0)");
+}
+
+// ------------------------------
+// Blue Ice Area Illustartiion
+// ------------------------------
+
+function drawBiaIllustartionDesc() {
+  const biaIllustrationSectionId = "bia_illustration";
+  const [biaIllustartionDescDiv, biaIllustartionImageDiv] = addSection(biaIllustrationSectionId);
+
+  biaIllustartionDescDiv
+    .append("p")
+    .html(
+      "These areas are special because shallow white ice layers are abraded, exposing deeper blue ice layers due to specific climatic and topographical factors. <b>This phenomenon makes meteorites visible on the surface, making it easier for researchers to locate them.</b>"
+    )
+    .style("margin", 0)
+    .style("font-size", "1.4rem");
+
+  biaIllustartionImageDiv.style("flex-direction", "row");
+  biaIllustrationLeftDiv = biaIllustartionImageDiv
+    .append("div")
+    .style("flex", "1")
+    .style("display", "flex")
+    .style("justify-content", "center")
+    .style("align-items", "center");
+
+  biaIllustrationLeftDiv.append("img").attr("src", "./data/bia_explain_01.png").style("width", "400px");
+
+  biaIllustrationMiddleDiv = biaIllustartionImageDiv
+    .append("div")
+    .style("flex-grow", "0")
+    .style("flex-shrink", "0")
+    .style("flex-basis", "10px")
+    .style("margin", "auto");
+
+  biaIllustrationMiddleDiv.append("p").text("→").style("font-size", "30px").style("color", "gray");
+
+  biaIllustrationRightDiv = biaIllustartionImageDiv
+    .append("div")
+    .style("flex", "1")
+    .style("display", "flex")
+    .style("justify-content", "center")
+    .style("align-items", "center");
+
+  biaIllustrationRightDiv
+    .append("img")
+    .attr("src", "./data/bia_explain_02.png")
+    .style("display", "block")
+    .style("margin", "auto")
+    .style("width", "400px");
+}
+
+// ------------------------------
+// Collected Meteorites
+// ------------------------------
+
+function drawCollectedMeteorites(antarcticaGeoJSON) {
+  const CollectedMeteoritesSectionId = "collected_meteorites";
+  const [CollectedMeteoritesDescDiv, CollectedMeteoritesImageDiv] = addSection(CollectedMeteoritesSectionId);
+
+  CollectedMeteoritesDescDiv.append("p")
+    .html(
+      "This unique phenomenon makes BIAs the most efficient locations for collecting meteorites on Earth. <b>Each year, scientists head to these areas and recover approximately 1,000 meteorites.</b> In addition, it is estimated that many more meteorites remain undiscovered."
+    )
+    .style("margin", 0)
+    .style("font-size", "1.4rem");
+
+  const AntarcticaMapSVG = drawAntarcticaMap(CollectedMeteoritesImageDiv, antarcticaGeoJSON);
+
+  AntarcticaMapSVG.append("text")
+    .text("1,000")
+    .attr("x", 290)
+    .attr("y", 270)
+    .style("fill", baseColor)
+    .style("font-size", "3.75rem")
+    .style("font-weight", 300);
+
+  AntarcticaMapSVG.append("text")
+    .text("Meteorites/Year")
+    .attr("x", 290)
+    .attr("y", 310)
+    .style("fill", baseColor)
+    .style("font-size", "1.15rem")
+    .style("font-weight", 200);
+}
+
+// ------------------------------
+// Collected Meteorites
+// ------------------------------
+
+function drawALH84001() {
+  const ALH84001SectionId = "ALH84001";
+  const [ALH84001DescDiv, ALH84001ImageDiv] = addSection(ALH84001SectionId);
+
+  ALH84001DescDiv.append("p")
+    .html(
+      "<b>Meteorites discovered in Antarctica have significantly advanced our understanding of space.</b> ALH 84001, a meteorite that suggested the possibility of ancient life on Mars, was also found in a Blue Ice Area of Antarctica."
+    )
+    .style("margin", 0);
+
+  ALH84001ImageDiv.style("display", "flex")
+    .style("flex-direction", "column")
+    .style("justify-content", "center")
+    .style("align-items", "center");
+
+  ALH84001ImageDiv.append("img").attr("src", "./data/alh84001.jpg").style("width", "600px");
+  ALH84001ImageDiv.append("p").html(
+    "image source : <a href='https://airandspace.si.edu/multimedia-gallery/web12004-2011hjpg'>airandspace.si.edu</a>"
+  );
+}
+
+// // ------------------------------
+// // Scrollama Setup
+// // ------------------------------
+
+// const scroller = scrollama();
+
+// scroller
+//   .setup({
+//     step: ".step",
+//   })
+//   .onStepEnter((response) => {
+//     // console.log("onStepEnter");
+//     // console.log(response);
+//   })
+//   .onStepExit((response) => {
+//     // console.log("onStepExit");
+//     // console.log(response);
+//   });
+
+async function main() {
+  // Load Data
+  const antarcticaGeoJSON = await loadAntarcticaGeoJSON();
+  const AttributedLocationData = await loadAttributedLocationData();
+  const antarcticaMeteoritesData = await loadAntarcticaMeteoritesData();
+  const elevationData = await loadElevationData();
+  const biaMapData = await getBiaMapData();
+
+  // Draw Functions
+  drawTitleSection();
+  drawSiStats();
+  drawCollectedLocation(AttributedLocationData);
+  drawAntarcticaClimate(antarcticaGeoJSON);
+  drawVisualContrast(antarcticaGeoJSON);
+  drawCollectionSpot(antarcticaGeoJSON, antarcticaMeteoritesData);
+  drawElevation(antarcticaGeoJSON, antarcticaMeteoritesData, elevationData);
+  drawSnowFlow(antarcticaGeoJSON, antarcticaMeteoritesData, elevationData);
+  drawBlueIceAreas(antarcticaGeoJSON, biaMapData, antarcticaMeteoritesData, elevationData);
+  drawBiaIllustartionDesc();
+  drawCollectedMeteorites(antarcticaGeoJSON);
+  drawALH84001();
+}
+
+main();
