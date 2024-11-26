@@ -54,8 +54,7 @@ function addSection(sectionId) {
     .style("background-color", "white")
     .style("display", "flex")
     .style("place-items", "center")
-    .style("flex-direction", "column")
-    .style("top", "10px");
+    .style("flex-direction", "column");
 
   const TextDiv = mainDiv
     .append("div")
@@ -87,7 +86,7 @@ function addSection(sectionId) {
     .attr("id", `${sectionId}_image_div`)
     .style("width", sectionWidth)
     .style("display", "flex")
-    .style("flex-grow", "1")
+    .style("height", "640px")
     .style("margin-top", marginTop)
     .style("margin-bottom", marginBottom);
 
