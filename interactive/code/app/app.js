@@ -520,7 +520,7 @@ function drawBlueIceAreas(antarcticaGeoJSON, biaMapData, antarcticaMeteoritesDat
 }
 
 // ------------------------------
-// Blue Ice Area Illustartiion
+// Blue Ice Area Illustration
 // ------------------------------
 
 function drawBiaIllustartionDesc() {
@@ -530,43 +530,17 @@ function drawBiaIllustartionDesc() {
   biaIllustartionDescDiv
     .append("p")
     .html(
-      "These areas are special because shallow white ice layers are abraded, exposing deeper blue ice layers due to specific climatic and topographical factors. <b>This phenomenon makes meteorites visible on the surface, making it easier for researchers to locate them.</b>"
+      "These areas are unique because deeper blue ice layers emerge on the surface due to specific climatic and topographical factors. <b>This phenomenon reveals meteorites previously hidden beneath the surface, facilitating their discovery by researchers.</b>"
     )
     .style("margin", 0)
     .style("font-size", "1.4rem");
 
-  biaIllustartionImageDiv.style("flex-direction", "row");
-  biaIllustrationLeftDiv = biaIllustartionImageDiv
-    .append("div")
-    .style("flex", "1")
-    .style("display", "flex")
-    .style("justify-content", "center")
-    .style("align-items", "center");
-
-  biaIllustrationLeftDiv.append("img").attr("src", "./data/bia_explain_01.png").style("width", "400px");
-
-  biaIllustrationMiddleDiv = biaIllustartionImageDiv
-    .append("div")
-    .style("flex-grow", "0")
-    .style("flex-shrink", "0")
-    .style("flex-basis", "10px")
-    .style("margin", "auto");
-
-  biaIllustrationMiddleDiv.append("p").text("→").style("font-size", "30px").style("color", "gray");
-
-  biaIllustrationRightDiv = biaIllustartionImageDiv
-    .append("div")
-    .style("flex", "1")
-    .style("display", "flex")
-    .style("justify-content", "center")
-    .style("align-items", "center");
-
-  biaIllustrationRightDiv
+  biaIllustartionImageDiv
     .append("img")
-    .attr("src", "./data/bia_explain_02.png")
+    .attr("src", "./data/bia_explain.png")
     .style("display", "block")
     .style("margin", "auto")
-    .style("width", "400px");
+    .style("width", "600px");
 }
 
 // ------------------------------
@@ -628,6 +602,49 @@ function drawALH84001() {
   );
 }
 
+// ------------------------------
+// Global Warming
+// ------------------------------
+
+function drawGlobalWarming() {
+  const globalWarmingSectionId = "global_warming";
+  const [globalWarmingDescDiv, globalWarmingImageDiv] = addSection(globalWarmingSectionId);
+
+  globalWarmingDescDiv
+    .append("p")
+    .html(
+      "<b>However, meteorites in Antarctica are threatened by global warming.</b> Rising temperatures are accelerating ice melt, causing meteorites in blue ice areas to sink into the deep layers of ice, where researchers cannot reach."
+    )
+    .style("margin", 0);
+
+  globalWarmingImageDiv
+    .append("img")
+    .attr("src", "./data/bia_losing.png")
+    .style("display", "block")
+    .style("margin", "auto")
+    .style("width", "600px");
+}
+
+// ------------------------------
+// Last Comment
+// ------------------------------
+
+function drawLastComment(antarcticaGeoJSON, antarcticaMeteoritesData) {
+  const lastCommentSectionId = "last_comment";
+  const [lastCommentDescDiv, lastCommentImageDiv] = addSection(lastCommentSectionId);
+
+  lastCommentDescDiv
+    .append("p")
+    .html(
+      "Harry Zekollari, a glaciologist at the Vrije Universiteit Brussel in Belgium, says <b>'The loss of Antarctic meteorites is much like the loss of data ... once they disappear, so do some of the secrets of the universe.'</b>"
+    )
+    .style("margin", 0);
+
+  // Draw Hexbin on Map
+  const lastCommentAntarcticaMapSVG = drawAntarcticaMap(lastCommentImageDiv, antarcticaGeoJSON);
+  addCollectionSpotHeatmap(lastCommentAntarcticaMapSVG, antarcticaMeteoritesData);
+}
+
 // // ------------------------------
 // // Scrollama Setup
 // // ------------------------------
@@ -668,6 +685,8 @@ async function main() {
   drawBiaIllustartionDesc();
   drawCollectedMeteorites(antarcticaGeoJSON);
   drawALH84001();
+  drawGlobalWarming();
+  drawLastComment(antarcticaGeoJSON, antarcticaMeteoritesData);
 }
 
 main();
