@@ -54,7 +54,8 @@ function addSection(sectionId) {
     .style("background-color", "white")
     .style("display", "flex")
     .style("place-items", "center")
-    .style("flex-direction", "column");
+    .style("flex-direction", "column")
+    .style("top", "10px");
 
   const TextDiv = mainDiv
     .append("div")
@@ -210,7 +211,6 @@ function drawTitleSection() {
     .attr("id", "title_div")
     .attr("class", "step")
     .style("display", "flex")
-    .style("background-color", baseColor)
     .style("height", "100vh")
     .style("display", "flex")
     .style("padding-left", "5vw")
@@ -220,7 +220,7 @@ function drawTitleSection() {
     .append("h1")
     .text("Why are meteorites always found in Antarctica?")
     .style("font-size", "72px")
-    .style("color", "white")
+    .style("color", baseColor)
     .style("font-weight", "700")
     .style("width", "1200px");
 }
@@ -290,12 +290,12 @@ function drawCollectedLocation(AttributedLocationData) {
   attrLocationChartDiv
     .append("p")
     .text("Attributed Locations")
-    .style("margin", "0 0 30px 55px")
+    .style("margin", "0 0 70px 55px")
     .style("font-weight", 100);
 
   const attrLocationChartSVG = LocationImageDiv.append("svg").style("width", "100%").style("height", "100%");
 
-  const XofattrLocationChartMargin = { left: 200, right: 50 };
+  const XofattrLocationChartMargin = { left: 220, right: 50 };
   const attrLocationChartWidth = 750;
   const attrLocationChartHeight = 400;
 
@@ -334,7 +334,8 @@ function drawCollectedLocation(AttributedLocationData) {
     .attr("y", (d) => attrLocationChartYScale(d[0]))
     .attr("width", (d) => attrLocationChartXScale(d[1].length_ratio))
     .attr("height", attrLocationChartYScale.bandwidth())
-    .attr("fill", (d) => (d[0] === "Antarctica" ? baseColor : "#DBDBDB"));
+    .attr("fill", (d) => (d[0] === "Antarctica" ? baseColor : "#DBDBDB"))
+    .attr("rx", 10);
 
   // Draw Chart Label
   attrLocationChartSVG
@@ -645,24 +646,9 @@ function drawLastComment(antarcticaGeoJSON, antarcticaMeteoritesData) {
   addCollectionSpotHeatmap(lastCommentAntarcticaMapSVG, antarcticaMeteoritesData);
 }
 
-// // ------------------------------
-// // Scrollama Setup
-// // ------------------------------
-
-// const scroller = scrollama();
-
-// scroller
-//   .setup({
-//     step: ".step",
-//   })
-//   .onStepEnter((response) => {
-//     // console.log("onStepEnter");
-//     // console.log(response);
-//   })
-//   .onStepExit((response) => {
-//     // console.log("onStepExit");
-//     // console.log(response);
-//   });
+// ------------------------------
+// Scrollama Setup
+// ------------------------------
 
 async function main() {
   // Load Data
@@ -687,6 +673,24 @@ async function main() {
   drawALH84001();
   drawGlobalWarming();
   drawLastComment(antarcticaGeoJSON, antarcticaMeteoritesData);
+
+  const scroller = scrollama();
+
+  scroller
+    .setup({
+      step: ".step",
+      offset: 0,
+      progress: true,
+    })
+    .onStepEnter((response) => {
+      console.log("onStepEnter", response);
+    })
+    .onStepProgress((response) => {
+      console.log("onStepProgress", response);
+    })
+    .onStepExit((response) => {
+      console.log("onStepExit", response);
+    });
 }
 
 main();
