@@ -4,12 +4,23 @@
 
 const body = d3.select("body").style("margin", "0").style("font-family", "Inria Sans");
 
+// State
+let state = {
+  descriptionDivOpacity: 0,
+  imageDivOpacity: 0,
+  imageDivAntarcticaHeatmapOpacity: 0,
+  imageDivContentsOnMapOpacity: 1,
+};
+
 // Color
 const baseColor = "#36B5C8";
 
 // Map Projection
 const projection = d3.geoStereographic().center([0, -90]).scale(675);
 const path = d3.geoPath().projection(projection);
+
+// opacity Threshold
+const fadeInOutThreshold = 0.25;
 
 // ------------------------------
 // Data Load functions
@@ -50,7 +61,7 @@ function buildScrollyTellingDiv() {
 
   const marginTop = "100px";
   const marginBottom = "100px";
-  const sectionWidth = "55vw";
+  const sectionWidth = "60vw";
 
   const scrollDiv = scrollyTellingDiv
     .append("div")
@@ -107,6 +118,7 @@ function buildScrollyTellingDiv() {
     .style("position", "sticky");
 
   const scrollyTellingElements = [
+    "title",
     "si_stats",
     "collected_location",
     "antarctica_climate",
@@ -127,7 +139,7 @@ function buildScrollyTellingDiv() {
       .append("div")
       .attr("class", "step")
       .attr("id", d + "_div")
-      .style("height", "100vh")
+      .style("height", "200vh")
       .style("width", "1px");
   });
   return [DescriptionDiv, imageDiv];
@@ -194,7 +206,8 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
   // Draw Hexbin Heatmap
   svg
     .append("g")
-    .attr("class", "hexmap")
+    .attr("id", "heatmap")
+    .style("opacity", state.imageDivAntarcticaHeatmapOpacity)
     .selectAll("path")
     .data(bins)
     .enter()
@@ -216,7 +229,7 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
 
 function drawElevationMap(AntarcticaMapSVG, elevationData) {
   AntarcticaMapSVG.append("g")
-    .attr("id", "antarctica_elevation")
+    .attr("class", "contentsOnMap")
     .selectAll("path.land")
     .data(elevationData.features)
     .enter()
@@ -454,9 +467,11 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
     )
     .style("margin", 0);
 
+  // Image Div Setup
   const climateAntarcticaMapSVG = drawAntarcticaMap(imageDiv, antarcticaGeoJSON);
+  const climateText = climateAntarcticaMapSVG.append("g").attr("class", "contentsOnMap");
 
-  climateAntarcticaMapSVG
+  climateText
     .append("text")
     .text("Avg. Temp.")
     .attr("x", 290)
@@ -464,7 +479,7 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
     .style("fill", baseColor)
     .style("font-weight", 100);
 
-  climateAntarcticaMapSVG
+  climateText
     .append("text")
     .text("-71 °F")
     .attr("x", 285)
@@ -503,6 +518,7 @@ function drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON) {
 
   visContrastAntarcticaMapSVG
     .append("g")
+    .attr("class", "contentsOnMap")
     .selectAll("image")
     .data(meteoriteCoordinates)
     .enter()
@@ -727,6 +743,20 @@ function drawLastComment(descriptionDiv, imageDiv, antarcticaGeoJSON, antarctica
   addCollectionSpotHeatmap(lastCommentAntarcticaMapSVG, antarcticaMeteoritesData);
 }
 
+function calculateOpacity(progress) {
+  let opacity;
+
+  if (progress < fadeInOutThreshold) {
+    opacity = progress * (1 / fadeInOutThreshold);
+  } else if (progress >= fadeInOutThreshold && progress < 1 - fadeInOutThreshold) {
+    opacity = 1;
+  } else if (progress >= 1 - fadeInOutThreshold) {
+    opacity = 1 - (progress - (1 - fadeInOutThreshold)) * (1 / fadeInOutThreshold);
+  }
+
+  return opacity;
+}
+
 // ------------------------------
 // Scrollama Setup
 // ------------------------------
@@ -742,22 +772,40 @@ async function main() {
   // Draw Functions
   drawTitleSection();
   const [descriptionDiv, imageDiv] = buildScrollyTellingDiv();
-  const drawFunctions = [
-    () => drawSiStats(descriptionDiv, imageDiv),
-    () => drawSiStats(descriptionDiv, imageDiv),
-    () => drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData),
-    () => drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON),
-    () => drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON),
-    () => drawCollectionSpot(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData),
-    () => drawElevation(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData, elevationData),
-    () => drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapData),
-    () => drawBiaPicture(descriptionDiv, imageDiv),
-    () => drawBiaIllustartionDesc(descriptionDiv, imageDiv),
-    () => drawCollectedMeteorites(descriptionDiv, imageDiv, antarcticaGeoJSON),
-    () => drawALH84001(descriptionDiv, imageDiv),
-    () => drawGlobalWarming(descriptionDiv, imageDiv),
-    () => drawLastComment(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData),
-  ];
+  function drawFunctions(index, progress) {
+    const opacity = calculateOpacity(progress);
+
+    // Draw Functions
+    if (index === 0) {
+      drawSiStats(descriptionDiv, imageDiv);
+    } else if (index === 1) {
+      drawSiStats(descriptionDiv, imageDiv);
+    } else if (index === 2) {
+      drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData, opacity);
+    } else if (index === 3) {
+      drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON, opacity);
+    } else if (index === 4) {
+      drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON, opacity);
+    } else if (index === 5) {
+      drawCollectionSpot(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData);
+    } else if (index === 6) {
+      drawElevation(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData, elevationData);
+    } else if (index === 7) {
+      drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapData);
+    } else if (index === 8) {
+      drawBiaPicture(descriptionDiv, imageDiv);
+    } else if (index === 9) {
+      drawBiaIllustartionDesc(descriptionDiv, imageDiv);
+    } else if (index === 10) {
+      drawCollectedMeteorites(descriptionDiv, imageDiv, antarcticaGeoJSON);
+    } else if (index === 11) {
+      drawALH84001(descriptionDiv, imageDiv);
+    } else if (index === 12) {
+      drawGlobalWarming(descriptionDiv, imageDiv);
+    } else if (index === 13) {
+      drawLastComment(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData);
+    }
+  }
 
   // Set up Scrollama
   const scroller = scrollama();
@@ -766,10 +814,52 @@ async function main() {
       step: ".step",
       offset: 0,
       progress: true,
+      antarcticaMapOpacity: 0,
     })
     .onStepProgress((response) => {
-      drawFunctions[response.index]();
-      console.log(response);
+      const { index, progress } = response;
+
+      state.index = index;
+      state.progress = progress;
+
+      // Default Opacity
+      state.descriptionDivOpacity = calculateOpacity(progress);
+      state.imageDivOpacity = calculateOpacity(progress);
+
+      // Conditional Opacity
+      if (index === 0) {
+        state.descriptionDivOpacity = 0;
+        state.imageDivOpacity = 0;
+      } else if (index === 3 && progress >= 1 - fadeInOutThreshold) {
+        state.imageDivContentsOnMapOpacity = calculateOpacity(progress);
+        state.imageDivOpacity = 1;
+      } else if (index === 4) {
+        state.imageDivOpacity = 1;
+        state.imageDivContentsOnMapOpacity = calculateOpacity(progress);
+      } else if (index === 5 && progress <= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = 1;
+        state.imageDivAntarcticaHeatmapOpacity = calculateOpacity(progress);
+      } else if (index === 5 && progress >= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = 1;
+        state.imageDivAntarcticaHeatmapOpacity = 1;
+      } else if (index === 6) {
+        state.imageDivOpacity = 1;
+        state.imageDivAntarcticaHeatmapOpacity = 1;
+        state.imageDivContentsOnMapOpacity = calculateOpacity(progress);
+      }
+
+      drawFunctions(index, progress);
+
+      const contentsOnMap = d3.selectAll(".contentsOnMap");
+      const heatMap = d3.select("#heatmap");
+
+      // Update Opacity
+      descriptionDiv.style("opacity", state.descriptionDivOpacity);
+      imageDiv.style("opacity", state.imageDivOpacity);
+      contentsOnMap.style("opacity", state.imageDivContentsOnMapOpacity);
+      heatMap.style("opacity", state.imageDivAntarcticaHeatmapOpacity);
+
+      console.log("state", state);
     });
 }
 
