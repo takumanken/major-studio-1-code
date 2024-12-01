@@ -91,7 +91,7 @@ function buildScrollyTellingDiv() {
   const DescriptionDiv = TextDiv.append("div")
     .attr("id", "desc_div")
     .style("flex-grow", "1")
-    .style("font-size", "1.5rem")
+    .style("font-size", "1.3rem")
     .style("padding-left", "15px")
     .style("padding-top", "5px")
     .style("font-weight", "400");
@@ -116,6 +116,7 @@ function buildScrollyTellingDiv() {
     "elevation",
     "snow_flow",
     "bia",
+    "bia_picture",
     "bia_illustration",
     "collected_meteorites",
     "ALH84001",
@@ -257,18 +258,61 @@ function drawTitleSection() {
     .attr("class", "step")
     .attr("id", "title_div")
     .style("display", "flex")
+    .style("flex-direction", "column")
     .style("height", "100vh")
-    .style("display", "flex")
-    .style("padding-left", "5vw")
-    .style("align-items", "center");
+    .style("align-items", "center")
+    .style("justify-content", "center")
+    .style("position", "relative")
+    .style("background-image", "linear-gradient(#76CDD9, #FFFFFF)");
 
   titleDiv
     .append("h1")
-    .text("Why are meteorites always found in Antarctica?")
-    .style("font-size", "72px")
-    .style("color", baseColor)
+    .html("WHY ARE METEORITES<br>FOUND IN ANTARCTICA?")
+    .style("font-size", "90px")
+    .style("color", "#123E42")
     .style("font-weight", "700")
-    .style("width", "1200px");
+    .style("width", "1200px")
+    .style("text-align", "center")
+    .style("margin", 0);
+
+  titleDiv
+    .append("p")
+    .html("GET TO KNOW THEIR INTIMATE BOND... AND CRISIS")
+    .style("font-size", "42px")
+    .style("color", "#2A99A0")
+    .style("font-weight", "400")
+    .style("width", "1200px")
+    .style("text-align", "center")
+    .style("margin", "20px 0");
+
+  titleDiv
+    .append("img")
+    .attr("src", "data/meteorites.png")
+    .style("position", "absolute")
+    .style("top", "0px")
+    .style("left", "50%")
+    .style("transform", "translateX(-50%)")
+    .style("width", "70%")
+    .style("height", "auto");
+
+  titleDiv
+    .append("img")
+    .attr("src", "data/antarctica_mountains.png")
+    .style("position", "absolute")
+    .style("bottom", "0px")
+    .style("left", "10px")
+    .style("width", "50%")
+    .style("height", "auto");
+
+  titleDiv
+    .append("img")
+    .attr("src", "data/scroll_down.png")
+    .style("position", "absolute")
+    .style("bottom", "50px")
+    .style("left", "50%")
+    .style("width", "30px")
+    .style("height", "auto")
+    .style("animation", "bounce 2s infinite");
 }
 
 // ------------------------------
@@ -282,7 +326,7 @@ function drawSiStats(descriptionDiv, imageDiv) {
   descriptionDiv
     .append("p")
     .html(
-      "<b>The Smithsonian Institution is renowned for its extensive collection of meteorites.</b><br>This collection, housed in the National Museum of Natural History, includes over 55,000 specimens representing more than 20,000 distinct meteorites."
+      "<b>The Smithsonian Institution holds a world-class meteorite collection.</b> This collection, preserved in the National Museum of Natural History, encompasses over 55,000 specimens and more than 20,000 distinct meteorites."
     )
     .style("margin", 0);
 
@@ -323,7 +367,7 @@ function drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData)
   descriptionDiv
     .append("p")
     .html(
-      "<b>Where are these meteorites collected? According to the Smithsonian’s collection, 71% of the meteorites were found in Antarctica</b>—a significantly higher proportion than from any other continent."
+      "Where are these meteorites collected? <b>The Smithsonian's collection reveals that 71% of its meteorites originate from Antarctica</b>—a proportion far higher than any other continent."
     )
     .style("margin", 0);
 
@@ -407,7 +451,7 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
   descriptionDiv
     .append("p")
     .html(
-      "What makes Antarctica so ideal for meteorites? One key reason is its climate. <b>The extremely cold temperatures slow weathering, while the dry conditions limit chemical alterations</b>, preserving meteorites in remarkably pristine condition for many years."
+      "What makes Antarctica such an ideal place for meteorites? <b>The first reason, of course, is the climate.</b> The extremely cold temperatures slow weathering, while the dry conditions limit chemical alteration, preserving meteorites in remarkably pristine condition for many years."
     )
     .style("margin", 0);
 
@@ -419,7 +463,6 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
     .attr("x", 290)
     .attr("y", 240)
     .style("fill", baseColor)
-    .style("font-size", "1.25rem")
     .style("font-weight", 100);
 
   climateAntarcticaMapSVG
@@ -442,7 +485,7 @@ function drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON) {
   descriptionDiv
     .append("p")
     .html(
-      "Another reason is the stark visual contrast. <b>Most meteorites are dark-colored, making them much easier to spot on the white ice sheets</b> compared to vegetated, gravel-covered, or urban areas."
+      "<b>Another reason is the clear visual contrast between the land and the meteorite.</b> Most meteorites are dark in color, making them easier to spot on the white surface of the ice than on other surfaces such as vegetation, gravel, or urban areas."
     )
     .style("margin", 0);
 
@@ -483,7 +526,7 @@ function drawCollectionSpot(descriptionDiv, imageDiv, antarcticaGeoJSON, antarct
   descriptionDiv
     .append("p")
     .html(
-      "So, where in Antarctica are meteorites found? Interestingly, their distribution across the continent is highly uneven. <b>According to the Smithsonian's collection, most meteorites are discovered in the highlighted areas shown on the map.</b>"
+      "So, meteorites can be found anywhere in Antarctica? Interestingly, <b>their distribution across the continent is highly uneven.</b> According to the Smithsonian's collection, most meteorites are discovered in the highlighted areas shown on the map."
     )
     .style("margin", 0);
 
@@ -503,7 +546,7 @@ function drawElevation(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMe
   descriptionDiv
     .append("p")
     .html(
-      "What are the characteristics of these areas? Firstly, they are low-lying regions. <b>Lower areas tend to accumulate less snow, allowing meteorites to remain on the surface.</b> This makes them easier to spot compared to higher-altitude regions with deeper snow cover."
+      "What is special about these areas? <b>First, they are relatively low-lying, which means less snow accumulation, leaving meteorites on the surface.</b> This makes meteorites easier to find compared to higher elevation regions with deeper snow cover."
     )
     .style("margin", 0);
 
@@ -522,7 +565,7 @@ function drawSnowFlow(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMet
   descriptionDiv
     .append("p")
     .html(
-      "Another factor is the slow movement of snow flow in Antarctica. <br>Over thousands of years, <b>snow gradually flows from higher to lower elevations, carrying meteorites that originally fell in higher regions into lower areas.</b>"
+      "<b>Low elevations also play a crucial role in meteorite accumulation.</b> In Antarctica, ice slowly but significantly flows from higher to lower elevations. Over thousands of years, this movement transports meteorites that have fallen in elevated regions down to lower areas, concentrating them over time."
     )
     .style("margin", 0);
 
@@ -541,7 +584,7 @@ function drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapDat
   descriptionDiv
     .append("p")
     .html(
-      "<b>The most important reason, however, is that these regions are Blue Ice Areas</b>—ideal spots for collecting meteorites due to unique and remarkable conditions."
+      "However, there is one definite characteristic of the area where meteorites have been collected in Antarctica....<b>They are Blue Ice Areas (BIA).</b>"
     )
     .style("margin", 0);
 
@@ -559,6 +602,28 @@ function drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapDat
 }
 
 // ------------------------------
+// Blue Ice Area Picture
+// ------------------------------
+
+function drawBiaPicture(descriptionDiv, imageDiv) {
+  removeExistingContents(descriptionDiv, imageDiv);
+
+  descriptionDiv
+    .append("p")
+    .html(
+      "Blue Ice Areas, as the name suggests, are areas where the ice surface is blue. Typically, blue ice is hidden in the deep ice layer. In these areas, however, this layer is exposed at the surface due to climatic conditions and upward ice flow caused by topological factors."
+    )
+    .style("margin", 0);
+
+  imageDiv
+    .append("img")
+    .attr("src", "./data/bia_explain.png")
+    .style("display", "block")
+    .style("margin", "auto")
+    .style("width", "600px");
+}
+
+// ------------------------------
 // Blue Ice Area Illustration
 // ------------------------------
 
@@ -568,10 +633,9 @@ function drawBiaIllustartionDesc(descriptionDiv, imageDiv) {
   descriptionDiv
     .append("p")
     .html(
-      "These areas are unique because deeper blue ice layers emerge on the surface due to specific climatic and topographical factors. <b>This phenomenon reveals meteorites previously hidden beneath the surface, facilitating their discovery by researchers.</b>"
+      "This is where the magic happens. Alongside the blue ice, many meteorites that fell to Antarctica over a thousand years ago and remained dormant in the deep ice are now exposed on the surface."
     )
-    .style("margin", 0)
-    .style("font-size", "1.4rem");
+    .style("margin", 0);
 
   imageDiv
     .append("img")
@@ -593,8 +657,7 @@ function drawCollectedMeteorites(descriptionDiv, imageDiv, antarcticaGeoJSON) {
     .html(
       "This unique phenomenon makes BIAs the most efficient locations for collecting meteorites on Earth. <b>Each year, scientists head to these areas and recover approximately 1,000 meteorites.</b> In addition, it is estimated that many more meteorites remain undiscovered."
     )
-    .style("margin", 0)
-    .style("font-size", "1.4rem");
+    .style("margin", 0);
 
   const AntarcticaMapSVG = drawAntarcticaMap(imageDiv, antarcticaGeoJSON);
 
@@ -709,6 +772,7 @@ async function main() {
     () => drawElevation(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData, elevationData),
     () => drawSnowFlow(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData, elevationData),
     () => drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapData),
+    () => drawBiaPicture(descriptionDiv, imageDiv),
     () => drawBiaIllustartionDesc(descriptionDiv, imageDiv),
     () => drawCollectedMeteorites(descriptionDiv, imageDiv, antarcticaGeoJSON),
     () => drawALH84001(descriptionDiv, imageDiv),

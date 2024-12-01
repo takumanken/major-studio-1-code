@@ -17,3 +17,21 @@
     font-size: 80px;
     margin: 0 0;
 }
+
+@keyframes bounce {
+    0%, 50%, 100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    25%, 75% {
+      transform: translateX(-50%) translateY(-10px);
+    }
+  }
+
+  .bounce-animation {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: auto;
+    animation: bounce 2s infinite;
