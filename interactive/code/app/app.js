@@ -91,7 +91,7 @@ function buildScrollyTellingDiv() {
   const DescriptionDiv = TextDiv.append("div")
     .attr("id", "desc_div")
     .style("flex-grow", "1")
-    .style("font-size", "1.3rem")
+    .style("font-size", "1.5rem")
     .style("padding-left", "15px")
     .style("padding-top", "5px")
     .style("font-weight", "400");
@@ -114,7 +114,6 @@ function buildScrollyTellingDiv() {
     "antarctica_visual_contrast",
     "collection_spot",
     "elevation",
-    "snow_flow",
     "bia",
     "bia_picture",
     "bia_illustration",
@@ -333,7 +332,7 @@ function drawSiStats(descriptionDiv, imageDiv) {
   imageDiv.style("display", "flex").style("flex-direction", "row").style("align-items", "center");
 
   // Specimen
-  const siStatsLeft = imageDiv.append("div").style("flex", "1");
+  const siStatsLeft = imageDiv.append("div").style("flex", "1").style("text-align", "center");
   siStatsLeft
     .append("p")
     .attr("class", "si_stats_metrics_name")
@@ -341,10 +340,11 @@ function drawSiStats(descriptionDiv, imageDiv) {
     .style("font-size", "2rem")
     .style("color", "#9D9D9D")
     .style("margin", "0");
+
   siStatsLeft.append("p").attr("class", "si_stats_metrics_number").text("55,000+").style("font-size", "5rem");
 
   // Distinct Meteorite
-  const siStatsRight = imageDiv.append("div").style("flex", "1");
+  const siStatsRight = imageDiv.append("div").style("flex", "1").style("text-align", "center");
   siStatsRight
     .append("p")
     .attr("class", "si_stats_metrics_name")
@@ -386,7 +386,7 @@ function drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData)
 
   const XofattrLocationChartMargin = { left: 220, right: 50 };
   const attrLocationChartWidth = 750;
-  const attrLocationChartHeight = 400;
+  const attrLocationChartHeight = 500;
 
   // Define X axis Scale
   const attrLocationChartXScale = d3
@@ -451,7 +451,7 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
   descriptionDiv
     .append("p")
     .html(
-      "What makes Antarctica such an ideal place for meteorites? <b>The first reason, of course, is the climate.</b> The extremely cold temperatures slow weathering, while the dry conditions limit chemical alteration, preserving meteorites in remarkably pristine condition for many years."
+      "Why Antarctica? <b>The first reason, of course, is the climate.</b> The extremely cold temperatures slow weathering, while the dry conditions limit chemical alteration."
     )
     .style("margin", 0);
 
@@ -485,7 +485,7 @@ function drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON) {
   descriptionDiv
     .append("p")
     .html(
-      "<b>Another reason is the clear visual contrast between the land and the meteorite.</b> Most meteorites are dark in color, making them easier to spot on the white surface of the ice than on other surfaces such as vegetation, gravel, or urban areas."
+      "<b>Another reason is the clear visual contrast.</b> Most meteorites are dark in color, making them easier to spot on the white surface of the ice than on other surfaces such as vegetation, gravel, or urban areas."
     )
     .style("margin", 0);
 
@@ -526,7 +526,7 @@ function drawCollectionSpot(descriptionDiv, imageDiv, antarcticaGeoJSON, antarct
   descriptionDiv
     .append("p")
     .html(
-      "So, meteorites can be found anywhere in Antarctica? Interestingly, <b>their distribution across the continent is highly uneven.</b> According to the Smithsonian's collection, most meteorites are discovered in the highlighted areas shown on the map."
+      "So, meteorites can be found anywhere in Antarctica? Not really... <b>Smithsonian's collection spots of meteorites is highly uneven.</b> Most meteorites are discovered in the highlighted areas shown on the map."
     )
     .style("margin", 0);
 
@@ -546,32 +546,13 @@ function drawElevation(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMe
   descriptionDiv
     .append("p")
     .html(
-      "What is special about these areas? <b>First, they are relatively low-lying, which means less snow accumulation, leaving meteorites on the surface.</b> This makes meteorites easier to find compared to higher elevation regions with deeper snow cover."
+      "What is special about these areas? <b>One reason is that they are relatively low elevation areas. This means they have less snow accumulation compared to higher elevation areas, leaving meteorites on the surface more often.</b>"
     )
     .style("margin", 0);
 
   const elevationAntarcticaMapSVG = drawAntarcticaMap(imageDiv, antarcticaGeoJSON);
   drawElevationMap(elevationAntarcticaMapSVG, elevationData);
   addCollectionSpotHeatmap(elevationAntarcticaMapSVG, antarcticaMeteoritesData);
-}
-
-// ------------------------------
-// Snow Flow
-// ------------------------------
-
-function drawSnowFlow(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData, elevationData) {
-  removeExistingContents(descriptionDiv, imageDiv);
-
-  descriptionDiv
-    .append("p")
-    .html(
-      "<b>Low elevations also play a crucial role in meteorite accumulation.</b> In Antarctica, ice slowly but significantly flows from higher to lower elevations. Over thousands of years, this movement transports meteorites that have fallen in elevated regions down to lower areas, concentrating them over time."
-    )
-    .style("margin", 0);
-
-  const snowFlowAntarcticaMapSVG = drawAntarcticaMap(imageDiv, antarcticaGeoJSON);
-  drawElevationMap(snowFlowAntarcticaMapSVG, elevationData);
-  addCollectionSpotHeatmap(snowFlowAntarcticaMapSVG, antarcticaMeteoritesData);
 }
 
 // ------------------------------
@@ -584,7 +565,7 @@ function drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapDat
   descriptionDiv
     .append("p")
     .html(
-      "However, there is one definite characteristic of the area where meteorites have been collected in Antarctica....<b>They are Blue Ice Areas (BIA).</b>"
+      "However, there is another definite characteristic of these areas.<br><br><b>... They are Blue Ice Areas (BIA).</b>"
     )
     .style("margin", 0);
 
@@ -611,7 +592,7 @@ function drawBiaPicture(descriptionDiv, imageDiv) {
   descriptionDiv
     .append("p")
     .html(
-      "Blue Ice Areas, as the name suggests, are areas where the ice surface is blue. Typically, blue ice is hidden in the deep ice layer. In these areas, however, this layer is exposed at the surface due to climatic conditions and upward ice flow caused by topological factors."
+      "Blue Ice Areas are areas where <b>blue ice layers, normally hidden deep underground, are exposed on the surface.</b> This is a rare phenomenon mainly caused by unique terrain conditions that direct ice flows upward."
     )
     .style("margin", 0);
 
@@ -639,7 +620,7 @@ function drawBiaIllustartionDesc(descriptionDiv, imageDiv) {
 
   imageDiv
     .append("img")
-    .attr("src", "./data/bia_explain.png")
+    .attr("src", "./data/bia_explain2.png")
     .style("display", "block")
     .style("margin", "auto")
     .style("width", "600px");
@@ -770,7 +751,6 @@ async function main() {
     () => drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON),
     () => drawCollectionSpot(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData),
     () => drawElevation(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData, elevationData),
-    () => drawSnowFlow(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData, elevationData),
     () => drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapData),
     () => drawBiaPicture(descriptionDiv, imageDiv),
     () => drawBiaIllustartionDesc(descriptionDiv, imageDiv),
