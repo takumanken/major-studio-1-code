@@ -107,7 +107,6 @@ function buildScrollyTellingDiv() {
     .style("position", "sticky");
 
   const scrollyTellingElements = [
-    "title",
     "si_stats",
     "collected_location",
     "antarctica_climate",
