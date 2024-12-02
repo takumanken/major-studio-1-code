@@ -6,10 +6,12 @@ const body = d3.select("body").style("margin", "0").style("font-family", "Inria 
 
 // State
 let state = {
+  blueBoxOpacity: 1,
   descriptionDivOpacity: 0,
   imageDivOpacity: 0,
   imageDivAntarcticaHeatmapOpacity: 0,
-  imageDivContentsOnMapOpacity: 1,
+  imageDivContentsOpacity: 0,
+  imageDivBIABaseIllustrationOpacity: 0,
 };
 
 // Color
@@ -93,6 +95,7 @@ function buildScrollyTellingDiv() {
     .style("flex-direction", "row");
 
   TextDiv.append("div")
+    .attr("id", "blue_box")
     .style("background-color", baseColor)
     .style("border-radius", "5px")
     .style("flex-grow", "0")
@@ -118,7 +121,6 @@ function buildScrollyTellingDiv() {
     .style("position", "sticky");
 
   const scrollyTellingElements = [
-    "title",
     "si_stats",
     "collected_location",
     "antarctica_climate",
@@ -132,14 +134,19 @@ function buildScrollyTellingDiv() {
     "ALH84001",
     "global_warming",
     "last_comment",
+    "credit",
   ];
 
   scrollyTellingElements.forEach((d, i) => {
+    let scrollDivHeight = "200vh";
+    if (d === "credit") {
+      scrollDivHeight = "400vh";
+    }
     scrollDiv
       .append("div")
       .attr("class", "step")
       .attr("id", d + "_div")
-      .style("height", "200vh")
+      .style("height", scrollDivHeight)
       .style("width", "1px");
   });
   return [DescriptionDiv, imageDiv];
@@ -189,7 +196,7 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
   // Hexbin Setup
   const hexbin = d3
     .hexbin()
-    .radius(3)
+    .radius(5)
     .x((d) => d.x)
     .y((d) => d.y);
 
@@ -204,10 +211,9 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
   const bins = hexbin(antarcticaMeteoritesData);
 
   // Draw Hexbin Heatmap
-  svg
-    .append("g")
-    .attr("id", "heatmap")
-    .style("opacity", state.imageDivAntarcticaHeatmapOpacity)
+  const heatmapGroup = svg.append("g").attr("id", "heatmap").style("opacity", state.imageDivAntarcticaHeatmapOpacity);
+
+  heatmapGroup
     .selectAll("path")
     .data(bins)
     .enter()
@@ -229,7 +235,7 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
 
 function drawElevationMap(AntarcticaMapSVG, elevationData) {
   AntarcticaMapSVG.append("g")
-    .attr("class", "contentsOnMap")
+    .attr("class", "imageDivContents")
     .selectAll("path.land")
     .data(elevationData.features)
     .enter()
@@ -266,8 +272,8 @@ function removeExistingContents(descriptionDiv, imageDiv) {
 function drawTitleSection() {
   const titleDiv = body
     .append("div")
-    .attr("class", "step")
     .attr("id", "title_div")
+    .attr("class", "step")
     .style("display", "flex")
     .style("flex-direction", "column")
     .style("height", "100vh")
@@ -469,7 +475,7 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
 
   // Image Div Setup
   const climateAntarcticaMapSVG = drawAntarcticaMap(imageDiv, antarcticaGeoJSON);
-  const climateText = climateAntarcticaMapSVG.append("g").attr("class", "contentsOnMap");
+  const climateText = climateAntarcticaMapSVG.append("g").attr("class", "imageDivContents");
 
   climateText
     .append("text")
@@ -518,7 +524,7 @@ function drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON) {
 
   visContrastAntarcticaMapSVG
     .append("g")
-    .attr("class", "contentsOnMap")
+    .attr("class", "imageDivContents")
     .selectAll("image")
     .data(meteoriteCoordinates)
     .enter()
@@ -573,20 +579,29 @@ function drawElevation(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMe
 // ------------------------------
 // Blue Ice Area
 // ------------------------------
-
 function drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapData) {
   removeExistingContents(descriptionDiv, imageDiv);
 
   descriptionDiv
     .append("p")
     .html(
-      "However, there is another definite characteristic of these areas.<br><br><b>... They are Blue Ice Areas (BIA).</b>"
+      "However, there is another definite characteristic of these areas.<br><br><b>... They are Blue Ice Areas.</b>"
     )
     .style("margin", 0);
 
   const biaMapSVG = drawAntarcticaMap(imageDiv, antarcticaGeoJSON);
+
+  // Define the glow filter
+  const defs = biaMapSVG.append("defs");
+  const glowFilter = defs.append("filter").attr("id", "glow");
+  glowFilter.append("feGaussianBlur").attr("stdDeviation", 1).attr("result", "coloredBlur");
+  const feMerge = glowFilter.append("feMerge");
+  feMerge.append("feMergeNode").attr("in", "coloredBlur");
+  feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
   const biaGroup = biaMapSVG.append("g").attr("class", "bia-group");
   biaGroup
+    .attr("class", "imageDivContents")
     .selectAll("path")
     .data(biaMapData.features)
     .enter()
@@ -594,7 +609,8 @@ function drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapDat
     .attr("class", "bia-path")
     .attr("d", path)
     .attr("fill", "#0091FF")
-    .attr("transform", "translate(-215, 0)");
+    .attr("transform", "translate(-215, 0)")
+    .style("filter", "url(#glow)"); // Apply the glow filter
 }
 
 // ------------------------------
@@ -607,16 +623,25 @@ function drawBiaPicture(descriptionDiv, imageDiv) {
   descriptionDiv
     .append("p")
     .html(
-      "Blue Ice Areas are areas where <b>blue ice layers, normally hidden deep underground, are exposed on the surface.</b> This is a rare phenomenon mainly caused by unique terrain conditions that direct ice flows upward."
+      "<b>Blue ice patches are areas where layers of blue ice, normally hidden deep underground, are exposed at the surface.</b> They are formed by upward flow of ice due to topographic features and abrasion of ice by strong winds."
     )
     .style("margin", 0);
 
-  imageDiv
+  const imageContainer = imageDiv
+    .append("div")
+    .style("position", "relative")
+    .style("width", "100%")
+    .style("height", "100%");
+
+  imageContainer
     .append("img")
+    .attr("id", "BiaBaseIllustration")
     .attr("src", "./data/bia_explain.png")
-    .style("display", "block")
-    .style("margin", "auto")
-    .style("width", "600px");
+    .style("width", "600px")
+    .style("position", "absolute")
+    .style("top", "50%")
+    .style("left", "50%")
+    .style("transform", "translate(-50%, -50%)");
 }
 
 // ------------------------------
@@ -629,16 +654,35 @@ function drawBiaIllustartionDesc(descriptionDiv, imageDiv) {
   descriptionDiv
     .append("p")
     .html(
-      "This is where the magic happens. Alongside the blue ice, many meteorites that fell to Antarctica over a thousand years ago and remained dormant in the deep ice are now exposed on the surface."
+      "However, exposure is not limited to the blue ice. <b>This upward flow also brings meteorites from deep within the ice to the surface, accumulating them in the Blue Ice Area.</b>"
     )
     .style("margin", 0);
 
-  imageDiv
+  const imageContainer = imageDiv
+    .append("div")
+    .style("position", "relative")
+    .style("width", "100%")
+    .style("height", "100%");
+
+  imageContainer
     .append("img")
+    .attr("id", "BiaBaseIllustration")
+    .attr("src", "./data/bia_explain.png")
+    .style("width", "600px")
+    .style("position", "absolute")
+    .style("top", "50%")
+    .style("left", "50%")
+    .style("transform", "translate(-50%, -50%)");
+
+  imageContainer
+    .append("img")
+    .attr("class", "imageDivContents")
     .attr("src", "./data/bia_explain2.png")
-    .style("display", "block")
-    .style("margin", "auto")
-    .style("width", "600px");
+    .style("width", "600px")
+    .style("position", "absolute")
+    .style("top", "50%")
+    .style("left", "50%")
+    .style("transform", "translate(-50%, -50%)");
 }
 
 // ------------------------------
@@ -651,7 +695,7 @@ function drawCollectedMeteorites(descriptionDiv, imageDiv, antarcticaGeoJSON) {
   descriptionDiv
     .append("p")
     .html(
-      "This unique phenomenon makes BIAs the most efficient locations for collecting meteorites on Earth. <b>Each year, scientists head to these areas and recover approximately 1,000 meteorites.</b> In addition, it is estimated that many more meteorites remain undiscovered."
+      "<b>This miraculous phenomenon has made the Blue Ice Areas the best meteorite-collecting spots on earth:</b> about 1,000 meteorites are collected annually in the BIAs, and it is estimated that many more are yet to be discovered."
     )
     .style("margin", 0);
 
@@ -684,7 +728,7 @@ function drawALH84001(descriptionDiv, imageDiv) {
   descriptionDiv
     .append("p")
     .html(
-      "<b>Meteorites discovered in Antarctica have significantly advanced our understanding of space.</b> ALH 84001, a meteorite that suggested the possibility of ancient life on Mars, was also found in a Blue Ice Area of Antarctica."
+      "<b>The collection of meteorites has greatly advanced our understanding of space.</b> ALH 84001, a meteorite that suggested the possibility of ancient life on Mars, was also found in a Blue Ice Area of Antarctica."
     )
     .style("margin", 0);
 
@@ -712,7 +756,7 @@ function drawGlobalWarming(descriptionDiv, imageDiv) {
   descriptionDiv
     .append("p")
     .html(
-      "<b>However, meteorites in Antarctica are threatened by global warming.</b> Rising temperatures are accelerating ice melt, causing meteorites in blue ice areas to sink into the deep layers of ice, where researchers cannot reach."
+      "However...<b>Antarctic meteorites are threatened by global warming.</b> Rising temperatures are making it easier for ice to melt even in Blue Ice Areas, causing exposed meteorites to sink deeper into the ice."
     )
     .style("margin", 0);
 
@@ -728,20 +772,28 @@ function drawGlobalWarming(descriptionDiv, imageDiv) {
 // Last Comment
 // ------------------------------
 
-function drawLastComment(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData) {
+function drawLastComment(descriptionDiv, imageDiv) {
   removeExistingContents(descriptionDiv, imageDiv);
 
-  descriptionDiv
+  imageDiv
     .append("p")
     .html(
-      "Harry Zekollari, a glaciologist at the Vrije Universiteit Brussel in Belgium, says <b>'The loss of Antarctic meteorites is much like the loss of data ... once they disappear, so do some of the secrets of the universe.'</b>"
+      "Harry Zekollari, a glaciologist at the Vrije Universiteit Brussel in Belgium, says<br><b>'The loss of Antarctic meteorites is much like the loss of data ... once they disappear, so do some of the secrets of the universe.'</b>"
     )
     .style("margin", 0);
-
-  // Draw Hexbin on Map
-  const lastCommentAntarcticaMapSVG = drawAntarcticaMap(imageDiv, antarcticaGeoJSON);
-  addCollectionSpotHeatmap(lastCommentAntarcticaMapSVG, antarcticaMeteoritesData);
 }
+
+// ------------------------------
+// draw Credit
+// ------------------------------
+
+function drawCredit(descriptionDiv, imageDiv) {
+  removeExistingContents(descriptionDiv, imageDiv);
+
+  imageDiv.append("p").html("aaa").style("margin", 0);
+}
+
+//
 
 function calculateOpacity(progress) {
   let opacity;
@@ -772,6 +824,7 @@ async function main() {
   // Draw Functions
   drawTitleSection();
   const [descriptionDiv, imageDiv] = buildScrollyTellingDiv();
+
   function drawFunctions(index, progress) {
     const opacity = calculateOpacity(progress);
 
@@ -803,7 +856,9 @@ async function main() {
     } else if (index === 12) {
       drawGlobalWarming(descriptionDiv, imageDiv);
     } else if (index === 13) {
-      drawLastComment(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData);
+      drawLastComment(descriptionDiv, imageDiv);
+    } else if (index === 14) {
+      drawCredit(descriptionDiv, imageDiv);
     }
   }
 
@@ -816,50 +871,85 @@ async function main() {
       progress: true,
       antarcticaMapOpacity: 0,
     })
+    .onStepEnter((response) => {
+      const { index, progress } = response;
+      drawFunctions(index, progress);
+    })
     .onStepProgress((response) => {
       const { index, progress } = response;
 
       state.index = index;
-      state.progress = progress;
 
       // Default Opacity
       state.descriptionDivOpacity = calculateOpacity(progress);
       state.imageDivOpacity = calculateOpacity(progress);
+      state.blueBoxOpacity = 1;
 
       // Conditional Opacity
-      if (index === 0) {
+      if (state.index === 0) {
         state.descriptionDivOpacity = 0;
         state.imageDivOpacity = 0;
-      } else if (index === 3 && progress >= 1 - fadeInOutThreshold) {
-        state.imageDivContentsOnMapOpacity = calculateOpacity(progress);
+        state.blueBoxOpacity = 0;
+      } else if ((index === 3 && progress >= 1 - fadeInOutThreshold) || index === 4) {
         state.imageDivOpacity = 1;
-      } else if (index === 4) {
-        state.imageDivOpacity = 1;
-        state.imageDivContentsOnMapOpacity = calculateOpacity(progress);
+        state.imageDivContentsOpacity = calculateOpacity(progress);
       } else if (index === 5 && progress <= 1 - fadeInOutThreshold) {
         state.imageDivOpacity = 1;
         state.imageDivAntarcticaHeatmapOpacity = calculateOpacity(progress);
       } else if (index === 5 && progress >= 1 - fadeInOutThreshold) {
         state.imageDivOpacity = 1;
         state.imageDivAntarcticaHeatmapOpacity = 1;
-      } else if (index === 6) {
+      } else if (index === 6 && progress <= 1 - fadeInOutThreshold) {
         state.imageDivOpacity = 1;
         state.imageDivAntarcticaHeatmapOpacity = 1;
-        state.imageDivContentsOnMapOpacity = calculateOpacity(progress);
+        state.imageDivContentsOpacity = calculateOpacity(progress);
+      } else if (index === 6 && progress >= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = 1;
+        state.imageDivAntarcticaHeatmapOpacity = calculateOpacity(progress);
+        state.imageDivContentsOpacity = calculateOpacity(progress);
+      } else if (index === 7 && progress <= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = 1;
+        state.imageDivContentsOpacity = calculateOpacity(progress);
+      } else if (index === 7 && progress >= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = calculateOpacity(progress);
+      } else if (index === 8 && progress <= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = 1;
+        state.imageDivBIABaseIllustrationOpacity = calculateOpacity(progress);
+      } else if (index === 8 && progress >= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = 1;
+        state.imageDivBIABaseIllustrationOpacity = 1;
+        state.imageDivContentsOpacity = calculateOpacity(progress);
+      } else if (index === 9 && progress <= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = 1;
+        state.imageDivBIABaseIllustrationOpacity = 1;
+        state.imageDivContentsOpacity = calculateOpacity(progress);
+      } else if (index === 9 && progress >= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = calculateOpacity(progress);
+        state.imageDivContentsOpacity = calculateOpacity(progress);
+      } else if (index === 12 && progress >= 1 - fadeInOutThreshold) {
+        state.blueBoxOpacity = calculateOpacity(progress);
+      } else if (index === 13) {
+        state.blueBoxOpacity = 0;
+        state.imageDivOpacity = calculateOpacity(progress);
+      } else if (index === 14) {
+        state.blueBoxOpacity = 0;
+        state.imageDivOpacity = calculateOpacity(progress * 2);
       }
 
-      drawFunctions(index, progress);
-
-      const contentsOnMap = d3.selectAll(".contentsOnMap");
+      const imageDivContents = d3.selectAll(".imageDivContents");
       const heatMap = d3.select("#heatmap");
+      const BiaBaseIllustration = d3.select("#BiaBaseIllustration");
+      const blueBox = d3.select("#blue_box");
 
       // Update Opacity
       descriptionDiv.style("opacity", state.descriptionDivOpacity);
       imageDiv.style("opacity", state.imageDivOpacity);
-      contentsOnMap.style("opacity", state.imageDivContentsOnMapOpacity);
+      imageDivContents.style("opacity", state.imageDivContentsOpacity);
       heatMap.style("opacity", state.imageDivAntarcticaHeatmapOpacity);
+      BiaBaseIllustration.style("opacity", state.imageDivBIABaseIllustrationOpacity);
+      blueBox.style("opacity", state.blueBoxOpacity);
 
-      console.log("state", state);
+      console.log(response);
     });
 }
 
