@@ -473,9 +473,9 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
   const climateAntarcticaMapSVG = drawAntarcticaMap(imageDiv, antarcticaGeoJSON);
   const climateText = climateAntarcticaMapSVG.append("g").attr("class", "imageDivContents");
 
-  const xHighest = 170;
+  const xHighest = 150;
   const xCoast = 355;
-  const y = 240;
+  const y = 245;
 
   climateText
     .append("text")
@@ -483,18 +483,18 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
     .attr("x", xCoast)
     .attr("y", y)
     .style("fill", baseColor)
-    .style("font-weight", 100)
+    .style("font-weight", 400)
     .style("text-anchor", "start")
-    .style("font-size", "0.8rem");
+    .style("font-size", "1rem");
 
   climateText
     .append("text")
     .text("-10 °C")
-    .attr("x", xCoast + 10)
+    .attr("x", xCoast + 20)
     .attr("y", y + 40)
     .style("fill", baseColor)
     .style("font-size", "2.3rem")
-    .style("font-weight", 300)
+    .style("font-weight", 400)
     .style("text-anchor", "start");
 
   climateText
@@ -503,18 +503,18 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
     .attr("x", xHighest)
     .attr("y", y)
     .style("fill", baseColor)
-    .style("font-weight", 100)
-    .style("font-size", "0.8rem")
+    .style("font-weight", 400)
+    .style("font-size", "1rem")
     .style("text-anchor", "start");
 
   climateText
     .append("text")
     .text("-70 °C")
-    .attr("x", xHighest + 20)
+    .attr("x", xHighest + 35)
     .attr("y", y + 40)
     .style("fill", baseColor)
     .style("font-size", "2.3rem")
-    .style("font-weight", 300)
+    .style("font-weight", 400)
     .style("text-anchor", "start");
 }
 
