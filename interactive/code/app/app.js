@@ -817,7 +817,7 @@ function drawBiaPicture(descriptionDiv, imageDiv) {
   descriptionDiv
     .append("p")
     .html(
-      "<b>Blue Ice Areas are regions where deep layers of ancient blue ice are exposed at the surface.</b> These formations result from the upward flow of ice, driven by topographic obstacles, and are sustained by strong winds that prevent snow accumulation."
+      "Blue Ice Areas are regions where deep layers of ancient blue ice are exposed at the surface. <b>These formations result from the upward flow of ice, driven by topographic obstacles</b>, and are sustained by strong winds that prevent snow accumulation."
     );
 
   const imageContainer = imageDiv.append("div").style("position", "relative");
