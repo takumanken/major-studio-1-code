@@ -6,7 +6,6 @@ const body = d3.select("body").style("margin", "0").style("font-family", "Ralewa
 
 // State
 let state = {
-  blueBoxOpacity: 1,
   descriptionDivOpacity: 0,
   imageDivOpacity: 0,
   imageDivAntarcticaHeatmapOpacity: 0,
@@ -174,6 +173,22 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
   // Generate hexbin data
   const bins = hexbin(antarcticaMeteoritesData);
 
+  // Create Tooltip
+  let tooltip = d3.select("body").select("#heatmap-tooltip");
+  if (tooltip.empty()) {
+    tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("id", "heatmap-tooltip")
+      .style("position", "absolute")
+      .style("padding", "8px")
+      .style("background", "rgba(255, 255, 255, 0.8)")
+      .style("border-radius", "4px")
+      .style("pointer-events", "none")
+      .style("font-size", "1rem")
+      .style("visibility", "hidden");
+  }
+
   // Draw Hexbin Heatmap
   const heatmapGroup = svg
     .append("g")
@@ -198,10 +213,36 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
       }
     })
     .attr("stroke", "gray")
-    .attr("stroke-width", 0.5);
+    .attr("stroke-width", 0.5)
+    .on("mouseover", function (event, d) {
+      tooltip.style("visibility", "visible").html(`<strong># of Meteorites:</strong> ${d.length}`);
+      d3.select(this).attr("stroke-width", 1).attr("stroke", "#000");
+    })
+    .on("mousemove", function (event) {
+      tooltip.style("top", event.pageY + 15 + "px").style("left", event.pageX + 15 + "px");
+    })
+    .on("mouseout", function () {
+      tooltip.style("visibility", "hidden");
+      d3.select(this).attr("stroke-width", 0.5).attr("stroke", "gray");
+    });
 }
-
 function drawElevationMap(AntarcticaMapSVG, elevationData) {
+  // Create Tooltip
+  let tooltip = d3.select("body").select("#elevation-tooltip");
+  if (tooltip.empty()) {
+    tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("id", "elevation-tooltip")
+      .style("position", "absolute")
+      .style("padding", "8px")
+      .style("background", "rgba(255, 255, 255, 0.8)")
+      .style("border-radius", "4px")
+      .style("pointer-events", "none")
+      .style("font-size", "1rem")
+      .style("visibility", "hidden");
+  }
+
   AntarcticaMapSVG.append("g")
     .attr("class", "imageDivContents")
     .selectAll("path.land")
@@ -220,11 +261,25 @@ function drawElevationMap(AntarcticaMapSVG, elevationData) {
         return "#D8D8D8";
       } else if (elevation === 3000) {
         return "#C6C6C6";
-      } else if (elevation >= 3500) {
+      } else if (elevation === 3500) {
         return "#BABABA";
+      } else if (elevation === 4000) {
+        return "#A8A8A8";
       }
     })
-    .attr("transform", "translate(0, 100)");
+    .attr("transform", "translate(0, 100)")
+    .on("mouseover", function (event, d) {
+      const elevation = d.properties.elevation;
+      tooltip.style("visibility", "visible").html(`<strong>Elevation:</strong> ${elevation} meters`);
+      d3.select(this).style("stroke", "lightgray").style("stroke-width", 1);
+    })
+    .on("mousemove", function (event) {
+      tooltip.style("top", event.pageY + 15 + "px").style("left", event.pageX + 15 + "px");
+    })
+    .on("mouseout", function () {
+      tooltip.style("visibility", "hidden");
+      d3.select(this).style("stroke", "none");
+    });
 }
 
 // Cleanup Function
@@ -311,18 +366,22 @@ function drawSiStats(descriptionDiv, imageDiv) {
   descriptionDiv.style("color", blackColor);
 
   // Positioning
-  descriptionDiv.style("position", "fixed").style("top", "15%").style("left", "20%").style("width", "60%");
-
-  imageDiv
-    .style("display", "flex")
-    .style("flex-direction", "row")
-    .style("align-items", "center")
-    .style("justify-content", "center")
+  descriptionDiv
     .style("position", "fixed")
     .style("top", "50%")
-    .style("left", "20%")
+    .style("left", "27%")
     .style("width", "60%")
-    .style("height", "20%");
+    .style("height", "50%")
+    .style("transform", "translateY(-50%)")
+    .style("display", "flex")
+    .style("align-items", "center");
+
+  imageDiv
+    .style("position", "fixed")
+    .style("top", "45%")
+    .style("left", "20%")
+    .style("height", "10%")
+    .style("width", "auto");
 
   // Description
   descriptionDiv
@@ -330,29 +389,9 @@ function drawSiStats(descriptionDiv, imageDiv) {
     .html(
       "<b>The Smithsonian Institution houses a world-class meteorite collection.</b><br>This collection, preserved in the National Museum of Natural History, includes over 55,000 specimens and more than 20,000 distinct meteorites."
     )
-    .style("margin", 0);
-
-  // Specimen
-  const siStatsLeft = imageDiv.append("div").style("flex", "1").style("text-align", "center");
-  siStatsLeft
-    .append("p")
-    .attr("class", "si_stats_metrics_name")
-    .text("Specimen")
-    .style("font-size", "2rem")
-    .style("color", "#9D9D9D")
     .style("margin", "0");
-  siStatsLeft.append("p").attr("class", "si_stats_metrics_number").text("55,000+").style("font-size", "5.5rem");
 
-  // Distinct Meteorite
-  const siStatsRight = imageDiv.append("div").style("flex", "1").style("text-align", "center");
-  siStatsRight
-    .append("p")
-    .attr("class", "si_stats_metrics_name")
-    .text("Distinct Meteorite")
-    .style("font-size", "2rem")
-    .style("color", "#9D9D9D")
-    .style("margin", "0");
-  siStatsRight.append("p").attr("class", "si_stats_metrics_number").text("20,000+").style("font-size", "5.5rem");
+  imageDiv.append("img").attr("src", "./data/smithsonian_logo.png").style("width", "100%").style("height", "100%");
 }
 
 // ------------------------------
@@ -826,10 +865,10 @@ function drawBiaIllustartionDesc(descriptionDiv, imageDiv) {
   const imageContainer = imageDiv.append("div").style("position", "relative");
   imageContainer
     .append("img")
-    .attr("id", "BiaBaseIllustration")
     .attr("src", "./data/bia_explain2.svg")
     .style("width", "100vw")
-    .style("height", "auto");
+    .style("height", "auto")
+    .style("z-index", 50);
 }
 
 // ------------------------------
@@ -1061,13 +1100,21 @@ async function main() {
       // Default Opacity
       state.descriptionDivOpacity = calculateOpacity(progress);
       state.imageDivOpacity = calculateOpacity(progress);
-      state.blueBoxOpacity = 1;
 
       // Conditional Opacity
       if (state.index === 0) {
+        // Title Div
+        const titleDiv = d3.select("#title_div");
+        const titleDivOpacity = 1 - progress;
+        titleDiv.style("opacity", titleDivOpacity);
+
+        // Description & Image Div
         state.descriptionDivOpacity = 0;
         state.imageDivOpacity = 0;
-        state.blueBoxOpacity = 0;
+      } else if (index === 2 && progress >= 1 - fadeInOutThreshold) {
+        const interpolatedColor = d3.interpolateRgb(whiteColor, baseColor)((progress - 0.75) * 4);
+        console.log(interpolatedColor);
+        body.style("background-color", interpolatedColor);
       } else if ((index === 3 && progress >= 1 - fadeInOutThreshold) || index === 4) {
         state.imageDivOpacity = 1;
         state.imageDivContentsOpacity = calculateOpacity(progress);
@@ -1105,12 +1152,9 @@ async function main() {
         state.imageDivOpacity = calculateOpacity(progress);
         state.imageDivContentsOpacity = calculateOpacity(progress);
       } else if (index === 12 && progress >= 1 - fadeInOutThreshold) {
-        state.blueBoxOpacity = calculateOpacity(progress);
       } else if (index === 13) {
-        state.blueBoxOpacity = 0;
         state.imageDivOpacity = calculateOpacity(progress);
       } else if (index === 14) {
-        state.blueBoxOpacity = 0;
         state.imageDivOpacity = calculateOpacity(progress * 2);
       }
 
@@ -1127,7 +1171,8 @@ async function main() {
       BiaBaseIllustration.style("opacity", state.imageDivBIABaseIllustrationOpacity);
       blueBox.style("opacity", state.blueBoxOpacity);
 
-      console.log(state);
+      console.log(response);
+      // console.log(state);
     });
 }
 
