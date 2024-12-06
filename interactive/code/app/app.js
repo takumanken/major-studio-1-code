@@ -24,11 +24,14 @@ const projection = d3.geoStereographic().center([0, -90]).scale(1150);
 const path = d3.geoPath().projection(projection);
 
 // opacity Threshold
-const fadeInOutThreshold = 0.25;
+const fadeInOutThreshold = 0.35;
 
 // Window Size
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
+const antarcticaMapSvgWidth = windowWidth * 0.6;
+const antarcticaMapSvgHeight = windowHeight * 0.9;
+const antarcticaMapTranslateY = antarcticaMapSvgHeight * 0.1;
 
 // ------------------------------
 // Data Load functions
@@ -77,7 +80,6 @@ function buildScrollyTellingDiv() {
     .style("width", 0)
     .style("height", "100%")
     .style("margin-top", marginTop)
-    .style("background-color", "white")
     .style("display", "flex")
     .style("flex-direction", "column");
 
@@ -130,18 +132,18 @@ function buildScrollyTellingDiv() {
 }
 
 function drawAntarcticaMap(div, antarcticaGeoJSON) {
-  const svgWidth = windowWidth * 0.6;
-  const svgHeight = windowHeight * 0.9;
-
   const antarcticaMapSVG = div
     .append("svg")
     .attr("id", "map")
-    .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
-    .style("height", svgHeight)
-    .style("width", svgWidth);
+    .attr("viewBox", `0 0 ${antarcticaMapSvgWidth} ${antarcticaMapSvgHeight}`)
+    .style("height", antarcticaMapSvgHeight)
+    .style("width", antarcticaMapSvgWidth);
 
   // SVG Group for Map
-  const svgMap = antarcticaMapSVG.append("g").attr("class", `antarcticaMap`).attr("transform", "translate(0, 100)");
+  const svgMap = antarcticaMapSVG
+    .append("g")
+    .attr("class", `antarcticaMap`)
+    .attr("transform", `translate(0, ${antarcticaMapTranslateY})`);
 
   svgMap
     .selectAll("path.land")
@@ -174,12 +176,13 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
   const bins = hexbin(antarcticaMeteoritesData);
 
   // Create Tooltip
-  let tooltip = d3.select("body").select("#heatmap-tooltip");
+  let tooltip = d3.select("body").select(".tooltip");
   if (tooltip.empty()) {
     tooltip = d3
       .select("body")
       .append("div")
       .attr("id", "heatmap-tooltip")
+      .attr("class", "tooltip")
       .style("position", "absolute")
       .style("padding", "8px")
       .style("background", "rgba(255, 255, 255, 0.8)")
@@ -194,7 +197,7 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
     .append("g")
     .attr("id", "heatmap")
     .style("opacity", state.imageDivAntarcticaHeatmapOpacity)
-    .attr("transform", "translate(0, 100)");
+    .attr("transform", `translate(0, ${antarcticaMapTranslateY})`);
 
   heatmapGroup
     .selectAll("path")
@@ -205,11 +208,11 @@ function addCollectionSpotHeatmap(svg, antarcticaMeteoritesData) {
     .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
     .attr("fill", (d) => {
       if (d.length > 1000) {
-        return "#E6955E";
+        return "#008CA0";
       } else if (d.length > 500) {
-        return "#ECF06A";
+        return "#3AC7DB";
       } else if (d.length > 0) {
-        return "#9DC165";
+        return "#C9F8FF";
       }
     })
     .attr("stroke", "gray")
@@ -234,6 +237,7 @@ function drawElevationMap(AntarcticaMapSVG, elevationData) {
       .select("body")
       .append("div")
       .attr("id", "elevation-tooltip")
+      .attr("class", "tooltip")
       .style("position", "absolute")
       .style("padding", "8px")
       .style("background", "rgba(255, 255, 255, 0.8)")
@@ -256,18 +260,18 @@ function drawElevationMap(AntarcticaMapSVG, elevationData) {
       if (elevation === 0) {
         return "#FFFFFF";
       } else if (elevation === 1000) {
-        return "#EDEDED";
+        return "#E5E5E5";
       } else if (elevation === 2000) {
-        return "#D8D8D8";
+        return "#D5D5D5";
       } else if (elevation === 3000) {
-        return "#C6C6C6";
+        return "#C5C5C5";
       } else if (elevation === 3500) {
-        return "#BABABA";
+        return "#BDBDBD";
       } else if (elevation === 4000) {
-        return "#A8A8A8";
+        return "#B5B5B5";
       }
     })
-    .attr("transform", "translate(0, 100)")
+    .attr("transform", `translate(0, ${antarcticaMapTranslateY})`)
     .on("mouseover", function (event, d) {
       const elevation = d.properties.elevation;
       tooltip.style("visibility", "visible").html(`<strong>Elevation:</strong> ${elevation} meters`);
@@ -404,14 +408,14 @@ function drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData)
   descriptionDiv.style("color", blackColor);
 
   // Positioning
-  descriptionDiv.style("position", "fixed").style("top", "15%").style("left", "20%").style("width", "60%");
+  descriptionDiv.style("position", "fixed").style("top", "18%").style("left", "25%").style("width", "50%");
   imageDiv
     .style("display", "flex")
     .style("flex-direction", "row")
     .style("align-items", "center")
     .style("justify-content", "center")
     .style("position", "fixed")
-    .style("top", "30%")
+    .style("top", "35%")
     .style("left", "20%")
     .style("width", "60%")
     .style("height", "100%");
@@ -420,7 +424,7 @@ function drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData)
   descriptionDiv
     .append("p")
     .html(
-      "Where are these meteorites collected? <b>The Smithsonian's collection shows that 71% of its meteorites come from Antarctica—a proportion much higher than any other continent."
+      "Where are these meteorites collected?<br>The Smithsonian's collection shows that <b>71% of its meteorites come from Antarctica</b>—a proportion much higher than any other continent."
     )
     .style("margin", 0);
 
@@ -433,9 +437,9 @@ function drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData)
 
   const attrLocationChartSVG = imageDiv.append("svg").style("width", "100%").style("height", "100%");
 
-  const attrLocationChartWidth = windowWidth / 3;
-  const attrLocationChartHeight = windowHeight / 2;
-  const attrLocationChartPadding = { left: windowWidth / 8 };
+  const attrLocationChartWidth = windowWidth / 3.5;
+  const attrLocationChartHeight = windowHeight / 2.2;
+  const attrLocationChartPadding = { left: windowWidth / 6 };
 
   // Define X axis Scale
   const attrLocationChartXScale = d3
@@ -483,7 +487,7 @@ function drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData)
     .append("text")
     .text((d) => Math.round(d[1].length_ratio * 100) + "%")
     .attr("x", (d) => attrLocationChartXScale(d[1].length_ratio) + 15)
-    .attr("y", (d) => attrLocationChartYScale(d[0]) + 21)
+    .attr("y", (d) => attrLocationChartYScale(d[0]) + 18)
     .attr("fill", (d) => (d[0] === "Antarctica" ? baseColor : "#858585"))
     .style("font-size", "1.5rem")
     .style("font-weight", 200)
@@ -507,7 +511,7 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
     .style("position", "fixed")
     .style("top", "50%")
     .style("left", "5%")
-    .style("width", "30%")
+    .style("width", "32%")
     .style("height", "50%")
     .style("transform", "translateY(-50%)")
     .style("display", "flex")
@@ -534,7 +538,7 @@ function drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON) {
 
   const xHighest = 375;
   const xCoast = 650;
-  const y = 330;
+  const y = 315;
 
   climateText
     .append("text")
@@ -594,7 +598,7 @@ function drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON) {
     .style("position", "fixed")
     .style("top", "50%")
     .style("left", "5%")
-    .style("width", "30%")
+    .style("width", "32%")
     .style("height", "50%")
     .style("transform", "translateY(-50%)")
     .style("display", "flex")
@@ -611,7 +615,7 @@ function drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON) {
   descriptionDiv
     .append("p")
     .html(
-      "<b>Another reason is the clear visual contrast.</b><br><br> Most meteorites are dark in color, making them easier to spot on the white ice surface than on other surfaces like vegetation, gravel, or urban areas."
+      "<b>Another reason is the clear visual contrast.</b><br> Most meteorites are dark in color, making them easier to spot on the white ice surface than on other surfaces like vegetation, gravel, or urban areas."
     )
     .style("margin", 0);
 
@@ -659,7 +663,7 @@ function drawCollectionSpot(descriptionDiv, imageDiv, antarcticaGeoJSON, antarct
     .style("position", "fixed")
     .style("top", "50%")
     .style("left", "5%")
-    .style("width", "30%")
+    .style("width", "32%")
     .style("height", "50%")
     .style("transform", "translateY(-50%)")
     .style("display", "flex")
@@ -676,7 +680,7 @@ function drawCollectionSpot(descriptionDiv, imageDiv, antarcticaGeoJSON, antarct
   descriptionDiv
     .append("p")
     .html(
-      "So, can meteorites be found anywhere in Antarctica?<br><br>Not really. <b>The distribution of meteorite collection spots is highly uneven.</b> Most meteorites are discovered in specific highlighted areas shown on the map."
+      "So, can meteorites be found anywhere in Antarctica?<br><br>Not really. According to Smithsonian data, <b>meteorite collection sites are primarily concentrated in the highlighted areas on the map.</b>"
     )
     .style("margin", 0);
 
@@ -784,7 +788,7 @@ function drawBlueIceAreas(descriptionDiv, imageDiv, antarcticaGeoJSON, biaMapDat
     .attr("class", "bia-path")
     .attr("d", path)
     .attr("fill", "#0091FF")
-    .attr("transform", "translate(0, 100)")
+    .attr("transform", `translate(0, ${antarcticaMapTranslateY})`)
     .style("filter", "url(#glow)");
 }
 
@@ -796,9 +800,8 @@ function drawBiaPicture(descriptionDiv, imageDiv) {
   removeExistingContents(descriptionDiv, imageDiv);
 
   // Color
-  body.style("background-color", baseColor);
+  body.style("background-color", whiteColor);
   descriptionDiv.style("color", blackColor);
-  imageDiv.style("height", "100vh").style("width", "100vw");
 
   // Positioning
   descriptionDiv
@@ -812,21 +815,24 @@ function drawBiaPicture(descriptionDiv, imageDiv) {
     .style("align-items", "center")
     .style("z-index", 100);
 
-  imageDiv.style("top", "0%").style("left", "0%").style("width", "100%").style("height", "100%");
-
   descriptionDiv
     .append("p")
     .html(
       "Blue Ice Areas are regions where deep layers of ancient blue ice are exposed at the surface. <b>These formations result from the upward flow of ice, driven by topographic obstacles</b>, and are sustained by strong winds that prevent snow accumulation."
     );
 
-  const imageContainer = imageDiv.append("div").style("position", "relative");
+  imageDiv.style("top", "0%").style("left", "0%").style("width", "100%").style("height", "100%");
+  const imageContainer = imageDiv.append("div").style("position", "absolute").style("top", "0").style("left", "0");
+
   imageContainer
     .append("img")
     .attr("id", "BiaBaseIllustration")
     .attr("src", "./data/bia_explain.svg")
     .style("width", "100vw")
-    .style("height", "auto");
+    .style("height", "auto")
+    .style("position", "absolute")
+    .style("top", "0")
+    .style("left", "0");
 }
 
 // ------------------------------
@@ -837,7 +843,7 @@ function drawBiaIllustartionDesc(descriptionDiv, imageDiv) {
   removeExistingContents(descriptionDiv, imageDiv);
 
   // Color
-  body.style("background-color", baseColor);
+  body.style("background-color", whiteColor);
   descriptionDiv.style("color", blackColor);
   imageDiv.style("height", "100vh").style("width", "100vw");
 
@@ -862,13 +868,28 @@ function drawBiaIllustartionDesc(descriptionDiv, imageDiv) {
     )
     .style("margin", 0);
 
-  const imageContainer = imageDiv.append("div").style("position", "relative");
+  const imageContainer = imageDiv.append("div").style("position", "absolute").style("top", "0").style("left", "0");
+
   imageContainer
     .append("img")
+    .attr("id", "BiaBaseIllustration")
+    .attr("src", "./data/bia_explain.svg")
+    .style("width", "100vw")
+    .style("height", "auto")
+    .style("position", "absolute")
+    .style("top", "0")
+    .style("left", "0");
+
+  imageContainer
+    .append("img")
+    .attr("class", "imageDivContents")
     .attr("src", "./data/bia_explain2.svg")
     .style("width", "100vw")
     .style("height", "auto")
-    .style("z-index", 50);
+    .style("position", "absolute")
+    .style("top", "0")
+    .style("left", "0")
+    .style("z-index", "50");
 }
 
 // ------------------------------
@@ -887,21 +908,21 @@ function drawALH84001(descriptionDiv, imageDiv) {
   descriptionDiv
     .style("position", "fixed")
     .style("top", "50%")
-    .style("left", "55%")
-    .style("width", "35%")
+    .style("left", "45%")
+    .style("width", "40%")
     .style("height", "30%")
     .style("transform", "translateY(-50%)")
     .style("display", "flex")
     .style("align-items", "center");
 
-  imageDiv.style("top", "25%").style("left", "7.5%").style("width", "auto").style("height", "55%");
-
   descriptionDiv
     .append("p")
     .html(
-      "<b>The collection of meteorites has greatly advanced our understanding of space.</b> ALH 84001, a meteorite that hinted at the possibility of ancient life on Mars, was also found in Blue Ice Areas."
+      "<b>The collection of meteorites has greatly advanced our understanding of space.</b><br>ALH 84001, a meteorite that hinted at the possibility of ancient life on Mars, was also found in Blue Ice Areas."
     )
     .style("margin", 0);
+
+  imageDiv.style("top", "25%").style("left", "15%").style("width", "auto").style("height", "55%");
 
   imageDiv
     .style("display", "flex")
@@ -909,11 +930,11 @@ function drawALH84001(descriptionDiv, imageDiv) {
     .style("justify-content", "center")
     .style("align-items", "center");
 
-  imageDiv.append("img").attr("src", "./data/alh84001.jpg").style("height", "100%").style("border-radius", "10px");
+  imageDiv.append("img").attr("src", "./data/alh84001.jpg").style("height", "50%").style("border-radius", "10px");
   imageDiv
     .append("p")
     .html(
-      "image source : <a href='https://airandspace.si.edu/multimedia-gallery/web12004-2011hjpg'>airandspace.si.edu</a>"
+      "Image from: <a href='https://collections.nmnh.si.edu/search/ms/?ark=ark:/65665/32beb5ac286354e29af6088002b6d9f51'>collections.nmnh.si.edu</a>"
     );
 }
 
@@ -961,12 +982,38 @@ function drawLastComment(descriptionDiv, imageDiv) {
     .style("display", "flex")
     .style("align-items", "center");
 
+  imageDiv.style("top", "0%").style("left", "0%").style("width", "100%").style("height", "100%");
+  const imageContainer = imageDiv.append("div").style("position", "absolute").style("top", "0").style("left", "0");
+
+  imageContainer
+    .append("img")
+    .attr("id", "BiaBaseIllustration")
+    .attr("src", "./data/ampfull.jpg")
+    .style("width", "auto")
+    .style("height", "100vh")
+    .style("position", "absolute")
+    .style("top", "0%")
+    .style("left", "0%");
+
   descriptionDiv
     .append("p")
     .html(
-      "<i>'The loss of Antarctic meteorites is much like the loss of data ... once they disappear, so do some of the secrets of the universe.'</i><br><br><span style='font-style: normal; font-weight: normal; font-size: 1rem'>Harry Zekollari, a glaciologist at the Vrije Universiteit Brussel in Belgium, in his interview with <a href='https://phys.org/news/2024-04-climate-threatens-antarctic-meteorites.html' target='_blank' style='text-decoration: none; color: #007BFF;'>Phys.org</a></span>"
+      "<b><i>'The loss of Antarctic meteorites is much like the loss of data ... once they disappear, so do some of the secrets of the universe.'</i></b><br><br><span style='font-style: normal; font-weight: normal; font-size: 1rem'>Harry Zekollari, a glaciologist at the Vrije Universiteit Brussel in Belgium, in his interview with <a href='https://phys.org/news/2024-04-climate-threatens-antarctic-meteorites.html' target='_blank' style='text-decoration: none; color: #007BFF;'>Phys.org</a></span>"
     )
     .style("margin", 0);
+
+  imageDiv
+    .append("p")
+    .html(
+      "Image from: <a href='https://naturalhistory.si.edu/research/mineral-sciences/programs' target='_blank' style='color: #007BFF; text-decoration: none;'>naturalhistory.si.edu</a>"
+    )
+    .style("position", "absolute")
+    .style("bottom", "20px")
+    .style("right", "30px")
+    .style("font-size", "0.8rem")
+    .style("z-index", 100)
+    .style("background-color", "rgba(255, 255, 255, 0.8)")
+    .style("padding", "5px 10px");
 }
 
 // ------------------------------
@@ -976,29 +1023,44 @@ function drawLastComment(descriptionDiv, imageDiv) {
 function drawCredit(descriptionDiv, imageDiv) {
   removeExistingContents(descriptionDiv, imageDiv);
 
+  imageDiv.style("top", "0%").style("left", "0%").style("width", "100%").style("height", "100%");
+  const imageContainer = imageDiv.append("div").style("position", "absolute").style("top", "0").style("left", "0");
+
+  imageContainer
+    .append("img")
+    .attr("id", "BiaBaseIllustration")
+    .attr("src", "./data/last_scene.svg")
+    .style("width", "100vw")
+    .style("height", "auto")
+    .style("position", "absolute")
+    .style("top", "0")
+    .style("left", "0");
+
   // Positioning
   descriptionDiv
     .style("position", "fixed")
-    .style("top", "50%")
-    .style("left", "25%")
-    .style("width", "60%")
+    .style("top", "70%")
+    .style("left", "5%")
+    .style("width", "50%")
     .style("height", "30%")
     .style("transform", "translateY(-50%)")
     .style("display", "flex")
     .style("align-items", "center");
 
   const references = `
-      <h1 style="font-size: 2rem">Why are meteorites found in Antarctica?</h1>
+      <h1 style="font-size: 1.75rem">Why are meteorites found in Antarctica?</h1>
       <h3 style="font-size: 1rem">Data Viz by: Tak Watanabe</h3>
       <br>
-      <h4 style="margin: 3px; font-size: 1.25rem; color: #333;">Data</h3>
-      <ul style="font-size: 1rem; margin: 0; padding-left: 20px; color: #555; line-height: 1.6;">
-          <li><a href="https://www.si.edu/openaccess" target="_blank" style="color: #007BFF; text-decoration: none;">Smithsonian Open Access | Smithsonian Institution</a></li>
+      <h4 style="margin: 3px; font-size: 1rem; color: #333;">Data</h3>
+      <ul style="font-size: 0.8rem; margin: 0; padding-left: 20px; color: #555; line-height: 1.6;">
+          <li><a href="https://www.si.edu/openaccess" target="_blank" style="color: #007BFF; text-decoration: none;">Smithsonian Open Access | Smithsonian Institution<br></a></li>
           <li><a href="https://nsidc.org/data/nsidc-0422/versions/1" target="_blank" style="color: #007BFF; text-decoration: none;">Antarctic Digital Elevation Model | National Snow and Ice Data Center</a></li>
           <li><a href="https://www.usap-dc.org/view/dataset/601742" target="_blank" style="color: #007BFF; text-decoration: none;">Distribution of blue ice areas in Antarctica derived from Landsat ETM+ and Modis images | U.S. Antarctic Program Data Center</a></li><br>
       </ul>
-      <h4 style="margin: 3px; font-size: 1.25rem; color: #333;">References</h3>
-      <ul style="font-size: 1rem; margin: 0; padding-left: 20px; color: #555; line-height: 1.6;">
+      <h4 style="margin: 3px; font-size: 1rem; color: #333;">References</h3>
+      <ul style="font-size: 0.8rem; margin: 0; padding-left: 20px; color: #555; line-height: 1.6;">
+          <li><a href="https://www.youtube.com/watch?v=3NUUNo43b3A" target="_blank" style="color: #007BFF; text-decoration: none;">Why Are They All In Antarctica? - MinuteEarth</a></li>    
+          <li><a href="https://phys.org/news/2024-04-climate-threatens-antarctic-meteorites.html" target="_blank" style="color: #007BFF; text-decoration: none;">Climate Threatens Antarctic Meteorites - Phys.org</a></li>    
           <li><a href="https://naturalhistory.si.edu/education/teaching-resources/earth-science/meteorites-messengers-outer-space" target="_blank" style="color: #007BFF; text-decoration: none;">Meteorites: Messengers from Outer Space - Smithsonian</a></li>
           <li><a href="https://www.nationalgeographic.com/science/article/antarctica-meteorites-asteroids-climate-change" target="_blank" style="color: #007BFF; text-decoration: none;">Antarctica Meteorites and Climate Change - National Geographic</a></li>
           <li><a href="https://www.antarctica.gov.au/about-antarctica/weather-and-climate/weather/" target="_blank" style="color: #007BFF; text-decoration: none;">Antarctica Weather and Climate - Australian Antarctic Program</a></li>
@@ -1006,7 +1068,7 @@ function drawCredit(descriptionDiv, imageDiv) {
           <li><a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/1999RG900007" target="_blank" style="color: #007BFF; text-decoration: none;">On the glaciological, meteorological, and climatological significance of Antarctic blue ice areas - Richard Bintanja</a></li>
           <li><a href="https://www.nature.com/articles/s41558-024-01954-y.pdf" target="_blank" style="color: #007BFF; text-decoration: none;">Climate Impact on Antarctic Meteorites - Nature</a></li>
           <li><a href="https://phys.org/news/2024-04-climate-threatens-antarctic-meteorites.html" target="_blank" style="color: #007BFF; text-decoration: none;">Climate Threatens Antarctic Meteorites - Phys.org</a></li>
-      </ul><br>
+          </ul><br>
   `;
 
   descriptionDiv.append("p").html(references).style("margin", 0);
@@ -1079,6 +1141,9 @@ async function main() {
     }
   }
 
+  imageDiv.style("opacity", 0);
+  descriptionDiv.style("opacity", 0);
+
   // Set up Scrollama
   const scroller = scrollama();
   scroller
@@ -1095,6 +1160,11 @@ async function main() {
     .onStepProgress((response) => {
       const { index, progress } = response;
 
+      // Disable Tooltip
+      let tooltip = d3.select("body").select("#elevation-tooltip");
+      tooltip.style("visibility", "hidden");
+
+      // Update State
       state.index = index;
 
       // Default Opacity
@@ -1111,10 +1181,9 @@ async function main() {
         // Description & Image Div
         state.descriptionDivOpacity = 0;
         state.imageDivOpacity = 0;
+        state.imageDivContentsOpacity = 1;
       } else if (index === 2 && progress >= 1 - fadeInOutThreshold) {
-        const interpolatedColor = d3.interpolateRgb(whiteColor, baseColor)((progress - 0.75) * 4);
-        console.log(interpolatedColor);
-        body.style("background-color", interpolatedColor);
+        body.style("background-color", d3.interpolateRgb(whiteColor, baseColor)((progress - 0.75) * 4));
       } else if ((index === 3 && progress >= 1 - fadeInOutThreshold) || index === 4) {
         state.imageDivOpacity = 1;
         state.imageDivContentsOpacity = calculateOpacity(progress);
@@ -1137,9 +1206,11 @@ async function main() {
         state.imageDivContentsOpacity = calculateOpacity(progress);
       } else if (index === 7 && progress >= 1 - fadeInOutThreshold) {
         state.imageDivOpacity = calculateOpacity(progress);
+        body.style("background-color", d3.interpolateRgb(baseColor, whiteColor)((progress - 0.75) * 4));
       } else if (index === 8 && progress <= 1 - fadeInOutThreshold) {
         state.imageDivOpacity = 1;
         state.imageDivBIABaseIllustrationOpacity = calculateOpacity(progress);
+        state.imageDivContentsOpacity = 0;
       } else if (index === 8 && progress >= 1 - fadeInOutThreshold) {
         state.imageDivOpacity = 1;
         state.imageDivBIABaseIllustrationOpacity = 1;
@@ -1152,11 +1223,14 @@ async function main() {
         state.imageDivOpacity = calculateOpacity(progress);
         state.imageDivContentsOpacity = calculateOpacity(progress);
       } else if (index === 12 && progress >= 1 - fadeInOutThreshold) {
-      } else if (index === 13) {
+      } else if (index === 13 && progress <= 1 - fadeInOutThreshold) {
         state.imageDivOpacity = calculateOpacity(progress);
-      } else if (index === 14) {
-        state.imageDivOpacity = calculateOpacity(progress * 2);
+      } else if (index === 13 && progress >= 1 - fadeInOutThreshold) {
+        state.imageDivOpacity = 1;
+        state.descriptionDivOpacity = 1;
       }
+
+      console.log(response);
 
       const imageDivContents = d3.selectAll(".imageDivContents");
       const heatMap = d3.select("#heatmap");
@@ -1170,9 +1244,6 @@ async function main() {
       heatMap.style("opacity", state.imageDivAntarcticaHeatmapOpacity);
       BiaBaseIllustration.style("opacity", state.imageDivBIABaseIllustrationOpacity);
       blueBox.style("opacity", state.blueBoxOpacity);
-
-      console.log(response);
-      // console.log(state);
     });
 }
 
