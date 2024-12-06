@@ -934,7 +934,7 @@ function drawALH84001(descriptionDiv, imageDiv) {
   imageDiv
     .append("p")
     .html(
-      "Image from: <a href='https://collections.nmnh.si.edu/search/ms/?ark=ark:/65665/32beb5ac286354e29af6088002b6d9f51'>collections.nmnh.si.edu</a>"
+      "ALH 84001, Image from: <a href='https://collections.nmnh.si.edu/search/ms/?ark=ark:/65665/32beb5ac286354e29af6088002b6d9f51'>collections.nmnh.si.edu</a>"
     );
 }
 
