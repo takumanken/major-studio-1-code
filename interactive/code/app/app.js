@@ -1107,19 +1107,17 @@ async function main() {
   const [descriptionDiv, imageDiv] = buildScrollyTellingDiv();
 
   function drawFunctions(index, progress) {
-    const opacity = calculateOpacity(progress);
-
     // Draw Functions
     if (index === 0) {
       drawSiStats(descriptionDiv, imageDiv);
     } else if (index === 1) {
       drawSiStats(descriptionDiv, imageDiv);
     } else if (index === 2) {
-      drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData, opacity);
+      drawCollectedLocation(descriptionDiv, imageDiv, AttributedLocationData);
     } else if (index === 3) {
-      drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON, opacity);
+      drawAntarcticaClimate(descriptionDiv, imageDiv, antarcticaGeoJSON);
     } else if (index === 4) {
-      drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON, opacity);
+      drawVisualContrast(descriptionDiv, imageDiv, antarcticaGeoJSON);
     } else if (index === 5) {
       drawCollectionSpot(descriptionDiv, imageDiv, antarcticaGeoJSON, antarcticaMeteoritesData);
     } else if (index === 6) {
@@ -1140,12 +1138,97 @@ async function main() {
       drawCredit(descriptionDiv, imageDiv);
     }
   }
-
   imageDiv.style("opacity", 0);
   descriptionDiv.style("opacity", 0);
 
   // Set up Scrollama
   const scroller = scrollama();
+
+  const handleStepProgress = throttle((response) => {
+    const { index, progress } = response;
+
+    // Disable Tooltip
+    let tooltip = d3.select("body").select("#elevation-tooltip");
+    tooltip.style("visibility", "hidden");
+
+    // Update State
+    state.index = index;
+
+    // Default Opacity
+    state.descriptionDivOpacity = calculateOpacity(progress);
+    state.imageDivOpacity = calculateOpacity(progress);
+
+    // Conditional Opacity
+    if (state.index === 0) {
+      // Title Div
+      const titleDiv = d3.select("#title_div");
+      const titleDivOpacity = 1 - progress;
+      titleDiv.style("opacity", titleDivOpacity);
+
+      // Description & Image Div
+      state.descriptionDivOpacity = 0;
+      state.imageDivOpacity = 0;
+      state.imageDivContentsOpacity = 1;
+    } else if (index === 2 && progress >= 1 - fadeInOutThreshold) {
+      body.style("background-color", d3.interpolateRgb(whiteColor, baseColor)((progress - 0.75) * 4));
+    } else if ((index === 3 && progress >= 1 - fadeInOutThreshold) || index === 4) {
+      state.imageDivOpacity = 1;
+      state.imageDivContentsOpacity = calculateOpacity(progress);
+    } else if (index === 5 && progress <= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.imageDivAntarcticaHeatmapOpacity = calculateOpacity(progress);
+    } else if (index === 5 && progress >= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.imageDivAntarcticaHeatmapOpacity = 1;
+    } else if (index === 6 && progress <= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.imageDivAntarcticaHeatmapOpacity = 1;
+      state.imageDivContentsOpacity = calculateOpacity(progress);
+    } else if (index === 6 && progress >= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.imageDivAntarcticaHeatmapOpacity = calculateOpacity(progress);
+      state.imageDivContentsOpacity = calculateOpacity(progress);
+    } else if (index === 7 && progress <= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.imageDivContentsOpacity = calculateOpacity(progress);
+    } else if (index === 7 && progress >= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = calculateOpacity(progress);
+      body.style("background-color", d3.interpolateRgb(baseColor, whiteColor)((progress - 0.75) * 4));
+    } else if (index === 8 && progress <= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.imageDivBIABaseIllustrationOpacity = calculateOpacity(progress);
+      state.imageDivContentsOpacity = 0;
+    } else if (index === 8 && progress >= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.imageDivBIABaseIllustrationOpacity = 1;
+      state.imageDivContentsOpacity = calculateOpacity(progress);
+    } else if (index === 9 && progress <= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.imageDivBIABaseIllustrationOpacity = 1;
+      state.imageDivContentsOpacity = calculateOpacity(progress);
+    } else if (index === 9 && progress >= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = calculateOpacity(progress);
+      state.imageDivContentsOpacity = calculateOpacity(progress);
+    } else if (index === 12 && progress >= 1 - fadeInOutThreshold) {
+    } else if (index === 13 && progress <= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = calculateOpacity(progress);
+    } else if (index === 13 && progress >= 1 - fadeInOutThreshold) {
+      state.imageDivOpacity = 1;
+      state.descriptionDivOpacity = 1;
+    }
+
+    const imageDivContents = d3.selectAll(".imageDivContents");
+    const heatMap = d3.select("#heatmap");
+    const BiaBaseIllustration = d3.select("#BiaBaseIllustration");
+
+    // Update Opacity
+    descriptionDiv.style("opacity", state.descriptionDivOpacity);
+    imageDiv.style("opacity", state.imageDivOpacity);
+    imageDivContents.style("opacity", state.imageDivContentsOpacity);
+    heatMap.style("opacity", state.imageDivAntarcticaHeatmapOpacity);
+    BiaBaseIllustration.style("opacity", state.imageDivBIABaseIllustrationOpacity);
+  }, 30);
+
   scroller
     .setup({
       step: ".step",
@@ -1157,94 +1240,27 @@ async function main() {
       const { index, progress } = response;
       drawFunctions(index, progress);
     })
-    .onStepProgress((response) => {
-      const { index, progress } = response;
-
-      // Disable Tooltip
-      let tooltip = d3.select("body").select("#elevation-tooltip");
-      tooltip.style("visibility", "hidden");
-
-      // Update State
-      state.index = index;
-
-      // Default Opacity
-      state.descriptionDivOpacity = calculateOpacity(progress);
-      state.imageDivOpacity = calculateOpacity(progress);
-
-      // Conditional Opacity
-      if (state.index === 0) {
-        // Title Div
-        const titleDiv = d3.select("#title_div");
-        const titleDivOpacity = 1 - progress;
-        titleDiv.style("opacity", titleDivOpacity);
-
-        // Description & Image Div
-        state.descriptionDivOpacity = 0;
-        state.imageDivOpacity = 0;
-        state.imageDivContentsOpacity = 1;
-      } else if (index === 2 && progress >= 1 - fadeInOutThreshold) {
-        body.style("background-color", d3.interpolateRgb(whiteColor, baseColor)((progress - 0.75) * 4));
-      } else if ((index === 3 && progress >= 1 - fadeInOutThreshold) || index === 4) {
-        state.imageDivOpacity = 1;
-        state.imageDivContentsOpacity = calculateOpacity(progress);
-      } else if (index === 5 && progress <= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.imageDivAntarcticaHeatmapOpacity = calculateOpacity(progress);
-      } else if (index === 5 && progress >= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.imageDivAntarcticaHeatmapOpacity = 1;
-      } else if (index === 6 && progress <= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.imageDivAntarcticaHeatmapOpacity = 1;
-        state.imageDivContentsOpacity = calculateOpacity(progress);
-      } else if (index === 6 && progress >= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.imageDivAntarcticaHeatmapOpacity = calculateOpacity(progress);
-        state.imageDivContentsOpacity = calculateOpacity(progress);
-      } else if (index === 7 && progress <= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.imageDivContentsOpacity = calculateOpacity(progress);
-      } else if (index === 7 && progress >= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = calculateOpacity(progress);
-        body.style("background-color", d3.interpolateRgb(baseColor, whiteColor)((progress - 0.75) * 4));
-      } else if (index === 8 && progress <= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.imageDivBIABaseIllustrationOpacity = calculateOpacity(progress);
-        state.imageDivContentsOpacity = 0;
-      } else if (index === 8 && progress >= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.imageDivBIABaseIllustrationOpacity = 1;
-        state.imageDivContentsOpacity = calculateOpacity(progress);
-      } else if (index === 9 && progress <= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.imageDivBIABaseIllustrationOpacity = 1;
-        state.imageDivContentsOpacity = calculateOpacity(progress);
-      } else if (index === 9 && progress >= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = calculateOpacity(progress);
-        state.imageDivContentsOpacity = calculateOpacity(progress);
-      } else if (index === 12 && progress >= 1 - fadeInOutThreshold) {
-      } else if (index === 13 && progress <= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = calculateOpacity(progress);
-      } else if (index === 13 && progress >= 1 - fadeInOutThreshold) {
-        state.imageDivOpacity = 1;
-        state.descriptionDivOpacity = 1;
-      }
-
-      console.log(response);
-
-      const imageDivContents = d3.selectAll(".imageDivContents");
-      const heatMap = d3.select("#heatmap");
-      const BiaBaseIllustration = d3.select("#BiaBaseIllustration");
-      const blueBox = d3.select("#blue_box");
-
-      // Update Opacity
-      descriptionDiv.style("opacity", state.descriptionDivOpacity);
-      imageDiv.style("opacity", state.imageDivOpacity);
-      imageDivContents.style("opacity", state.imageDivContentsOpacity);
-      heatMap.style("opacity", state.imageDivAntarcticaHeatmapOpacity);
-      BiaBaseIllustration.style("opacity", state.imageDivBIABaseIllustrationOpacity);
-      blueBox.style("opacity", state.blueBoxOpacity);
-    });
+    .onStepProgress(handleStepProgress);
 }
 
 main();
+
+function throttle(func, limit) {
+  let lastFunc;
+  let lastRan;
+  return function (...args) {
+    const context = this;
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(function () {
+        if (Date.now() - lastRan >= limit) {
+          func.apply(context, args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  };
+}
