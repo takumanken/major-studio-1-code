@@ -94,13 +94,24 @@ d3.json("../data/data.json").then((data) => {
   // AI Summary Content
   const aiSummaryContentsDiv = aiSummaryDiv.append("div").attr("id", "ai-summary-contents");
 
+  function adjustFontSize(element, maxLength, fontSizeSmall, fontSizeLarge) {
+    const textContent = element.text();
+    if (textContent.length > maxLength) {
+      element.style("font-size", fontSizeSmall);
+    } else {
+      element.style("font-size", fontSizeLarge);
+    }
+  }
+
   aiSummaryContentsDiv.append("h4").text("ABOUT");
 
-  aiSummaryContentsDiv.append("p").html(portraitData.description).style("height", "50px");
+  const aboutParagraph = aiSummaryContentsDiv.append("p").html(portraitData.description).style("height", "50px");
+  adjustFontSize(aboutParagraph, 300, "14px", "16px");
 
   aiSummaryContentsDiv.append("h4").text("MOMENT OF THE PORTRAIT");
 
-  aiSummaryContentsDiv.append("p").text(portraitData.portraitMoment).style("height", "50px");
+  const momentParagraph = aiSummaryContentsDiv.append("p").text(portraitData.portraitMoment).style("height", "50px");
+  adjustFontSize(momentParagraph, 300, "14px", "16px");
 
   // Life Events Timeline
   aiSummaryContentsDiv.append("h4").text("LIFE EVENTS");
