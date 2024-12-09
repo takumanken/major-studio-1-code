@@ -96,11 +96,11 @@ d3.json("../data/data.json").then((data) => {
 
   aiSummaryContentsDiv.append("h4").text("ABOUT");
 
-  aiSummaryContentsDiv.append("p").html(portraitData.description);
+  aiSummaryContentsDiv.append("p").html(portraitData.description).style("height", "50px");
 
   aiSummaryContentsDiv.append("h4").text("MOMENT OF THE PORTRAIT");
 
-  aiSummaryContentsDiv.append("p").text(portraitData.portraitMoment);
+  aiSummaryContentsDiv.append("p").text(portraitData.portraitMoment).style("height", "50px");
 
   // Life Events Timeline
   aiSummaryContentsDiv.append("h4").text("LIFE EVENTS");
