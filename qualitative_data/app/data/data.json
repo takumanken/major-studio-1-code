@@ -56,55 +56,6 @@
     }
   },
   {
-    "description": "Alfred Jones is a noted American engraver and artist who, despite being born in England, spent most of his career in the United States and is best known for his work on the 1890 postage stamp honoring Thomas Jefferson.",
-    "id": "ld1-1715938889731-1715938944581-1",
-    "mainEvents": [
-      {
-        "year": 1819
-      },
-      {
-        "year": 1890
-      },
-      {
-        "description": "Worked at the American Bank Note Company",
-        "year": 1890
-      },
-      {
-        "description": "Designed the Thomas Jefferson postage stamp",
-        "year": 1890
-      },
-      {
-        "year": 1900
-      }
-    ],
-    "portraitMoment": "This portrait drawn in c. 1850 seems to capture the moment when Alfred Jones, with a decade of experience in the United States, had already begun to establish his reputation as an engraver, but was still a young man with many years of successful work ahead.",
-    "wikiURL": "https://en.wikipedia.org/wiki/Alfred_Jones_(engraver)",
-    "title": "Self-Portrait",
-    "objectType": "Painting",
-    "portraitYear": {
-      "original": "c. 1850",
-      "yearInt": 1850,
-      "yearGroup": "1850s"
-    },
-    "name": "Alfred Jones",
-    "period": "1819 - 1900",
-    "sex": "Male",
-    "categories": [
-      "Arts & Culture"
-    ],
-    "artistName": "Alfred Jones",
-    "isSelfPortrait": "Yes",
-    "imageLink": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_2023_8_inex",
-    "thumbnailLink": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_2023_8_inex&max=200",
-    "detailLink": "https://npg.si.edu/object/npg_NPG.2023.8",
-    "birthYear": 1819,
-    "deathYear": 1900,
-    "ageAtPortrait": {
-      "ageInt": 31,
-      "ageGroup": "30s"
-    }
-  },
-  {
     "description": "Abbott Handerson Thayer is a prominent American artist and naturalist recognized for his 'angel' paintings, contributions to camouflage theory, and influence on American art through his teaching.",
     "id": "ld1-1643399756728-1643399779444-0",
     "mainEvents": [
